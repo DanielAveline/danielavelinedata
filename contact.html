@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - Daniel Aveline</title>
+    <title>Contact Me</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <header>
-        <h1 id="brand">Daniel Aveline's Data Background</h1>
+        <h1>Daniel Aveline's Data Background</h1>
         <nav>
             <a href="index.html">Home</a>
             <a href="projects.html">Projects</a>
@@ -18,32 +18,29 @@
     </header>
 
     <main>
-        <h2>CONTACT US</h2>
-        <p>Email us with any questions or inquiries and we will be happy to answer your questions and set up a meeting with you. We want to help set you apart from the flock!</p>
-        <form action="https://formspree.io/f/{YOUR_FORM_ID}" method="POST">
-            <label for="name">NAME:</label>
-            <input type="text" id="name" name="name" required>
+        <section class="contact-form">
+            <h2>Contact Me</h2>
+            <form action="#" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Your Name">
 
-            <label for="email">EMAIL:</label>
-            <input type="email" id="email" name="email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Your Email">
 
-            <label for="subject">SUBJECT:</label>
-            <input type="text" id="subject" name="subject" required>
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" placeholder="Subject">
 
-            <label for="message">MESSAGE:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="6" placeholder="Your Message"></textarea>
 
-            <div class="checkbox-label">
-                <input type="checkbox" id="copy" name="copy">
-                <label for="copy">SEND ME A COPIED EMAIL</label>
-            </div>
-
-            <button type="submit">SEND EMAIL</button>
-        </form>
+                <button type="submit">Send Email</button>
+            </form>
+        </section>
     </main>
 
     <footer>
         <p>© 2025 Daniel Aveline</p>
     </footer>
+
 </body>
 </html>
