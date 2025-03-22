@@ -1,62 +1,58 @@
+/* Global Styles */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     color: #333;
     background-color: #e0f2ff;
+    transition: background-color 0.5s;
 }
 
+/* Header Styling */
 header {
     background-color: #1e3a8a;
     padding: 1rem;
     text-align: center;
     color: white;
+    transition: all 0.3s;
 }
 
-header nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: white;
-    transition: color 0.3s;
-}
-
-header nav a:hover {
-    color: #93c5fd;
-}
-
+/* Header Brand */
 #brand {
     font-size: 2rem;
+    color: white;
     transition: text-shadow 0.3s, color 0.3s;
 }
 
 #brand:hover {
     text-shadow: 0 0 10px white;
-    color: white;
 }
 
+/* Navigation Links */
+header nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s, transform 0.3s;
+}
+
+header nav a:hover {
+    color: #93c5fd;
+    transform: scale(1.1);
+}
+
+/* Main Content Styling */
 main {
     padding: 2rem;
     text-align: center;
+    animation: fadeIn 1s;
 }
 
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 2rem;
+/* Section Headings */
+section h2 {
+    animation: slideDown 0.8s;
 }
 
-.project-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.project-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
+/* Footer Styling */
 footer {
     text-align: center;
     padding: 1rem;
@@ -68,16 +64,68 @@ footer p {
     margin: 0;
 }
 
+/* Project Cards */
+.project-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 500px;
+}
+
+input, textarea, button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Form Button Styling */
+button {
+    background-color: #1e3a8a;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2563eb;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     header nav a {
         display: block;
         margin: 10px 0;
     }
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
 }
+
 
 
 
