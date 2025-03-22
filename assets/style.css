@@ -7,7 +7,64 @@ body {
     transition: background-color 0.5s;
 }
 
-/* Projects Grid */
+/* Header Styling */
+header {
+    background-color: #1e3a8a;
+    padding: 1rem;
+    text-align: center;
+    color: white;
+    transition: all 0.3s;
+}
+
+/* Header Brand */
+#brand {
+    font-size: 2rem;
+    color: white;
+    transition: text-shadow 0.3s, color 0.3s;
+}
+
+#brand:hover {
+    text-shadow: 0 0 10px white;
+}
+
+/* Navigation Links */
+header nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s, transform 0.3s;
+}
+
+header nav a:hover {
+    color: #93c5fd;
+    transform: scale(1.1);
+}
+
+/* Main Content Styling */
+main {
+    padding: 2rem;
+    text-align: center;
+    animation: fadeIn 1s;
+}
+
+/* Section Headings */
+section h2 {
+    animation: slideDown 0.8s;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #1e3a8a;
+    color: white;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Project Cards Styling */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -15,7 +72,6 @@ body {
     padding: 2rem;
 }
 
-/* Project Cards */
 .project-card {
     background-color: white;
     border-radius: 10px;
@@ -33,7 +89,6 @@ body {
     background-color: #eff6ff;
 }
 
-/* Project Card Headings */
 .project-card h3 {
     margin: 0 0 10px;
     color: #1e3a8a;
@@ -44,10 +99,62 @@ body {
     color: #2563eb;
 }
 
-/* Project Card Paragraphs */
 .project-card p {
     margin: 0;
     line-height: 1.5;
+}
+
+/* Contact Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+}
+
+form:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+input, textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #1e3a8a;
+    box-shadow: 0 0 5px rgba(30, 58, 138, 0.3);
+}
+
+/* Submit Button Styling */
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e3a8a;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2563eb;
 }
 
 /* Animations */
@@ -56,12 +163,25 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
+    header nav a {
+        display: block;
+        margin: 10px 0;
+    }
     .projects-grid {
         grid-template-columns: 1fr;
     }
+    form {
+        padding: 15px;
+    }
 }
+
 
 
 
