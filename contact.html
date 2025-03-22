@@ -3,47 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - Daniel Aveline Data</title>
-    <meta name="description" content="Contact Daniel Aveline for collaboration or inquiries about data analytics projects.">
-    <meta name="keywords" content="Daniel Aveline, Contact, Data Projects, Inquiries">
+    <title>Contact - Daniel Aveline</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <header>
-        <h1 id="brand" tabindex="0">Daniel Aveline's Data Background</h1>
-        <nav aria-label="Main Navigation">
+        <h1 id="brand">Daniel Aveline's Data Background</h1>
+        <nav>
             <a href="index.html">Home</a>
             <a href="projects.html">Projects</a>
             <a href="resume.html">Resume</a>
             <a href="contact.html">Contact</a>
         </nav>
     </header>
+
     <main>
-        <section aria-labelledby="contact-form">
-            <h2 id="contact-form">Get In Touch</h2>
-            <p>Feel free to reach out if you have any questions or opportunities to discuss!</p>
-            <form>
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Your Name" required>
-                </div>
+        <section>
+            <h2>Contact Me</h2>
+            <form action="https://formspree.io/f/{YOUR_FORM_ID}" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
 
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Your Email" required>
-                </div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-                </div>
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
 
                 <button type="submit">Send Message</button>
             </form>
         </section>
     </main>
+
     <footer>
         <p>© 2025 Daniel Aveline</p>
     </footer>
 </body>
 </html>
+
