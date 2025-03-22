@@ -40,70 +40,6 @@ header nav a:hover {
     transform: scale(1.1);
 }
 
-/* Main Content Styling */
-main {
-    padding: 2rem;
-    text-align: center;
-    animation: fadeIn 1s;
-}
-
-/* Section Headings */
-section h2 {
-    animation: slideDown 0.8s;
-}
-
-/* Footer Styling */
-footer {
-    text-align: center;
-    padding: 1rem;
-    background-color: #1e3a8a;
-    color: white;
-}
-
-footer p {
-    margin: 0;
-}
-
-/* Project Cards Styling */
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 2rem;
-}
-
-.project-card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
-    text-decoration: none;
-    color: inherit;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.6s ease-in-out;
-}
-
-.project-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    background-color: #eff6ff;
-}
-
-.project-card h3 {
-    margin: 0 0 10px;
-    color: #1e3a8a;
-    transition: color 0.3s;
-}
-
-.project-card:hover h3 {
-    color: #2563eb;
-}
-
-.project-card p {
-    margin: 0;
-    line-height: 1.5;
-}
-
 /* Contact Form Styling */
 form {
     display: flex;
@@ -120,11 +56,12 @@ form {
 label {
     font-weight: bold;
     margin-bottom: 5px;
-    background-color: #1e3a8a;
+    background-color: black;
     color: white;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 8px;
+    border-radius: 3px;
     display: inline-block;
+    transform: skew(-10deg);
 }
 
 input, textarea {
@@ -143,29 +80,21 @@ input:focus, textarea:focus {
 
 /* Submit Button Styling */
 button {
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 5px;
     background-color: #1e3a8a;
     color: white;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 200px;
+    align-self: center;
 }
 
 button:hover {
     background-color: #2563eb;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    transform: scale(1.05);
 }
 
 /* Mobile Responsiveness */
@@ -174,9 +103,7 @@ button:hover {
         display: block;
         margin: 10px 0;
     }
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
+
     form {
         padding: 15px;
     }
