@@ -1,28 +1,10 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("JavaScript Loaded Successfully");
+// Minimal JavaScript for the portfolio site
+// Currently this file is just a placeholder for future enhancements.
+// Keeping a separate script file allows you to add interactive
+// functionality (e.g. form validation, animations) without cluttering
+// the HTML documents.
 
-    const links = document.querySelectorAll("nav a");
-
-    links.forEach(link => {
-        link.addEventListener("click", (event) => {
-            const target = event.target.getAttribute("href");
-            if (target.includes(".html")) {
-                event.preventDefault();
-
-                fetch(target)
-                    .then(response => response.text())
-                    .then(data => {
-                        const parser = new DOMParser();
-                        const newDoc = parser.parseFromString(data, "text/html");
-                        const newContent = newDoc.querySelector("main").innerHTML;
-
-                        document.querySelector("main").innerHTML = newContent;
-                        window.history.pushState({}, "", target);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    })
-                    .catch(error => console.error("Error loading page:", error));
-            }
-        });
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Daniel Aveline portfolio loaded');
 });
 
