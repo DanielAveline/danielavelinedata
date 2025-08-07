@@ -61,7 +61,13 @@ footer {
   color: #aaa;
 }
 
-/* Carousel Styling */
+/* Carousel Layout */
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .carousel {
   display: flex;
   overflow-x: auto;
@@ -69,6 +75,7 @@ footer {
   gap: 1rem;
   padding: 1rem 0;
   scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
 .carousel::-webkit-scrollbar {
@@ -79,10 +86,42 @@ footer {
   flex: 0 0 calc(50% - 1rem);
   scroll-snap-align: start;
   background-color: #1a1a1a;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 12px;
+  padding: 1.2rem;
   min-width: 350px;
   max-width: 400px;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
 }
 
+.carousel-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.7);
+}
+
+/* Arrows */
+.carousel-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #00bfff;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 1;
+  transition: background 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-btn:hover {
+  background-color: rgba(0, 191, 255, 0.3);
+}
+
+.carousel-btn.left {
+  left: -1rem;
+}
+
+.carousel-btn.right {
+  right: -1rem;
+}
