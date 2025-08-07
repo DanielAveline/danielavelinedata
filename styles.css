@@ -105,19 +105,7 @@ overflow: visible;
 
 
 /* Carousel items styled as cards with white backgrounds */
-.carousel-item {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1.2rem;
-  flex: 0 0 calc(50% - 1rem);
-  min-width: 340px;
-  max-width: 420px;
-  color: #222;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
-  text-align: center;
-  scroll-snap-align: start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+
 
 /* Slight lift on hover for carousel cards */
 .carousel-item:hover {
@@ -197,19 +185,7 @@ overflow: visible;
 /* Removed old education container styles; updated education carousel definitions below */
 
 
-.education-carousel .carousel-item {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1.2rem;
-  flex: 0 0 calc(50% - 1rem);
-  min-width: 340px;
-  max-width: 420px;
-  color: #222;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
-  text-align: center;
-  scroll-snap-align: start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+.education-carousel 
 
 .education-carousel .carousel-item:hover {
     transform: scale(1.05);
@@ -387,6 +363,29 @@ display: block;
 
 .carousel-btn.right { right: -14px; }
 
+
+
+
+
+
+.exp-spacer { height: 10px; }
+.exp-keywords { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.keyword-tag { padding:6px 10px; border-radius:999px; background:#eef5f8; border:1px solid #d4e2e8; font-size:0.85rem; white-space:nowrap; color:#222; }
+
+.carousel-item {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.2rem;
+  flex: 0 0 calc(50% - 1rem);
+  min-width: calc(50% - 1rem);
+  max-width: calc(50% - 1rem);
+  color: #222;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+  text-align: center;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .employer-logo {
   display: block;
   height: 90px;        /* consistent readable height */
@@ -396,9 +395,23 @@ display: block;
   object-fit: contain;
 }
 
-.exp-name { font-weight: 700; margin: 4px 0; font-size: 1.05rem; color:#222; }
-.exp-title { font-weight: 600; margin-bottom: 2px; opacity: 0.95; display:block; color:#222; }
-.exp-dates { color: #77858b; font-size: 0.95rem; display:block; }
-.exp-spacer { height: 10px; }
-.exp-keywords { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
-.keyword-tag { padding:6px 10px; border-radius:999px; background:#eef5f8; border:1px solid #d4e2e8; font-size:0.85rem; white-space:nowrap; color:#222; }
+.exp-name {
+  font-weight: 700;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+}
+
+.exp-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+
+display: block;
+}
+
+.exp-dates {
+  color: #555;
+  font-size: 0.9em;
+
+display: block;
+}
