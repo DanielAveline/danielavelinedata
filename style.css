@@ -1,0 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #0e0e0e;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+header {
+  background: #002244;
+  padding: 2rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2rem;
+}
+
+nav {
+  margin-top: 1rem;
+}
+
+nav a {
+  margin: 0 1rem;
+  color: #00bfff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+section {
+  padding: 2rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+.section-title {
+  color: #00bfff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+footer {
+  background: #002244;
+  color: #ccc;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+.job-title {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.company {
+  color: #aaa;
+}
+
+/* Carousel styling */
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  flex: 0 0 calc(50% - 1rem);
+  scroll-snap-align: start;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 350px;
+  max-width: 400px;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+}
