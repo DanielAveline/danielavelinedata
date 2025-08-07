@@ -190,7 +190,7 @@ footer {
 
 
 .education-card:hover {
-  transform: translateY(-6px) scale(1.04);
+  transform: translateY(-6px) scale(1.06);
   box-shadow: 0 16px 36px rgba(0,0,0,0.22);
 }
 
@@ -246,7 +246,7 @@ footer {
 }
 
 .education-card:hover {
-  transform: translateY(-6px) scale(1.04);
+  transform: translateY(-6px) scale(1.06);
   box-shadow: 0 16px 36px rgba(0,0,0,0.22);
 }
 
@@ -256,9 +256,9 @@ footer {
 
 .education-logo {
   display: block;
-  height: 72px;        /* consistent logo height */
-  width: auto;         /* keep aspect ratio */
-  max-width: 85%;      /* don't overflow the card */
+  height: 90px;        /* consistent readable height */
+  width: auto;
+  max-width: 85%;
   margin: 0 auto 12px auto;
   object-fit: contain;
 }
@@ -280,11 +280,17 @@ footer {
 .edu-degree {
   font-weight: 500;
   margin-bottom: 4px;
+
+display: block;
 }
+
 .edu-dates {
   color: #555;
   font-size: 0.9em;
+
+display: block;
 }
+
 .edu-space {
   height: 10px;
 }
@@ -307,12 +313,18 @@ footer {
   font-weight: 600;
   margin-bottom: 2px;
   opacity: 0.95;
+
+display: block;
 }
+
 
 .edu-dates {
   color: #77858b;
   font-size: 0.95rem;
+
+display: block;
 }
+
 
 .edu-spacer {
   height: 10px;
@@ -332,4 +344,20 @@ footer {
   border: 1px solid #d4e2e8;
   font-size: 0.85rem;
   white-space: nowrap;
+}
+
+.edu-subname {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* Subtitle under Purdue "P" logo */
+.edu-subtitle {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+  color: #6b7a84;
+  font-weight: 600;
 }
