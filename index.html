@@ -4,10 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daniel Aveline | Data Analyst Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <!-- Import Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Header with navigation -->
   <header>
     <h1>Daniel Aveline</h1>
     <p>MBA in Business Data Analytics | Data Analytics Professional | Experienced Team Leader</p>
@@ -19,21 +22,25 @@
     </nav>
   </header>
 
+  <!-- About section -->
   <section id="about">
     <h2 class="section-title">About Me</h2>
     <p>
-      I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques, data-driven problem-solving, and strategic decision-making. My background in leadership equips me to manage projects effectively and drive team success.
+      I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques, data‑driven problem‑solving, and strategic decision‑making. My background in leadership equips me to manage projects effectively and drive team success.
     </p>
     <p>
       Passionate about transforming complex data into actionable insights, I am proficient in advanced analytics tools and thrive on using data to enhance organizational performance. Currently, I work as a Consumer Reporting Analyst at First Merchants Bank, focusing on analytics, reporting, and compliance to support growth and efficiency.
     </p>
   </section>
 
+  <!-- Experience section with carousel -->
   <section id="experience">
     <h2 class="section-title">Experience</h2>
     <div class="carousel-container">
-      <button class="carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
+      <!-- Left arrow button -->
+      <button class="carousel-btn left" onclick="scrollCarousel(-1)">❮</button>
       <div class="carousel">
+        <!-- Carousel items -->
         <div class="carousel-item">
           <p class="job-title">Consumer Reporting Analyst</p>
           <p class="company">First Merchants Bank (Aug 2025 – Present)</p>
@@ -47,7 +54,7 @@
         <div class="carousel-item">
           <p class="job-title">Team Lead Manager</p>
           <p class="company">Bob Rohrman Auto Group (Jan 2024 – Aug 2025)</p>
-          <p>Directed a high-performing team and spearheaded business process improvements.</p>
+          <p>Directed a high‑performing team and spearheaded business process improvements.</p>
         </div>
         <div class="carousel-item">
           <p class="job-title">Business Manager</p>
@@ -60,21 +67,22 @@
           <p>Enhanced customer experience and product delivery through expert CRM management.</p>
         </div>
       </div>
-      <button class="carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
+      <!-- Right arrow button -->
+      <button class="carousel-btn right" onclick="scrollCarousel(1)">❯</button>
     </div>
   </section>
 
+  <!-- Education section -->
   <section id="education">
     <h2 class="section-title">Education</h2>
     <p><strong>Purdue University</strong> — Master’s in Business Analytics (Aug 2024 – Dec 2025)</p>
     <p>Focus on machine learning, optimization, and business analytics strategy. Collaboration with the Krannert Center for Business Analytics.</p>
-
     <p><strong>Purdue Global</strong> — BASc in Data Analytics (Nov 2021 – Jun 2024)</p>
     <p>Emphasis on Python, data mining, predictive modeling, and communication.</p>
-
     <p><strong>Jefferson High School</strong> — High School Diploma, Computer Science (2006 – 2010)</p>
   </section>
 
+  <!-- Contact section -->
   <section id="contact">
     <h2 class="section-title">Contact</h2>
     <p>Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a></p>
@@ -82,16 +90,18 @@
   </section>
 
   <footer>
-    &copy; 2025 Daniel Aveline. All rights reserved.
+    © 2025 Daniel Aveline. All rights reserved.
   </footer>
 
+  <!-- Carousel script -->
   <script>
+    // Auto scroll the carousel every 4 seconds
     const carousel = document.querySelector('.carousel');
     let scrollAmount = 0;
     const scrollStep = 420;
-
     setInterval(() => {
       if (!carousel) return;
+      // Reset to beginning when reaching the end
       if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth) {
         scrollAmount = 0;
       } else {
@@ -100,13 +110,13 @@
       carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
     }, 4000);
 
+    // Manual carousel scroll
     function scrollCarousel(direction) {
       if (!carousel) return;
       scrollAmount += scrollStep * direction;
       if (scrollAmount < 0) scrollAmount = 0;
-      if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) {
-        scrollAmount = carousel.scrollWidth - carousel.clientWidth;
-      }
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (scrollAmount > maxScroll) scrollAmount = maxScroll;
       carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
     }
   </script>
