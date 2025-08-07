@@ -70,26 +70,33 @@
   <!-- Education section -->
   <section id="education">
     <h2 class="section-title">Education</h2>
-    <div class="education-container">
-      <!-- Purdue University card -->
-      <div class="education-card">
-        <img src="purdue.png" alt="Purdue University logo" class="education-logo" />
-        <strong>Purdue University</strong>
-        <p>Master’s in Business Analytics (Aug 2024 – Dec 2025)</p>
-        <p>Focus on machine learning, optimization, and business analytics strategy. Collaboration with the Krannert Center for Business Analytics.</p>
+    <div class="carousel-container edu-carousel-container">
+      <!-- Left arrow button for education carousel -->
+      <button class="carousel-btn left" onclick="scrollEduCarousel(-1)">❮</button>
+      <!-- Education carousel items -->
+      <div class="edu-carousel">
+        <!-- Purdue University card -->
+        <div class="education-card">
+          <img src="purdue.png" alt="Purdue University logo" class="education-logo" />
+          <strong>Purdue University</strong>
+          <p>Master’s in Business Analytics (Aug 2024 – Dec 2025)</p>
+          <p>Focus on machine learning, optimization, and business analytics strategy. Collaboration with the Krannert Center for Business Analytics.</p>
+        </div>
+        <!-- Purdue Global card -->
+        <div class="education-card">
+          <img src="purdue_global.png" alt="Purdue University Global logo" class="education-logo" />
+          <strong>Purdue Global</strong>
+          <p>BASc in Data Analytics (Nov 2021 – Jun 2024)</p>
+          <p>Emphasis on Python, data mining, predictive modeling, and communication.</p>
+        </div>
+        <!-- Jefferson High School card -->
+        <div class="education-card">
+          <strong>Jefferson High School</strong>
+          <p>High School Diploma, Computer Science (2006 – 2010)</p>
+        </div>
       </div>
-      <!-- Purdue Global card -->
-      <div class="education-card">
-        <img src="purdue_global.png" alt="Purdue University Global logo" class="education-logo" />
-        <strong>Purdue Global</strong>
-        <p>BASc in Data Analytics (Nov 2021 – Jun 2024)</p>
-        <p>Emphasis on Python, data mining, predictive modeling, and communication.</p>
-      </div>
-      <!-- Jefferson High School card -->
-      <div class="education-card">
-        <strong>Jefferson High School</strong>
-        <p>High School Diploma, Computer Science (2006 – 2010)</p>
-      </div>
+      <!-- Right arrow button for education carousel -->
+      <button class="carousel-btn right" onclick="scrollEduCarousel(1)">❯</button>
     </div>
   </section>
 
@@ -129,6 +136,31 @@
       const maxScroll = carousel.scrollWidth - carousel.clientWidth;
       if (scrollAmount > maxScroll) scrollAmount = maxScroll;
       carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    }
+
+    // ------- Education carousel logic -------
+    const eduCarousel = document.querySelector('.edu-carousel');
+    let eduScrollAmount = 0;
+    const eduScrollStep = 420;
+    // Auto scroll the education carousel every 4 seconds
+    setInterval(() => {
+      if (!eduCarousel) return;
+      if (eduCarousel.scrollLeft + eduCarousel.offsetWidth >= eduCarousel.scrollWidth) {
+        eduScrollAmount = 0;
+      } else {
+        eduScrollAmount += eduScrollStep;
+      }
+      eduCarousel.scrollTo({ left: eduScrollAmount, behavior: 'smooth' });
+    }, 4000);
+
+    // Manual scroll for the education carousel
+    function scrollEduCarousel(direction) {
+      if (!eduCarousel) return;
+      eduScrollAmount += eduScrollStep * direction;
+      if (eduScrollAmount < 0) eduScrollAmount = 0;
+      const eduMaxScroll = eduCarousel.scrollWidth - eduCarousel.clientWidth;
+      if (eduScrollAmount > eduMaxScroll) eduScrollAmount = eduMaxScroll;
+      eduCarousel.scrollTo({ left: eduScrollAmount, behavior: 'smooth' });
     }
   </script>
 </body>
