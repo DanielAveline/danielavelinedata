@@ -1,129 +1,114 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daniel Aveline | Data Analyst Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Daniel Aveline</h1>
+    <p>MBA in Business Data Analytics | Data Analytics Professional | Experienced Team Leader</p>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-body {
-  background-color: #0e0e0e;
-  color: #e0e0e0;
-  line-height: 1.6;
-}
+  <section id="about">
+    <h2 class="section-title">About Me</h2>
+    <p>
+      I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques, data-driven problem-solving, and strategic decision-making. My background in leadership equips me to manage projects effectively and drive team success.
+    </p>
+    <p>
+      Passionate about transforming complex data into actionable insights, I am proficient in advanced analytics tools and thrive on using data to enhance organizational performance. Currently, I work as a Consumer Reporting Analyst at First Merchants Bank, focusing on analytics, reporting, and compliance to support growth and efficiency.
+    </p>
+  </section>
 
-header {
-  background: #002244;
-  padding: 2rem;
-  text-align: center;
-}
+  <section id="experience">
+    <h2 class="section-title">Experience</h2>
+    <div class="carousel-container">
+      <button class="carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
+      <div class="carousel">
+        <div class="carousel-item">
+          <p class="job-title">Consumer Reporting Analyst</p>
+          <p class="company">First Merchants Bank (Aug 2025 – Present)</p>
+          <p>Utilize analytics, reporting, and compliance expertise to support business growth and operational efficiency.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Chief Executive Officer</p>
+          <p class="company">BuzzWorthy Mead (May 2023 – Present)</p>
+          <p>Led a DIY brewing kit company, driving strategy, product innovation, and operations for growth.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Team Lead Manager</p>
+          <p class="company">Bob Rohrman Auto Group (Jan 2024 – Aug 2025)</p>
+          <p>Directed a high-performing team and spearheaded business process improvements.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Business Manager</p>
+          <p class="company">Bob Rohrman Auto Group (Feb 2021 – Aug 2025)</p>
+          <p>Managed financial and sales operations, focusing on profitability and strategic management.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Product Specialist</p>
+          <p class="company">Bob Rohrman Auto Group (Feb 2018 – Aug 2025)</p>
+          <p>Enhanced customer experience and product delivery through expert CRM management.</p>
+        </div>
+      </div>
+      <button class="carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
+    </div>
+  </section>
 
-header h1 {
-  font-size: 2rem;
-}
+  <section id="education">
+    <h2 class="section-title">Education</h2>
+    <p><strong>Purdue University</strong> — Master’s in Business Analytics (Aug 2024 – Dec 2025)</p>
+    <p>Focus on machine learning, optimization, and business analytics strategy. Collaboration with the Krannert Center for Business Analytics.</p>
 
-nav {
-  margin-top: 1rem;
-}
+    <p><strong>Purdue Global</strong> — BASc in Data Analytics (Nov 2021 – Jun 2024)</p>
+    <p>Emphasis on Python, data mining, predictive modeling, and communication.</p>
 
-nav a {
-  margin: 0 1rem;
-  color: #00bfff;
-  text-decoration: none;
-  font-weight: 600;
-}
+    <p><strong>Jefferson High School</strong> — High School Diploma, Computer Science (2006 – 2010)</p>
+  </section>
 
-section {
-  padding: 2rem;
-  max-width: 900px;
-  margin: auto;
-}
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <p>Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a></p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/danielaveline" target="_blank">linkedin.com/in/danielaveline</a></p>
+  </section>
 
-.section-title {
-  color: #00bfff;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
+  <footer>
+    &copy; 2025 Daniel Aveline. All rights reserved.
+  </footer>
 
-footer {
-  background: #002244;
-  color: #ccc;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
-}
+  <script>
+    const carousel = document.querySelector('.carousel');
+    let scrollAmount = 0;
+    const scrollStep = 420;
 
-.job-title {
-  font-weight: bold;
-  color: #ffffff;
-}
+    setInterval(() => {
+      if (!carousel) return;
+      if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth) {
+        scrollAmount = 0;
+      } else {
+        scrollAmount += scrollStep;
+      }
+      carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    }, 4000);
 
-.company {
-  color: #aaa;
-}
-
-/* Carousel Layout */
-.carousel-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 1rem;
-  padding: 1rem 0;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-}
-
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.carousel-item {
-  flex: 0 0 calc(50% - 1rem);
-  scroll-snap-align: start;
-  background-color: #1a1a1a;
-  border-radius: 12px;
-  padding: 1.2rem;
-  min-width: 350px;
-  max-width: 400px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
-}
-
-.carousel-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.7);
-}
-
-/* Arrows */
-.carousel-btn {
-  background-color: rgba(0, 0, 0, 0.5);
-  border: none;
-  color: #00bfff;
-  font-size: 2rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  z-index: 1;
-  transition: background 0.3s ease;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.carousel-btn:hover {
-  background-color: rgba(0, 191, 255, 0.3);
-}
-
-.carousel-btn.left {
-  left: -1rem;
-}
-
-.carousel-btn.right {
-  right: -1rem;
-}
-
-
+    function scrollCarousel(direction) {
+      if (!carousel) return;
+      scrollAmount += scrollStep * direction;
+      if (scrollAmount < 0) scrollAmount = 0;
+      if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) {
+        scrollAmount = carousel.scrollWidth - carousel.clientWidth;
+      }
+      carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
