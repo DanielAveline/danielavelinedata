@@ -112,26 +112,48 @@
     © 2025 Daniel Aveline. All rights reserved.
   </footer>
 
+  
   <!-- Carousel script -->
   <script>
-    // Auto scroll the carousel every 4 seconds
+    // ===== Experience carousel =====
     const carousel = document.querySelector('.carousel');
+    const carouselContainer = document.querySelector('.carousel-container');
     let scrollAmount = 0;
     const scrollStep = 420;
-    setInterval(() => {
-      if (!carousel) return;
-      // Reset to beginning when reaching the end
-      if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth) {
-        scrollAmount = 0;
-      } else {
-        scrollAmount += scrollStep;
-      }
-      carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
-    }, 7000);
+    let carouselTimer = null;
 
-    // Manual carousel scroll
+    function startExperienceAuto() {
+      if (carouselTimer) return;
+      carouselTimer = setInterval(() => {
+        if (!carousel) return;
+        // Reset to beginning when reaching the end
+        if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth) {
+          scrollAmount = 0;
+        } else {
+          scrollAmount += scrollStep;
+        }
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        if (scrollAmount > maxScroll) scrollAmount = 0;
+        carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+      }, 7000);
+    }
+    function stopExperienceAuto() {
+      if (carouselTimer) {
+        clearInterval(carouselTimer);
+        carouselTimer = null;
+      }
+    }
+
+    if (carouselContainer) {
+      carouselContainer.addEventListener('mouseenter', stopExperienceAuto);
+      carouselContainer.addEventListener('mouseleave', startExperienceAuto);
+    }
+    startExperienceAuto();
+
+    // Manual scroll for the experience carousel
     function scrollCarousel(direction) {
       if (!carousel) return;
+      stopExperienceAuto();
       scrollAmount += scrollStep * direction;
       if (scrollAmount < 0) scrollAmount = 0;
       const maxScroll = carousel.scrollWidth - carousel.clientWidth;
@@ -139,24 +161,44 @@
       carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
     }
 
-    // ------- Education carousel logic -------
+    // ===== Education carousel =====
     const eduCarousel = document.querySelector('.edu-carousel');
+    const eduContainer = document.querySelector('.edu-carousel-container');
     let eduScrollAmount = 0;
     const eduScrollStep = 420;
-    // Auto scroll the education carousel every 4 seconds
-    setInterval(() => {
-      if (!eduCarousel) return;
-      if (eduCarousel.scrollLeft + eduCarousel.offsetWidth >= eduCarousel.scrollWidth) {
-        eduScrollAmount = 0;
-      } else {
-        eduScrollAmount += eduScrollStep;
+    let eduTimer = null;
+
+    function startEduAuto() {
+      if (eduTimer) return;
+      eduTimer = setInterval(() => {
+        if (!eduCarousel) return;
+        if (eduCarousel.scrollLeft + eduCarousel.offsetWidth >= eduCarousel.scrollWidth) {
+          eduScrollAmount = 0;
+        } else {
+          eduScrollAmount += eduScrollStep;
+        }
+        const eduMaxScroll = eduCarousel.scrollWidth - eduCarousel.clientWidth;
+        if (eduScrollAmount > eduMaxScroll) eduScrollAmount = 0;
+        eduCarousel.scrollTo({ left: eduScrollAmount, behavior: 'smooth' });
+      }, 7000);
+    }
+    function stopEduAuto() {
+      if (eduTimer) {
+        clearInterval(eduTimer);
+        eduTimer = null;
       }
-      eduCarousel.scrollTo({ left: eduScrollAmount, behavior: 'smooth' });
-    }, 7000);
+    }
+
+    if (eduContainer) {
+      eduContainer.addEventListener('mouseenter', stopEduAuto);
+      eduContainer.addEventListener('mouseleave', startEduAuto);
+    }
+    startEduAuto();
 
     // Manual scroll for the education carousel
     function scrollEduCarousel(direction) {
       if (!eduCarousel) return;
+      stopEduAuto();
       eduScrollAmount += eduScrollStep * direction;
       if (eduScrollAmount < 0) eduScrollAmount = 0;
       const eduMaxScroll = eduCarousel.scrollWidth - eduCarousel.clientWidth;
@@ -164,5 +206,6 @@
       eduCarousel.scrollTo({ left: eduScrollAmount, behavior: 'smooth' });
     }
   </script>
+
 </body>
 </html>
