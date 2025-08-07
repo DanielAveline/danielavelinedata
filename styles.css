@@ -1,3 +1,4 @@
+/* Global base styles */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,7 @@ body {
   line-height: 1.6;
 }
 
+/* Header styles */
 header {
   background: #002244;
   padding: 2rem;
@@ -21,15 +23,27 @@ header h1 {
   font-size: 2rem;
 }
 
+/* Navigation links */
 nav {
   margin-top: 1rem;
 }
 
 nav a {
   margin: 0 1rem;
-  color: #00bfff;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 600;
+}
+
+/* Global anchor styling */
+a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #00bfff;
+  text-decoration: underline;
 }
 
 section {
@@ -61,7 +75,7 @@ footer {
   color: #aaa;
 }
 
-/* Carousel Layout */
+/* Carousel layout */
 .carousel-container {
   position: relative;
   display: flex;
@@ -99,7 +113,7 @@ footer {
   box-shadow: 0 0 20px rgba(0, 191, 255, 0.7);
 }
 
-/* Arrows */
+/* Carousel buttons */
 .carousel-btn {
   background-color: rgba(0, 0, 0, 0.5);
   border: none;
