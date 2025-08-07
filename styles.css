@@ -190,8 +190,8 @@ footer {
 
 
 .education-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.22);
 }
 
 .education-card strong {
@@ -246,8 +246,8 @@ footer {
 }
 
 .education-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.16);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.22);
 }
 
 
@@ -268,4 +268,68 @@ footer {
 .carousel-container:hover, 
 .edu-carousel-container:hover {
   cursor: pointer;
+}
+
+
+
+.edu-school {
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+.edu-degree {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.edu-dates {
+  color: #555;
+  font-size: 0.9em;
+}
+.edu-space {
+  height: 10px;
+}
+.edu-keywords {
+  font-size: 0.85em;
+  color: #333;
+}
+
+
+
+/* Education structured content */
+.edu-name {
+  font-weight: 700;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+}
+
+.edu-degree {
+  font-weight: 600;
+  margin-bottom: 2px;
+  opacity: 0.95;
+}
+
+.edu-dates {
+  color: #77858b;
+  font-size: 0.95rem;
+}
+
+.edu-spacer {
+  height: 10px;
+}
+
+.edu-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.keyword-tag {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef5f8;
+  border: 1px solid #d4e2e8;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
