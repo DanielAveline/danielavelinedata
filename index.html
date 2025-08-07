@@ -31,32 +31,36 @@
 
   <section id="experience">
     <h2 class="section-title">Experience</h2>
-    <div class="carousel">
-      <div class="carousel-item">
-        <p class="job-title">Consumer Reporting Analyst</p>
-        <p class="company">First Merchants Bank (Aug 2025 – Present)</p>
-        <p>Utilize analytics, reporting, and compliance expertise to support business growth and operational efficiency.</p>
+    <div class="carousel-container">
+      <button class="carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
+      <div class="carousel">
+        <div class="carousel-item">
+          <p class="job-title">Consumer Reporting Analyst</p>
+          <p class="company">First Merchants Bank (Aug 2025 – Present)</p>
+          <p>Utilize analytics, reporting, and compliance expertise to support business growth and operational efficiency.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Chief Executive Officer</p>
+          <p class="company">BuzzWorthy Mead (May 2023 – Present)</p>
+          <p>Led a DIY brewing kit company, driving strategy, product innovation, and operations for growth.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Team Lead Manager</p>
+          <p class="company">Bob Rohrman Auto Group (Jan 2024 – Aug 2025)</p>
+          <p>Directed a high-performing team and spearheaded business process improvements.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Business Manager</p>
+          <p class="company">Bob Rohrman Auto Group (Feb 2021 – Aug 2025)</p>
+          <p>Managed financial and sales operations, focusing on profitability and strategic management.</p>
+        </div>
+        <div class="carousel-item">
+          <p class="job-title">Product Specialist</p>
+          <p class="company">Bob Rohrman Auto Group (Feb 2018 – Aug 2025)</p>
+          <p>Enhanced customer experience and product delivery through expert CRM management.</p>
+        </div>
       </div>
-      <div class="carousel-item">
-        <p class="job-title">Chief Executive Officer</p>
-        <p class="company">BuzzWorthy Mead (May 2023 – Present)</p>
-        <p>Led a DIY brewing kit company, driving strategy, product innovation, and operations for growth.</p>
-      </div>
-      <div class="carousel-item">
-        <p class="job-title">Team Lead Manager</p>
-        <p class="company">Bob Rohrman Auto Group (Jan 2024 – Aug 2025)</p>
-        <p>Directed a high-performing team and spearheaded business process improvements.</p>
-      </div>
-      <div class="carousel-item">
-        <p class="job-title">Business Manager</p>
-        <p class="company">Bob Rohrman Auto Group (Feb 2021 – Aug 2025)</p>
-        <p>Managed financial and sales operations, focusing on profitability and strategic management.</p>
-      </div>
-      <div class="carousel-item">
-        <p class="job-title">Product Specialist</p>
-        <p class="company">Bob Rohrman Auto Group (Feb 2018 – Aug 2025)</p>
-        <p>Enhanced customer experience and product delivery through expert CRM management.</p>
-      </div>
+      <button class="carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
     </div>
   </section>
 
@@ -81,11 +85,10 @@
     &copy; 2025 Daniel Aveline. All rights reserved.
   </footer>
 
-  <!-- Carousel Auto Scroll Script -->
   <script>
     const carousel = document.querySelector('.carousel');
     let scrollAmount = 0;
-    const scrollStep = 420; // Adjust to match item width + gap
+    const scrollStep = 420;
 
     setInterval(() => {
       if (!carousel) return;
@@ -98,7 +101,20 @@
         left: scrollAmount,
         behavior: 'smooth'
       });
-    }, 4000); // scroll every 4 seconds
+    }, 4000);
+
+    function scrollCarousel(direction) {
+      if (!carousel) return;
+      scrollAmount += scrollStep * direction;
+      if (scrollAmount < 0) scrollAmount = 0;
+      if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) {
+        scrollAmount = carousel.scrollWidth - carousel.clientWidth;
+      }
+      carousel.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
   </script>
 </body>
 </html>
