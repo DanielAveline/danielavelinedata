@@ -61,13 +61,14 @@ footer {
   color: #aaa;
 }
 
-/* Carousel styling */
+/* Carousel Styling */
 .carousel {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   gap: 1rem;
   padding: 1rem 0;
+  scroll-behavior: smooth;
 }
 
 .carousel::-webkit-scrollbar {
@@ -84,3 +85,4 @@ footer {
   max-width: 400px;
   box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
 }
+
