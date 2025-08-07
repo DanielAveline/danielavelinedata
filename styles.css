@@ -363,15 +363,6 @@ display: block;
 
 .carousel-btn.right { right: -14px; }
 
-
-
-
-
-
-.exp-spacer { height: 10px; }
-.exp-keywords { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
-.keyword-tag { padding:6px 10px; border-radius:999px; background:#eef5f8; border:1px solid #d4e2e8; font-size:0.85rem; white-space:nowrap; color:#222; }
-
 .carousel-item {
   background-color: #ffffff;
   border-radius: 12px;
