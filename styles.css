@@ -36,11 +36,14 @@ nav a {
 }
 
 /* Global anchor styling */
-a {
+/* Style normal and visited links to white so they don't revert to browser defaults */
+a:link,
+a:visited {
   color: #ffffff;
   text-decoration: none;
 }
 
+/* Hover state for links uses theme accent color */
 a:hover {
   color: #00bfff;
   text-decoration: underline;
