@@ -123,31 +123,15 @@ footer {
 }
 
 /* Carousel buttons */
-.carousel-btn {
-  background-color: rgba(0, 0, 0, 0.5);
-  border: none;
-  color: #00bfff;
-  font-size: 2rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  z-index: 1;
-  transition: background 0.3s ease;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
+.carousel-btn { }
 
 .carousel-btn:hover {
   background-color: rgba(0, 191, 255, 0.3);
 }
 
-.carousel-btn.left {
-  left: -1rem;
-}
 
-.carousel-btn.right {
-  right: -1rem;
-}
+
+
 
 /* Education carousel layout */
 .edu-carousel {
@@ -360,4 +344,39 @@ display: block;
   letter-spacing: 0.2px;
   color: #6b7a84;
   font-weight: 600;
+}
+
+
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+  z-index: 2;
+}
+
+.carousel-btn:hover {
+  background: rgba(240, 240, 240, 0.95);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.carousel-btn.left {
+  left: 8px;
+}
+
+.carousel-btn.right {
+  right: 8px;
 }
