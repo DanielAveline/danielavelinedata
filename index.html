@@ -125,7 +125,7 @@
     const carousel = document.querySelector('.carousel');
     const carouselContainer = document.querySelector('.carousel-container');
     let scrollAmount = 0;
-    const scrollStep = 420;
+    let scrollStep = carousel ? carousel.clientWidth : 420;
     let carouselTimer = null;
 
     function startExperienceAuto() {
@@ -136,7 +136,8 @@
         if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth) {
           scrollAmount = 0;
         } else {
-          scrollAmount += scrollStep;
+          scrollStep = carousel ? carousel.clientWidth : scrollStep;
+        scrollAmount += scrollStep;
         }
         const maxScroll = carousel.scrollWidth - carousel.clientWidth;
         if (scrollAmount > maxScroll) scrollAmount = 0;
@@ -160,6 +161,7 @@
     function scrollCarousel(direction) {
       if (!carousel) return;
       stopExperienceAuto();
+      scrollStep = carousel ? carousel.clientWidth : scrollStep;
       scrollAmount += scrollStep * direction;
       if (scrollAmount < 0) scrollAmount = 0;
       const maxScroll = carousel.scrollWidth - carousel.clientWidth;
@@ -171,7 +173,7 @@
     const eduCarousel = document.querySelector('.edu-carousel');
     const eduContainer = document.querySelector('.edu-carousel-container');
     let eduScrollAmount = 0;
-    const eduScrollStep = 420;
+    let eduScrollStep = eduCarousel ? eduCarousel.clientWidth : 420;
     let eduTimer = null;
 
     function startEduAuto() {
@@ -181,7 +183,8 @@
         if (eduCarousel.scrollLeft + eduCarousel.offsetWidth >= eduCarousel.scrollWidth) {
           eduScrollAmount = 0;
         } else {
-          eduScrollAmount += eduScrollStep;
+          eduScrollStep = eduCarousel ? eduCarousel.clientWidth : eduScrollStep;
+        eduScrollAmount += eduScrollStep;
         }
         const eduMaxScroll = eduCarousel.scrollWidth - eduCarousel.clientWidth;
         if (eduScrollAmount > eduMaxScroll) eduScrollAmount = 0;
@@ -200,11 +203,17 @@
       eduContainer.addEventListener('mouseleave', startEduAuto);
     }
     startEduAuto();
+    window.addEventListener('resize', () => {
+      if (carousel) { scrollStep = carousel.clientWidth; }
+      if (eduCarousel) { eduScrollStep = eduCarousel.clientWidth; }
+    });
+
 
     // Manual scroll for the education carousel
     function scrollEduCarousel(direction) {
       if (!eduCarousel) return;
       stopEduAuto();
+      eduScrollStep = eduCarousel ? eduCarousel.clientWidth : eduScrollStep;
       eduScrollAmount += eduScrollStep * direction;
       if (eduScrollAmount < 0) eduScrollAmount = 0;
       const eduMaxScroll = eduCarousel.scrollWidth - eduCarousel.clientWidth;
