@@ -87,8 +87,6 @@ footer {
   align-items: center;
 
 overflow: visible;
-
-overflow: visible;
 }
 
 .carousel {
@@ -99,7 +97,16 @@ overflow: visible;
   padding: 1rem 0;
   scroll-behavior: smooth;
   scrollbar-width: none;
+
+display: flex;
+flex-wrap: nowrap;
+overflow-x: auto;
+overflow-y: hidden;
+scroll-snap-type: x mandatory;
+scroll-behavior: smooth;
+gap: 1rem;
 }
+.carousel::-webkit-scrollbar{display:none;}
 
 .carousel::-webkit-scrollbar {
   display: none;
@@ -365,16 +372,6 @@ display: block;
 
 .carousel-btn.right { right: -14px; }
 
-
-
-
-
-
-
-
-
-
-
 .carousel-item {
   background-color: #ffffff;
   border-radius: 12px;
@@ -387,7 +384,13 @@ display: block;
   text-align: center;
   scroll-snap-align: start;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+flex: 0 0 calc(50% - 1rem);
+min-width: calc(50% - 1rem);
+max-width: calc(50% - 1rem);
+scroll-snap-align: start;
 }
+
 
 .employer-logo {
   display: block;
