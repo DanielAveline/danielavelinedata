@@ -144,6 +144,59 @@ gap: 1rem;
   scrollbar-width: none;
 }
 
+/* ==== Experience carousel layout (modeled after education) ==== */
+.exp-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.exp-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Container for experience carousel */
+.exp-carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+/* Experience cards mirror the visual style of education cards */
+.experience-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.2rem;
+  flex: 0 0 calc(50% - 1rem);
+  min-width: calc(50% - 1rem);
+  max-width: calc(50% - 1rem);
+  color: #222;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+  text-align: center;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-6px) scale(1.06);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+/* Company logos inside experience cards */
+.experience-logo {
+  display: block;
+  height: 90px;
+  width: auto;
+  max-width: 85%;
+  margin: 0 auto 12px auto;
+  object-fit: contain;
+}
+
 .edu-carousel::-webkit-scrollbar {
   display: none;
 }

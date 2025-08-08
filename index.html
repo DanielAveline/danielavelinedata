@@ -33,83 +33,49 @@
     </p>
   </section>
 
-  <!-- Experience section with carousel -->
+  <!-- Experience section with carousel cards similar to education -->
   <section id="experience">
     <h2 class="section-title">Experience</h2>
-    <div class="carousel-container">
-      <!-- Left arrow button -->
-      <button class="carousel-btn left" onclick="scrollCarousel(-1)">❮</button>
-      <div class="carousel">
-
-        <div class="carousel-item">
-          <img src="first_merchants_logo.png" alt="First Merchants Corporation logo" class="employer-logo" />
-          <div class="exp-name">First Merchants Bank</div>
-          <div class="exp-title">Consumer Reporting Analyst</div>
-          <div class="exp-dates">August 2025 – Present</div>
-          <div class="exp-spacer"></div>
-          <div class="exp-keywords">
-            <span class="keyword-tag">Regulatory Reporting</span>
-            <span class="keyword-tag">Data Quality</span>
-            <span class="keyword-tag">SQL</span>
-            <span class="keyword-tag">Compliance</span>
-          </div>
+    <div class="exp-carousel-container">
+      <!-- Left arrow button for experience carousel -->
+      <button class="carousel-btn left" onclick="scrollExpCarousel(-1)">❮</button>
+      <!-- Experience carousel items -->
+      <div class="exp-carousel">
+        <!-- First Merchants Corporation card -->
+        <div class="experience-card">
+          <img src="first_merchants_logo.png" alt="First Merchants Corporation logo" class="experience-logo" />
+          <strong>First Merchants Corporation</strong>
+          <p>Consumer Reporting Analyst</p>
+          <p>August 2025 – Present</p>
+          <p>Focus on analytics, reporting, and compliance to support growth and efficiency.</p>
         </div>
-        <div class="carousel-item">
-          <img src="rohrman_logo.png" alt="Rohrman Automotive Group logo" class="employer-logo" />
-          <div class="exp-name">Rohrman Automotive Group</div>
-          <div class="exp-title">Team Lead Manager</div>
-          <div class="exp-dates">January 2024 – August 2025</div>
-          <div class="exp-spacer"></div>
-          <div class="exp-keywords">
-            <span class="keyword-tag">Team Leadership</span>
-            <span class="keyword-tag">Process Improvement</span>
-            <span class="keyword-tag">Sales Operations</span>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img src="rohrman_logo.png" alt="Rohrman Automotive Group logo" class="employer-logo" />
-          <div class="exp-name">Rohrman Automotive Group</div>
-          <div class="exp-title">Finance Manager</div>
-          <div class="exp-dates">February 2021 – August 2025</div>
-          <div class="exp-spacer"></div>
-          <div class="exp-keywords">
-            <span class="keyword-tag">Finance</span>
-            <span class="keyword-tag">P&L</span>
-            <span class="keyword-tag">CRM</span>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img src="rohrman_logo.png" alt="Rohrman Automotive Group logo" class="employer-logo" />
-          <div class="exp-name">Rohrman Automotive Group</div>
-          <div class="exp-title">Product Specialist</div>
-          <div class="exp-dates">February 2018 – August 2025</div>
-          <div class="exp-spacer"></div>
-          <div class="exp-keywords">
-            <span class="keyword-tag">Customer Experience</span>
-            <span class="keyword-tag">Product Delivery</span>
-            <span class="keyword-tag">CRM</span>
-          </div>
-        </div>
-
-      </div>
-        <div class="carousel-item">
-          <p class="job-title">Team Lead Manager</p>
-          <p class="company">Bob Rohrman Auto Group (Jan 2024 – Aug 2025)</p>
+        <!-- Bob Rohrman Auto Group – Team Lead Manager card -->
+        <div class="experience-card">
+          <img src="rohrman_logo.png" alt="Bob Rohrman Auto Group logo" class="experience-logo" />
+          <strong>Bob Rohrman Auto Group</strong>
+          <p>Team Lead Manager</p>
+          <p>January 2024 – August 2025</p>
           <p>Directed a high‑performing team and spearheaded business process improvements.</p>
         </div>
-        <div class="carousel-item">
-          <p class="job-title">Business Manager</p>
-          <p class="company">Bob Rohrman Auto Group (Feb 2021 – Aug 2025)</p>
+        <!-- Bob Rohrman Auto Group – Business Manager card -->
+        <div class="experience-card">
+          <img src="rohrman_logo.png" alt="Bob Rohrman Auto Group logo" class="experience-logo" />
+          <strong>Bob Rohrman Auto Group</strong>
+          <p>Business Manager</p>
+          <p>February 2021 – August 2025</p>
           <p>Managed financial and sales operations, focusing on profitability and strategic management.</p>
         </div>
-        <div class="carousel-item">
-          <p class="job-title">Product Specialist</p>
-          <p class="company">Bob Rohrman Auto Group (Feb 2018 – Aug 2025)</p>
-          <p>Enhanced customer experience and product delivery through expert CRM management.</p>
+        <!-- Bob Rohrman Auto Group – Product Specialist card -->
+        <div class="experience-card">
+          <img src="rohrman_logo.png" alt="Bob Rohrman Auto Group logo" class="experience-logo" />
+          <strong>Bob Rohrman Auto Group</strong>
+          <p>Product Specialist</p>
+          <p>February 2018 – August 2025</p>
+          <p>Deepened customer relationships and enhanced the customer experience through expert management of product offerings, including customer engagement, product expertise, sales support, market analysis, and customer feedback.</p>
         </div>
       </div>
-      <!-- Right arrow button -->
-      <button class="carousel-btn right" onclick="scrollCarousel(1)">❯</button>
+      <!-- Right arrow button for experience carousel -->
+      <button class="carousel-btn right" onclick="scrollExpCarousel(1)">❯</button>
     </div>
   </section>
 
@@ -168,51 +134,57 @@
   <!-- Carousel script -->
   <script>
     // ===== Experience carousel =====
-    const carousel = document.querySelector('.carousel');
-    const carouselContainer = document.querySelector('.carousel-container');
-    let scrollAmount = 0;
-    let scrollStep = carousel ? carousel.clientWidth : 420;
-    let carouselTimer = null;
+    // Grab the experience carousel and its container
+    const expCarousel = document.querySelector('.exp-carousel');
+    const expContainer = document.querySelector('.exp-carousel-container');
+    let expScrollAmount = 0;
+    let expScrollStep = expCarousel ? expCarousel.clientWidth : 420;
+    let expTimer = null;
 
-    function startExperienceAuto() {
-      if (carouselTimer) return;
-      carouselTimer = setInterval(() => {
-        if (!carousel) return;
-        // Reset to beginning when reaching the end
-        if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth) {
-          scrollAmount = 0;
+    // Automatically cycle through experience cards every few seconds
+    function startExpAuto() {
+      if (expTimer) return;
+      expTimer = setInterval(() => {
+        if (!expCarousel) return;
+        // If we've reached the end, loop back to the start
+        if (expCarousel.scrollLeft + expCarousel.offsetWidth >= expCarousel.scrollWidth) {
+          expScrollAmount = 0;
         } else {
-          scrollStep = carousel ? carousel.clientWidth : scrollStep;
-        scrollAmount += scrollStep;
+          expScrollStep = expCarousel ? expCarousel.clientWidth : expScrollStep;
+          expScrollAmount += expScrollStep;
         }
-        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-        if (scrollAmount > maxScroll) scrollAmount = 0;
-        carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+        const expMaxScroll = expCarousel.scrollWidth - expCarousel.clientWidth;
+        if (expScrollAmount > expMaxScroll) expScrollAmount = 0;
+        expCarousel.scrollTo({ left: expScrollAmount, behavior: 'smooth' });
       }, 7000);
     }
-    function stopExperienceAuto() {
-      if (carouselTimer) {
-        clearInterval(carouselTimer);
-        carouselTimer = null;
+
+    // Pause the automatic scrolling
+    function stopExpAuto() {
+      if (expTimer) {
+        clearInterval(expTimer);
+        expTimer = null;
       }
     }
 
-    if (carouselContainer) {
-      carouselContainer.addEventListener('mouseenter', stopExperienceAuto);
-      carouselContainer.addEventListener('mouseleave', startExperienceAuto);
+    // Attach event listeners to pause auto-scroll on hover
+    if (expContainer) {
+      expContainer.addEventListener('mouseenter', stopExpAuto);
+      expContainer.addEventListener('mouseleave', startExpAuto);
     }
-    startExperienceAuto();
+    // Kick off automatic scrolling on load
+    startExpAuto();
 
-    // Manual scroll for the experience carousel
-    function scrollCarousel(direction) {
-      if (!carousel) return;
-      stopExperienceAuto();
-      scrollStep = carousel ? carousel.clientWidth : scrollStep;
-      scrollAmount += scrollStep * direction;
-      if (scrollAmount < 0) scrollAmount = 0;
-      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-      if (scrollAmount > maxScroll) scrollAmount = maxScroll;
-      carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    // Manual scroll handler for the experience carousel
+    function scrollExpCarousel(direction) {
+      if (!expCarousel) return;
+      stopExpAuto();
+      expScrollStep = expCarousel ? expCarousel.clientWidth : expScrollStep;
+      expScrollAmount += expScrollStep * direction;
+      if (expScrollAmount < 0) expScrollAmount = 0;
+      const expMaxScroll = expCarousel.scrollWidth - expCarousel.clientWidth;
+      if (expScrollAmount > expMaxScroll) expScrollAmount = expMaxScroll;
+      expCarousel.scrollTo({ left: expScrollAmount, behavior: 'smooth' });
     }
 
     // ===== Education carousel =====
@@ -250,7 +222,7 @@
     }
     startEduAuto();
     window.addEventListener('resize', () => {
-      if (carousel) { scrollStep = carousel.clientWidth; }
+      if (expCarousel) { expScrollStep = expCarousel.clientWidth; }
       if (eduCarousel) { eduScrollStep = eduCarousel.clientWidth; }
     });
 
