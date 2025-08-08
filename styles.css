@@ -200,6 +200,42 @@ gap: 1rem;
   object-fit: contain;
 }
 
+/* Tag container for experience cards */
+.exp-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* About section layout */
+.about-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Portrait styling */
+.about-photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Container for the text next to the photo */
+.about-text {
+  flex: 1;
+}
+
+.about-text p {
+  margin-bottom: 0.8rem;
+}
+
 .edu-carousel::-webkit-scrollbar {
   display: none;
 }
