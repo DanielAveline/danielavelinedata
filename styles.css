@@ -153,6 +153,9 @@ gap: 1rem;
   padding: 1rem 0;
   scroll-behavior: smooth;
   scrollbar-width: none;
+
+  /* Prevent cards from wrapping to a new line so they scroll horizontally */
+  flex-wrap: nowrap;
 }
 
 .exp-carousel::-webkit-scrollbar {
