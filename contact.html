@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Daniel Aveline | Data Analyst Portfolio</title>
+  <title>Contact | Daniel Aveline</title>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,35 +27,34 @@
 </head>
 <body>
   <header>
-    <h1>Daniel Aveline</h1>
-    <p>MBA in Business Data Analytics | Data Analytics Professional | Experienced Team Leader</p>
+    <h1>Contact</h1>
     <nav>
-      <a href="index.html" aria-current="page">About</a>
+      <a href="index.html">About</a>
       <a href="experience.html">Experience</a>
       <a href="education.html">Education</a>
-      <a href="contact.html">Contact</a>
+      <a href="contact.html" aria-current="page">Contact</a>
     </nav>
   </header>
 
-  <section id="about">
-    <h2 class="section-title">About Me</h2>
-    <div class="about-content">
-      <img src="about_photo.png" alt="Portrait" class="about-photo" />
-      <div class="about-text">
-        <p>
-          I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques, data-driven problem-solving, and strategic decision-making. My background in leadership equips me to manage projects effectively and drive team success.
-        </p>
-        <p>
-          Passionate about transforming complex data into actionable insights, I am proficient in advanced analytics tools and thrive on using data to enhance organizational performance. Currently, I work as a Consumer Reporting Analyst at First Merchants Bank, focusing on analytics, reporting, and compliance to support growth and efficiency.
-        </p>
-      </div>
-    </div>
-  </section>
-
   <section id="contact">
-    <h2 class="section-title">Contact</h2>
-    <p>Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a></p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/danielaveline" target="_blank" rel="noopener">linkedin.com/in/danielaveline</a></p>
+    <h2 class="section-title">Get in Touch</h2>
+    <p>Fill out the form below and I’ll respond as soon as possible.</p>
+
+    <form action="https://formspree.io/f/mwpqavra" method="POST" class="contact-form">
+      <label> Your Name:
+        <input type="text" name="name" required>
+      </label>
+      <label> Your Email:
+        <input type="email" name="email" required>
+      </label>
+      <label> Subject:
+        <input type="text" name="subject" required>
+      </label>
+      <label> Message:
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+      <button type="submit">Send Message</button>
+    </form>
   </section>
 
   <footer>© 2025 Daniel Aveline. All rights reserved.</footer>
