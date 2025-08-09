@@ -28,17 +28,12 @@
     if(e.key === 'Escape' && modal.getAttribute('aria-hidden')==='false') closeModal();
   });
 
-  // Example for AJAX success panel (requires Formspree JSON)
+  // Optional success panel hook (if you use AJAX submission)
   // form?.addEventListener('submit', async (e)=>{
   //   e.preventDefault();
   //   const data = new FormData(form);
-  //   await fetch(form.action, {
-  //     method: 'POST',
-  //     body: data,
-  //     headers: { 'Accept': 'application/json' }
-  //   });
-  //   form.hidden = true;
-  //   success.hidden = false;
+  //   await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+  //   form.hidden = true; success.hidden = false;
   // });
 
   closeAfterSuccess?.addEventListener('click', closeModal);
