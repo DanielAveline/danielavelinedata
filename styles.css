@@ -514,3 +514,31 @@ display: block;
 
 display: block;
 }
+
+/* Sticky footer layout */
+html, body {
+  height: 100%;
+}
+body {
+  min-height: 100dvh;        /* supports mobile address bar changes */
+  display: flex;
+  flex-direction: column;
+}
+footer {
+  margin-top: auto;          /* pushes footer to bottom */
+}
+
+/* Optional: footer styling tune-up */
+footer {
+  padding: 16px;
+  text-align: center;
+  opacity: 0.9;
+}
+footer a {
+  color: inherit;
+  text-decoration: underline;
+}
+footer a:hover {
+  text-decoration: none;
+}
+
