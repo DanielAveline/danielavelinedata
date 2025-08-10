@@ -22,23 +22,21 @@
     gtag('config', 'G-QC4N4GL86C');
   </script>
 
-  <!-- Active page underline + sticky footer -->
+  <!-- Active page underline (white) -->
   <style>
     nav a[aria-current="page"] {
       color: white;
       border-bottom: 2px solid currentColor;
       font-weight: 600;
     }
-    /* Sticky footer layout (safe add-on) */
-    html, body { height: 100%; }
-    body { min-height: 100dvh; display: flex; flex-direction: column; }
-    footer { margin-top: auto; padding: 16px; text-align: center; opacity: .9; }
-    footer a { color: inherit; text-decoration: underline; }
-    footer a:hover { text-decoration: none; }
+  </style>
+
+  <!-- Scroll fix for privacy modal -->
+  <style>
+    .policy-modal__panel { max-height: 90vh; overflow-y: auto; }
   </style>
 </head>
 <body>
-  <!-- Header with navigation -->
   <header>
     <h1>Daniel Aveline</h1>
     <p>MBA in Business Data Analytics | Data Analytics Professional | Experienced Team Leader</p>
@@ -50,7 +48,7 @@
     </nav>
   </header>
 
-  <!-- About section -->
+  <!-- About section (ORIGINAL KEPT) -->
   <section id="about">
     <h2 class="section-title">About Me</h2>
     <div class="about-content">
@@ -70,6 +68,82 @@
     © 2025 Daniel Aveline. All rights reserved. •
     <a href="#" id="openPrivacy" role="button" aria-haspopup="dialog">Privacy Notice</a>
   </footer>
+
+  <!-- Privacy Notice Modal -->
+  <div class="policy-modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
+    <div class="policy-modal__backdrop" id="privacyBackdrop"></div>
+    <div class="policy-modal__panel" role="document">
+      <button class="policy-modal__close" id="closePrivacy" aria-label="Close">&times;</button>
+      <h3 id="privacyTitle">Privacy Notice</h3>
+
+      <div class="policy-body">
+        <p><strong>Last updated:</strong> August 9, 2025</p>
+
+        <h4>1) What I collect</h4>
+        <p>When you visit this site, I may receive standard usage data (pages viewed, approximate location, device/browser type) via analytics tools. If you submit the contact form, I receive the information you enter (name, email, subject, message).</p>
+
+        <h4>2) Cookies & analytics</h4>
+        <p>I use Google Analytics to understand how visitors use the site. Google Analytics sets cookies and processes usage data. You can learn more about Google’s data practices and controls in their documentation. You can also use your browser settings to block or delete cookies.</p>
+
+        <h4>3) Contact form</h4>
+        <p>The contact form is powered by Formspree. When you submit the form, the details you provide (name, email, subject, message) are transmitted to deliver your message to me. Do not send sensitive personal information through the form.</p>
+
+        <h4>4) How I use your information</h4>
+        <ul>
+          <li>To operate and improve this website;</li>
+          <li>To respond to your inquiries and communicate with you;</li>
+          <li>To understand aggregate site usage and performance.</li>
+        </ul>
+
+        <h4>5) Sharing</h4>
+        <p>I do not sell your personal information. I may share limited data with service providers (e.g., analytics, contact form) to operate the site. Service providers are only permitted to use the data to provide their services to me.</p>
+
+        <h4>6) Retention</h4>
+        <p>I retain contact messages as long as reasonably necessary to manage our communications. Analytics data is retained according to the settings in the analytics platform.</p>
+
+        <h4>7) Your choices</h4>
+        <ul>
+          <li>Browser controls to block or delete cookies;</li>
+          <li>Use the contact details below to request access, correction, or deletion of your form submissions if applicable.</li>
+        </ul>
+
+        <h4>8) Children’s privacy</h4>
+        <p>This site is not directed to children and I do not knowingly collect personal information from children.</p>
+
+        <h4>9) Changes</h4>
+        <p>I may update this notice from time to time. Updates will be posted on this page with a new “Last updated” date.</p>
+
+        <h4>10) Contact</h4>
+        <p>Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a></p>
+
+        <button class="policy-cta" id="closePrivacyCta" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Modal Script -->
+  <script>
+    (function(){
+      function openPolicy(){ modal.setAttribute('aria-hidden','false'); }
+      function closePolicy(){ modal.setAttribute('aria-hidden','true'); }
+
+      const modal = document.getElementById('privacyModal');
+      const openBtn = document.getElementById('openPrivacy');
+      const closeBtn = document.getElementById('closePrivacy');
+      const closeCta = document.getElementById('closePrivacyCta');
+      const backdrop = document.getElementById('privacyBackdrop');
+
+      openBtn?.addEventListener('click', function(e){ e.preventDefault(); openPolicy(); });
+      closeBtn?.addEventListener('click', closePolicy);
+      closeCta?.addEventListener('click', closePolicy);
+      backdrop?.addEventListener('click', closePolicy);
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closePolicy(); });
+
+      function gaEvent(name, params){ if (typeof gtag === 'function') gtag('event', name, params || {}); }
+      openBtn?.addEventListener('click', ()=>gaEvent('privacy_opened'));
+      [closeBtn, closeCta, backdrop].forEach(el => el?.addEventListener('click', ()=>gaEvent('privacy_closed')));
+    })();
+  </script>
 
   <!-- Optional lightweight engagement: section views + clicks -->
   <script>
@@ -95,105 +169,7 @@
       }, { capture: true });
     })();
   </script>
-
-  <!-- Privacy Notice Modal -->
-  <div class="policy-modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
-    <div class="policy-modal__backdrop" id="privacyBackdrop"></div>
-    <div class="policy-modal__panel" role="document">
-      <button class="policy-modal__close" id="closePrivacy" aria-label="Close">&times;</button>
-      <h3 id="privacyTitle">Privacy Notice</h3>
-
-      <div class="policy-body">
-        <p><strong>Last updated:</strong> August 9, 2025</p>
-
-        <h4>1) What I collect</h4>
-        <p>
-          When you visit this site, I may receive standard usage data (pages viewed, approximate location, device/browser type)
-          via analytics tools. If you submit the contact form, I receive the information you enter (name, email, subject, message).
-        </p>
-
-        <h4>2) Cookies & analytics</h4>
-        <p>
-          I use Google Analytics to understand how visitors use the site. Google Analytics sets cookies and processes usage data.
-          You can learn more about Google’s data practices and controls in their documentation. You can also use your browser
-          settings to block or delete cookies.
-        </p>
-
-        <h4>3) Contact form</h4>
-        <p>
-          The contact form is powered by Formspree. When you submit the form, the details you provide (name, email, subject, message)
-          are transmitted to deliver your message to me. Do not send sensitive personal information through the form.
-        </p>
-
-        <h4>4) How I use your information</h4>
-        <ul>
-          <li>To operate and improve this website;</li>
-          <li>To respond to your inquiries and communicate with you;</li>
-          <li>To understand aggregate site usage and performance.</li>
-        </ul>
-
-        <h4>5) Sharing</h4>
-        <p>
-          I do not sell your personal information. I may share limited data with service providers (e.g., analytics, contact form)
-          to operate the site. Service providers are only permitted to use the data to provide their services to me.
-        </p>
-
-        <h4>6) Retention</h4>
-        <p>
-          I retain contact messages as long as reasonably necessary to manage our communications. Analytics data is retained according
-          to the settings in the analytics platform.
-        </p>
-
-        <h4>7) Your choices</h4>
-        <ul>
-          <li>Browser controls to block or delete cookies;</li>
-          <li>Use the contact details below to request access, correction, or deletion of your form submissions if applicable.</li>
-        </ul>
-
-        <h4>8) Children’s privacy</h4>
-        <p>
-          This site is not directed to children and I do not knowingly collect personal information from children.
-        </p>
-
-        <h4>9) Changes</h4>
-        <p>
-          I may update this notice from time to time. Updates will be posted on this page with a new “Last updated” date.
-        </p>
-
-        <h4>10) Contact</h4>
-        <p>
-          Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a>
-        </p>
-
-        <button class="policy-cta" id="closePrivacyCta" type="button">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Privacy modal script -->
-  <script>
-    (function(){
-      function openPolicy(){ modal.setAttribute('aria-hidden','false'); }
-      function closePolicy(){ modal.setAttribute('aria-hidden','true'); }
-
-      const modal = document.getElementById('privacyModal');
-      const openBtn = document.getElementById('openPrivacy');
-      const closeBtn = document.getElementById('closePrivacy');
-      const closeCta = document.getElementById('closePrivacyCta');
-      const backdrop = document.getElementById('privacyBackdrop');
-
-      openBtn?.addEventListener('click', function(e){ e.preventDefault(); openPolicy(); });
-      closeBtn?.addEventListener('click', closePolicy);
-      closeCta?.addEventListener('click', closePolicy);
-      backdrop?.addEventListener('click', closePolicy);
-      document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closePolicy(); });
-
-      // Optional GA events
-      function gaEvent(name, params){ if (typeof gtag === 'function') gtag('event', name, params || {}); }
-      openBtn?.addEventListener('click', ()=>gaEvent('privacy_opened'));
-      [closeBtn, closeCta, backdrop].forEach(el => el?.addEventListener('click', ()=>gaEvent('privacy_closed')));
-    })();
-  </script>
 </body>
 </html>
+
 
