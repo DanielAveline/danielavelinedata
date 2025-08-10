@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Education - Daniel Aveline</title>
+  <title>Education | Daniel Aveline</title>
 
-  <!-- Your existing CSS links -->
+  <!-- Fonts & site styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="contact-card.css" />
 
-  <!-- Favicons -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <!-- Google Analytics -->
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QC4N4GL86C"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -22,7 +22,7 @@
     gtag('config', 'G-QC4N4GL86C');
   </script>
 
-  <!-- Active nav underline CSS -->
+  <!-- Active page underline (white) -->
   <style>
     nav a[aria-current="page"] {
       color: white;
@@ -41,31 +41,108 @@
   </style>
 </head>
 <body>
+  <header>
+    <h1>Education</h1>
+    <nav>
+      <a href="index.html">About</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html" aria-current="page">Education</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-  <!-- Navigation -->
-  <nav>
-    <a href="index.html">About</a>
-    <a href="experience.html">Experience</a>
-    <a href="education.html" aria-current="page">Education</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-
-  <!-- Education content -->
-  <main>
-    <section id="education">
-      <h1>Education</h1>
-      <!-- Your carousel or card layout for education stays here -->
-      <div class="education-carousel">
-        <!-- Your existing education carousel cards -->
+  <!-- Education section (ORIGINAL CAROUSEL KEPT) -->
+  <section id="education">
+    <h2 class="section-title">Education</h2>
+    <div class="carousel-container edu-carousel-container">
+      <!-- Left arrow button for education carousel -->
+      <button class="carousel-btn left" onclick="scrollEduCarousel(-1)">❮</button>
+      <!-- Education carousel items -->
+      <div class="edu-carousel">
+        <!-- Purdue University card -->
+        <div class="education-card">
+          <img src="purdue_mdsb_logo.png" alt="Purdue University Mitch Daniels School of Business logo" class="education-logo" />
+          <strong>Purdue University</strong>
+          <p>Master’s in Business Analytics</p>
+          <p>August 2024 - December 2025</p>
+          <p></p>
+          <p>Focus on machine learning, optimization, and business analytics strategy. Collaboration with the Krannert Center for Business Analytics.</p>
+        </div>
+        <!-- Purdue Global card -->
+        <div class="education-card">
+          <img src="purdue_global_logo.png" alt="Purdue University Global logo" class="education-logo" />
+          <strong>Purdue Global</strong>
+          <p>BASc in Data Analytics</p>
+          <p>November 2021 - June 2024</p>
+          <p></p>
+          <p>Emphasis on Python, data mining, predictive modeling, and communication.</p>
+        </div>
+        <!-- Jefferson High School card -->
+        <div class="education-card">
+          <img src="jefferson_logo.png" alt="Jefferson High School crest" class="education-logo" />
+          <strong>Jefferson High School</strong>
+          <p>High School Diploma</p>
+          <p>Computer Science</p>
+          <p>August 2005 - May 2010</p>
+        </div>
       </div>
-    </section>
-  </main>
+      <!-- Right arrow button for education carousel -->
+      <button class="carousel-btn right" onclick="scrollEduCarousel(1)">❯</button>
+    </div>
+  </section>
 
-  <!-- Footer -->
   <footer>
     © 2025 Daniel Aveline. All rights reserved. •
     <a href="#" id="openPrivacy" role="button" aria-haspopup="dialog">Privacy Notice</a>
   </footer>
+
+  <!-- Carousel script (ORIGINAL KEPT) -->
+  <script>
+    // ===== Education carousel =====
+    const eduCarousel = document.querySelector('.edu-carousel');
+    const eduContainer = document.querySelector('.edu-carousel-container');
+    let eduScrollAmount = 0;
+    let eduScrollStep = eduCarousel ? eduCarousel.clientWidth : 420;
+    let eduTimer = null;
+
+    function startEduAuto() {
+      if (eduTimer) return;
+      eduTimer = setInterval(() => {
+        if (!eduCarousel) return;
+        if (eduCarousel.scrollLeft + eduCarousel.offsetWidth >= eduCarousel.scrollWidth) {
+          eduScrollAmount = 0;
+        } else {
+          eduScrollStep = eduCarousel ? eduCarousel.clientWidth : eduScrollStep;
+          eduScrollAmount += eduScrollStep;
+        }
+        const eduMaxScroll = eduCarousel.scrollWidth - eduCarousel.clientWidth;
+        if (eduScrollAmount > eduMaxScroll) eduScrollAmount = 0;
+        eduCarousel.scrollTo({ left: eduScrollAmount, behavior: 'smooth' });
+      }, 7000);
+    }
+    function stopEduAuto() {
+      if (eduTimer) {
+        clearInterval(eduTimer);
+        eduTimer = null;
+      }
+    }
+    if (eduContainer) {
+      eduContainer.addEventListener('mouseenter', stopEduAuto);
+      eduContainer.addEventListener('mouseleave', startEduAuto);
+    }
+    startEduAuto();
+
+    function scrollEduCarousel(direction) {
+      if (!eduCarousel) return;
+      stopEduAuto();
+      eduScrollStep = eduCarousel ? eduCarousel.clientWidth : eduScrollStep;
+      eduScrollAmount += eduScrollStep * direction;
+      if (eduScrollAmount < 0) eduScrollAmount = 0;
+      const eduMaxScroll = eduCarousel.scrollWidth - eduCarousel.clientWidth;
+      if (eduScrollAmount > eduMaxScroll) eduScrollAmount = eduMaxScroll;
+      eduCarousel.scrollTo({ left: eduScrollAmount, behavior: 'smooth' });
+    }
+  </script>
 
   <!-- Privacy Notice Modal -->
   <div class="policy-modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
@@ -166,7 +243,7 @@
     })();
   </script>
 
-  <!-- Engagement tracking -->
+  <!-- Optional lightweight engagement: section views + clicks -->
   <script>
     (function(){
       function send(ev, params){ if (typeof gtag==='function') gtag('event', ev, params||{}); }
@@ -192,4 +269,5 @@
   </script>
 </body>
 </html>
+
 
