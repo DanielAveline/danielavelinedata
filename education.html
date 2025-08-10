@@ -13,13 +13,23 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QC4N4GL86C"></script>
+  <!-- Google tag (gtag.js) with Consent Mode -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
+
+    /* Default: deny analytics until the user accepts via the cookie banner */
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied'
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QC4N4GL86C"></script>
+  <script>
     gtag('js', new Date());
-    gtag('config', 'G-QC4N4GL86C');
+    gtag('config', 'G-QC4N4GL86C', { 'anonymize_ip': true });
   </script>
 
   <!-- Active page underline (white) -->
@@ -34,10 +44,38 @@
   <!-- Scroll fix for privacy modal -->
   <style>
     /* Ensure privacy modal content scrolls within the panel */
-    .policy-modal__panel {
-      max-height: 90vh;
-      overflow-y: auto;
+    .policy-modal__panel { max-height: 90vh; overflow-y: auto; }
+  </style>
+
+  <!-- Cookie banner styles (inline so you can paste this single file) -->
+  <style>
+    .cookie-banner {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+      background: rgba(17,24,39,.98); color: #eaf0ff;
+      border-top: 1px solid rgba(255,255,255,.2);
+      box-shadow: 0 -8px 24px rgba(0,0,0,.25);
+      padding: 12px 14px;
     }
+    .cookie-banner__inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; gap: 12px; align-items: center;
+      justify-content: space-between; flex-wrap: wrap;
+    }
+    .cookie-banner p { margin: 0; color: #cfd8ef; }
+    .cookie-banner a { color: #93c5fd; text-decoration: underline; }
+    .cookie-banner a:hover { text-decoration: none; }
+    .cookie-banner__actions { display: flex; gap: 10px; }
+    .cookie-btn {
+      border: 0; cursor: pointer; color: white;
+      padding: 10px 14px; border-radius: 999px;
+      background: linear-gradient(90deg,#1e3a8a,#3b82f6);
+      box-shadow: 0 6px 14px rgba(59,130,246,.35);
+    }
+    .cookie-btn--ghost {
+      background: transparent; border: 1px solid rgba(255,255,255,.3);
+      color: #eaf0ff; box-shadow: none;
+    }
+    @media (max-width: 640px) { .cookie-banner__inner { align-items: flex-start; } }
   </style>
 </head>
 <body>
@@ -57,6 +95,7 @@
     <div class="carousel-container edu-carousel-container">
       <!-- Left arrow button for education carousel -->
       <button class="carousel-btn left" onclick="scrollEduCarousel(-1)">❮</button>
+
       <!-- Education carousel items -->
       <div class="edu-carousel">
         <!-- Purdue University card -->
@@ -86,6 +125,7 @@
           <p>August 2005 - May 2010</p>
         </div>
       </div>
+
       <!-- Right arrow button for education carousel -->
       <button class="carousel-btn right" onclick="scrollEduCarousel(1)">❯</button>
     </div>
@@ -121,10 +161,7 @@
       }, 7000);
     }
     function stopEduAuto() {
-      if (eduTimer) {
-        clearInterval(eduTimer);
-        eduTimer = null;
-      }
+      if (eduTimer) { clearInterval(eduTimer); eduTimer = null; }
     }
     if (eduContainer) {
       eduContainer.addEventListener('mouseenter', stopEduAuto);
@@ -236,10 +273,70 @@
       backdrop?.addEventListener('click', closePolicy);
       document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closePolicy(); });
 
-      // Optional: Google Analytics events if gtag is present
+      // Optional: GA events if available
       function gaEvent(name, params){ if (typeof gtag === 'function') gtag('event', name, params || {}); }
       openBtn?.addEventListener('click', ()=>gaEvent('privacy_opened'));
       [closeBtn, closeCta, backdrop].forEach(el => el?.addEventListener('click', ()=>gaEvent('privacy_closed')));
+    })();
+  </script>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookieBanner" class="cookie-banner" hidden>
+    <div class="cookie-banner__inner">
+      <p>
+        I use cookies to understand site usage and improve this website.
+        <a href="#" id="cookieLearnMore">Learn more</a>
+      </p>
+      <div class="cookie-banner__actions">
+        <button id="cookieDecline" class="cookie-btn cookie-btn--ghost" type="button">Decline</button>
+        <button id="cookieAccept" class="cookie-btn" type="button">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie Banner Logic -->
+  <script>
+    (function(){
+      const BANNER_ID = 'cookieBanner';
+      const KEY = 'da_cookie_consent';
+      const banner = document.getElementById(BANNER_ID);
+      const btnAccept = document.getElementById('cookieAccept');
+      const btnDecline = document.getElementById('cookieDecline');
+      const learnMore = document.getElementById('cookieLearnMore');
+      const openPrivacyBtn = document.getElementById('openPrivacy');
+
+      function setConsent(status){
+        try { localStorage.setItem(KEY, status); } catch(_) {}
+        if (typeof gtag === 'function') {
+          const granted = (status === 'granted');
+          gtag('consent', 'update', {
+            'analytics_storage': granted ? 'granted' : 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
+          });
+        }
+      }
+      function show(){ banner.hidden = false; }
+      function hide(){ banner.hidden = true; }
+
+      const existing = (function(){ try { return localStorage.getItem(KEY); } catch(_) { return null; }})();
+      if (!existing) { show(); }
+
+      btnAccept?.addEventListener('click', function(){
+        setConsent('granted');
+        hide();
+      });
+
+      btnDecline?.addEventListener('click', function(){
+        setConsent('denied');
+        hide();
+      });
+
+      learnMore?.addEventListener('click', function(e){
+        e.preventDefault();
+        openPrivacyBtn?.click();
+      });
     })();
   </script>
 
@@ -269,5 +366,6 @@
   </script>
 </body>
 </html>
+
 
 
