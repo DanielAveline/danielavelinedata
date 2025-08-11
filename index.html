@@ -7,18 +7,16 @@
 
   <!-- Fonts & site styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="assets/styles.css" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
   <!-- Google tag (gtag.js) with Consent Mode -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
-
-    /* Default: deny analytics until the user accepts via the cookie banner */
     gtag('consent', 'default', {
       'analytics_storage': 'denied',
       'ad_storage': 'denied',
@@ -89,11 +87,11 @@
     </nav>
   </header>
 
-  <!-- About section (kept as-is) -->
+  <!-- About section -->
   <section id="about">
     <h2 class="section-title">About Me</h2>
     <div class="about-content">
-      <img src="about_photo.png" alt="Portrait" class="about-photo" />
+      <img src="assets/about_photo.png" alt="Portrait" class="about-photo" />
       <div class="about-text">
         <p>
           I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques, data-driven problem-solving, and strategic decision-making. My background in leadership equips me to manage projects effectively and drive team success.
@@ -234,7 +232,7 @@
     })();
   </script>
 
-  <!-- Optional lightweight engagement: section views + clicks -->
+  <!-- Optional lightweight engagement -->
   <script>
     (function(){
       function send(ev, params){ if (typeof gtag==='function') gtag('event', ev, params||{}); }
@@ -260,6 +258,7 @@
   </script>
 </body>
 </html>
+
 
 
 
