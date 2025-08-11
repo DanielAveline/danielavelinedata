@@ -7,12 +7,14 @@
 
   <!-- Fonts & site styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="contact-card.css" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="assets/contact-card.css" />
+  <!-- (Optional additional styles for contact, if you use them) -->
+  <link rel="stylesheet" href="assets/contact-styles.css" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
   <!-- Google tag (gtag.js) with Consent Mode -->
   <script>
@@ -28,7 +30,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QC4N4GL86C"></script>
   <script>
     gtag('js', new Date());
-    gtag('config', 'G-QC4N4GL86C', { 'anonymize_ip': true });
+    gtag('config', 'G-QC4N4GL86C', { anonymize_ip: true });
   </script>
 
   <!-- Active page underline (white) -->
@@ -87,10 +89,10 @@
     </nav>
   </header>
 
-  <!-- Contact Card (kept as-is) -->
+  <!-- Contact Card -->
   <section class="da-contact-card">
     <div class="da-card">
-      <img class="da-avatar" src="about_photo.png" alt="Daniel Aveline portrait" />
+      <img class="da-avatar" src="assets/about_photo.png" alt="Daniel Aveline portrait" />
       <h3 class="da-name">Daniel Aveline</h3>
       <p class="da-title">Data Analyst</p>
       <div class="da-actions">
@@ -107,7 +109,7 @@
     </div>
   </section>
 
-  <!-- Contact Modal (kept as-is) -->
+  <!-- Contact Modal -->
   <div class="da-modal" id="contactModal" aria-hidden="true" role="dialog" aria-labelledby="contactModalTitle">
     <div class="da-modal__backdrop" id="modalBackdrop"></div>
     <div class="da-modal__panel" role="document">
@@ -136,7 +138,7 @@
   </footer>
 
   <!-- Contact modal logic + GA events -->
-  <script src="contact-modal.js" defer></script>
+  <script src="assets/contact-modal.js" defer></script>
 
   <!-- Privacy Notice Modal -->
   <div class="policy-modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
@@ -288,4 +290,5 @@
   </script>
 </body>
 </html>
+
 
