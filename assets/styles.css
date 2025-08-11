@@ -341,3 +341,33 @@ body.__fade-leave { opacity: 0; transition: opacity .16s ease; }
   }
 }
 
+/* --- Desktop header fix (center brand + nav) --- */
+@media (min-width: 781px) {
+  header { text-align: center; }
+
+  /* Stack brand above nav and center it */
+  .nav-bar {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  /* Desktop nav shows inline, no collapse */
+  nav#siteNav {
+    display: inline-block;
+    padding: 0;
+    margin-top: .75rem;
+  }
+
+  /* Ensure links are horizontal on desktop */
+  nav#siteNav a {
+    display: inline-block;
+    padding: 0;               /* desktop uses your global spacing */
+    margin: 0 1rem;
+    text-align: left;
+  }
+
+  /* Hide the hamburger on desktop */
+  .nav-toggle { display: none !important; }
+}
