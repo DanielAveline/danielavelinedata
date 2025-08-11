@@ -1,47 +1,55 @@
-<script>
-// Everything global (nav highlight, privacy modal, cookie consent)
+// assets/js/site.js
+// Global site wiring: active nav link, privacy modal, cookie consent.
+
 window.siteInit = function () {
-  // --- Highlight active nav link
-  const path = location.pathname.replace(/\/+$/, '');
-  document.querySelectorAll('nav a[data-nav]').forEach(a => {
-    const href = a.getAttribute('href').replace(/\/+$/, '');
-    if (href === path || (path === '' && href === '/index.html')) {
-      a.setAttribute('aria-current', 'page');
-    }
+  // ===== Active nav highlighting =====
+  function normalize(path) {
+    if (!path || path === "/") return "/aboutme.html";
+    path = path.replace(/\/+$/, ""); // remove trailing slash
+    if (path.toLowerCase().endsWith("/index.html")) return "/aboutme.html";
+    return path;
+  }
+  const current = normalize(location.pathname);
+  document.querySelectorAll("nav a[data-nav]").forEach(a => {
+    const href = normalize(a.getAttribute("href") || "");
+    if (href === current) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
   });
 
-  // --- Privacy modal open/close
-  const modal    = document.getElementById('privacyModal');
-  const openBtn  = document.getElementById('openPrivacy');
-  const closeBtn = document.getElementById('closePrivacy');
-  const closeCta = document.getElementById('closePrivacyCta');
-  const backdrop = document.getElementById('privacyBackdrop');
+  // ===== Privacy modal wiring =====
+  const modal    = document.getElementById("privacyModal");
+  const openBtn  = document.getElementById("openPrivacy");
+  const closeBtn = document.getElementById("closePrivacy");
+  const closeCta = document.getElementById("closePrivacyCta");
+  const backdrop = document.getElementById("privacyBackdrop");
 
-  function openPolicy(e){ if(e) e.preventDefault(); modal?.setAttribute('aria-hidden','false'); }
-  function closePolicy(){ modal?.setAttribute('aria-hidden','true'); }
+  function openPolicy(e){ if(e) e.preventDefault(); modal?.setAttribute("aria-hidden","false"); }
+  function closePolicy(){ modal?.setAttribute("aria-hidden","true"); }
 
-  openBtn?.addEventListener('click', openPolicy);
-  closeBtn?.addEventListener('click', closePolicy);
-  closeCta?.addEventListener('click', closePolicy);
-  backdrop?.addEventListener('click', closePolicy);
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal?.getAttribute('aria-hidden')==='false') closePolicy(); });
+  openBtn?.addEventListener("click", openPolicy);
+  closeBtn?.addEventListener("click", closePolicy);
+  closeCta?.addEventListener("click", closePolicy);
+  backdrop?.addEventListener("click", closePolicy);
+  document.addEventListener("keydown", (e)=>{
+    if(e.key==="Escape" && modal?.getAttribute("aria-hidden")==="false") closePolicy();
+  });
 
-  // --- Cookie consent
-  const KEY = 'da_cookie_consent';
-  const banner     = document.getElementById('cookieBanner');
-  const btnAccept  = document.getElementById('cookieAccept');
-  const btnDecline = document.getElementById('cookieDecline');
-  const learnMore  = document.getElementById('cookieLearnMore');
+  // ===== Cookie consent banner =====
+  const KEY        = "da_cookie_consent";
+  const banner     = document.getElementById("cookieBanner");
+  const btnAccept  = document.getElementById("cookieAccept");
+  const btnDecline = document.getElementById("cookieDecline");
+  const learnMore  = document.getElementById("cookieLearnMore");
 
   function setConsent(status){
     try { localStorage.setItem(KEY, status); } catch(_) {}
-    if (typeof gtag === 'function') {
-      const granted = (status === 'granted');
-      gtag('consent', 'update', {
-        'analytics_storage': granted ? 'granted' : 'denied',
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied'
+    if (typeof gtag === "function") {
+      const granted = (status === "granted");
+      gtag("consent", "update", {
+        "analytics_storage": granted ? "granted" : "denied",
+        "ad_storage": "denied",
+        "ad_user_data": "denied",
+        "ad_personalization": "denied"
       });
     }
   }
@@ -52,8 +60,8 @@ window.siteInit = function () {
   try { existing = localStorage.getItem(KEY); } catch(_) {}
   if (!existing) show();
 
-  btnAccept?.addEventListener('click', ()=>{ setConsent('granted'); hide(); });
-  btnDecline?.addEventListener('click', ()=>{ setConsent('denied'); hide(); });
-  learnMore?.addEventListener('click', (e)=>{ e.preventDefault(); openPolicy(); });
+  btnAccept?.addEventListener("click", ()=>{ setConsent("granted"); hide(); });
+  btnDecline?.addEventListener("click", ()=>{ setConsent("denied"); hide(); });
+  learnMore?.addEventListener("click", (e)=>{ e.preventDefault(); openPolicy(); });
 };
-</script>
+
