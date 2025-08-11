@@ -6,7 +6,9 @@
   font-family: 'Inter', sans-serif;
 }
 
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+}
 
 body {
   background: #0e0e0e;
@@ -20,7 +22,9 @@ body {
 }
 
 /* Main content grows; footer sits at the bottom on short pages */
-main { flex: 1 0 auto; }
+main {
+  flex: 1 0 auto;
+}
 
 /* ========== Header / Nav ========== */
 header {
@@ -245,5 +249,6 @@ footer a:hover { text-decoration: none; }
 /* ========== Misc helpers ========== */
 .job-title { font-weight: 700; color: #002244; }
 .company { color: #555; }
+
 
 
