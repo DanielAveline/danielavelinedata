@@ -87,7 +87,7 @@ nav a:hover { color: #00bfff; }
   /* Collapse the nav into a panel */
   nav#siteNav {
     display: grid;
-    grid-template-rows: 0fr;    /* collapsed */
+    grid-template-rows: 0fr;    /* Collapsed */
     overflow: hidden;
     transition: grid-template-rows .25s ease, padding .25s ease;
     padding: 0;
@@ -95,16 +95,52 @@ nav a:hover { color: #00bfff; }
     gap: 0;
   }
   nav#siteNav[aria-expanded="true"] {
-    grid-template-rows: 1fr;    /* expanded */
+    grid-template-rows: 1fr;    /* Expanded */
     padding: .5rem 0;
     gap: .25rem;
   }
   nav#siteNav a {
-    padding: .6rem .3rem;
     display: block;
-    margin: 0;                  /* stack links */
+    padding: .6rem .3rem;
+    margin: 0;
     text-align: center;
   }
+}
+
+/* --- Desktop header fix (center brand + inline nav) --- */
+@media (min-width: 781px) {
+  header { text-align: center; }
+
+  /* Stack brand above nav and center it */
+  .nav-bar {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  /* Desktop nav shows inline, no collapse */
+  nav#siteNav {
+    display: inline-block;
+    padding: 0;
+    margin-top: .75rem;
+  }
+
+  /* Horizontal links on desktop */
+  nav#siteNav a {
+    display: inline-block;
+    padding: 0;               /* desktop uses global spacing via margin */
+    margin: 0 1rem;
+    text-align: left;
+  }
+
+  /* Hide hamburger on desktop */
+  .nav-toggle { display: none !important; }
+}
+
+/* Slightly larger title on larger desktops */
+@media (min-width: 981px) {
+  header h1 { font-size: 2.2rem; }
 }
 
 /* ========== Global links ========== */
@@ -188,8 +224,8 @@ footer a:hover { text-decoration: none; }
   padding: 1rem 0;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  scrollbar-width: none;        /* Firefox */
-  -webkit-overflow-scrolling: touch; /* iOS momentum */
+  scrollbar-width: none;                 /* Firefox */
+  -webkit-overflow-scrolling: touch;     /* iOS momentum */
 }
 .carousel::-webkit-scrollbar,
 .edu-carousel::-webkit-scrollbar,
@@ -341,33 +377,3 @@ body.__fade-leave { opacity: 0; transition: opacity .16s ease; }
   }
 }
 
-/* --- Desktop header fix (center brand + nav) --- */
-@media (min-width: 781px) {
-  header { text-align: center; }
-
-  /* Stack brand above nav and center it */
-  .nav-bar {
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: .5rem;
-  }
-
-  /* Desktop nav shows inline, no collapse */
-  nav#siteNav {
-    display: inline-block;
-    padding: 0;
-    margin-top: .75rem;
-  }
-
-  /* Ensure links are horizontal on desktop */
-  nav#siteNav a {
-    display: inline-block;
-    padding: 0;               /* desktop uses your global spacing */
-    margin: 0 1rem;
-    text-align: left;
-  }
-
-  /* Hide the hamburger on desktop */
-  .nav-toggle { display: none !important; }
-}
