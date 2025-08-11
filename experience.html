@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
 
-  <!-- GA (same as other pages) -->
+  <!-- GA -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
@@ -33,12 +33,68 @@
     <section id="experience">
       <h2 class="section-title">Experience</h2>
 
-      <!-- your carousel exactly as you have it now -->
       <div class="exp-carousel-container">
         <button class="carousel-btn left" onclick="scrollExpCarousel(-1)">❮</button>
+
         <div class="exp-carousel">
-          <!-- cards... (unchanged) -->
+          <!-- Card 1 -->
+          <div class="experience-card">
+            <img class="employer-logo" src="/assets/first_merchants_logo.png" alt="First Merchants Corporation" />
+            <strong class="exp-name">First Merchants Corporation</strong>
+            <span class="exp-title">Consumer Reporting Analyst</span>
+            <span class="exp-dates">August 2025 – Present</span>
+            <div class="exp-keywords">
+              <span class="keyword-tag">Regulatory Reporting</span>
+              <span class="keyword-tag">Data Quality</span>
+              <span class="keyword-tag">SQL</span>
+              <span class="keyword-tag">Compliance</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="experience-card">
+            <img class="employer-logo" src="/assets/rohrman_logo.png" alt="Bob Rohrman Auto Group" />
+            <strong class="exp-name">Bob Rohrman Auto Group</strong>
+            <span class="exp-title">Team Lead Manager</span>
+            <span class="exp-dates">January 2024 – August 2025</span>
+            <div class="exp-keywords">
+              <span class="keyword-tag">Team Collaboration</span>
+              <span class="keyword-tag">Business Strategy</span>
+              <span class="keyword-tag">Leadership</span>
+              <span class="keyword-tag">Process Improvement</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="experience-card">
+            <img class="employer-logo" src="/assets/rohrman_logo.png" alt="Bob Rohrman Auto Group" />
+            <strong class="exp-name">Bob Rohrman Auto Group</strong>
+            <span class="exp-title">Business Manager</span>
+            <span class="exp-dates">February 2021 – August 2025</span>
+            <div class="exp-keywords">
+              <span class="keyword-tag">Financial Analysis</span>
+              <span class="keyword-tag">Financial Reporting</span>
+              <span class="keyword-tag">Profitability</span>
+              <span class="keyword-tag">Operations</span>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="experience-card">
+            <img class="employer-logo" src="/assets/rohrman_logo.png" alt="Bob Rohrman Auto Group" />
+            <strong class="exp-name">Bob Rohrman Auto Group</strong>
+            <span class="exp-title">Product Specialist</span>
+            <span class="exp-dates">February 2018 – August 2025</span>
+            <div class="exp-keywords">
+              <span class="keyword-tag">Customer Engagement</span>
+              <span class="keyword-tag">Product Expertise</span>
+              <span class="keyword-tag">Sales Support</span>
+              <span class="keyword-tag">Market Analysis</span>
+              <span class="keyword-tag">CRM</span>
+            </div>
+          </div>
         </div>
+
         <button class="carousel-btn right" onclick="scrollExpCarousel(1)">❯</button>
       </div>
     </section>
@@ -48,9 +104,8 @@
   <div id="site-footer"></div>
   <div id="privacy-host"></div>
 
-  <!-- page-specific JS first -->
+  <!-- Page-specific JS: carousel controls -->
   <script>
-    // your existing carousel JS (unchanged)
     const expCarousel = document.querySelector('.exp-carousel');
     const expContainer = document.querySelector('.exp-carousel-container');
     let expScrollAmount = 0;
@@ -91,11 +146,12 @@
     }
   </script>
 
-  <!-- load global partial injector + wiring last -->
+  <!-- Global partial injector + wiring -->
   <script src="/assets/js/partials.js"></script>
   <script src="/assets/js/site.js"></script>
 </body>
 </html>
+
 
 
 
