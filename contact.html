@@ -7,14 +7,13 @@
 
   <!-- Fonts & site styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css" />
-  <link rel="stylesheet" href="assets/contact-card.css" />
-  <!-- (Optional additional styles for contact, if you use them) -->
-  <link rel="stylesheet" href="assets/contact-styles.css" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/contact-card.css" />
+  <link rel="stylesheet" href="/assets/contact-styles.css" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
 
   <!-- Google tag (gtag.js) with Consent Mode -->
   <script>
@@ -32,84 +31,36 @@
     gtag('js', new Date());
     gtag('config', 'G-QC4N4GL86C', { anonymize_ip: true });
   </script>
-
-  <!-- Active page underline (white) -->
-  <style>
-    nav a[aria-current="page"] {
-      color: white;
-      border-bottom: 2px solid currentColor;
-      font-weight: 600;
-    }
-  </style>
-
-  <!-- Scroll fix for privacy modal -->
-  <style>
-    .policy-modal__panel { max-height: 90vh; overflow-y: auto; }
-  </style>
-
-  <!-- Cookie banner styles -->
-  <style>
-    .cookie-banner {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
-      background: rgba(17,24,39,.98); color: #eaf0ff;
-      border-top: 1px solid rgba(255,255,255,.2);
-      box-shadow: 0 -8px 24px rgba(0,0,0,.25);
-      padding: 12px 14px;
-    }
-    .cookie-banner__inner {
-      max-width: 1100px; margin: 0 auto;
-      display: flex; gap: 12px; align-items: center;
-      justify-content: space-between; flex-wrap: wrap;
-    }
-    .cookie-banner p { margin: 0; color: #cfd8ef; }
-    .cookie-banner a { color: #93c5fd; text-decoration: underline; }
-    .cookie-banner a:hover { text-decoration: none; }
-    .cookie-banner__actions { display: flex; gap: 10px; }
-    .cookie-btn {
-      border: 0; cursor: pointer; color: white;
-      padding: 10px 14px; border-radius: 999px;
-      background: linear-gradient(90deg,#1e3a8a,#3b82f6);
-      box-shadow: 0 6px 14px rgba(59,130,246,.35);
-    }
-    .cookie-btn--ghost {
-      background: transparent; border: 1px solid rgba(255,255,255,.3);
-      color: #eaf0ff; box-shadow: none;
-    }
-    @media (max-width: 640px) { .cookie-banner__inner { align-items: flex-start; } }
-  </style>
 </head>
 <body>
-  <header>
-    <h1>Contact</h1>
-    <nav>
-      <a href="index.html">About</a>
-      <a href="experience.html">Experience</a>
-      <a href="education.html">Education</a>
-      <a href="contact.html" aria-current="page">Contact</a>
-    </nav>
-  </header>
+  <!-- Global header -->
+  <div id="site-header"></div>
 
   <!-- Contact Card -->
-  <section class="da-contact-card">
-    <div class="da-card">
-      <img class="da-avatar" src="assets/about_photo.png" alt="Daniel Aveline portrait" />
-      <h3 class="da-name">Daniel Aveline</h3>
-      <p class="da-title">Data Analyst</p>
-      <div class="da-actions">
-        <a class="da-pill" href="https://www.linkedin.com/in/danielaveline" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8 8.5h3.8v2.1h.1c.53-1 1.83-2.1 3.77-2.1 4.03 0 4.77 2.65 4.77 6.1V23h-4v-6.4c0-1.52-.03-3.48-2.12-3.48-2.12 0-2.45 1.65-2.45 3.37V23H8V8.5z"/></svg>
-          LinkedIn
-        </a>
-        <a class="da-pill" href="mailto:danielavelinedata@gmail.com">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.1-.9-2-2-2zm0 3.2l-8 5-8-5V6l8 5 8-5v1.2z"/></svg>
-          Email
-        </a>
-      </div>
-      <button class="da-cta" id="openContactModal" type="button">Contact me</button>
-    </div>
-  </section>
+  <main>
+    <section class="da-contact-card">
+      <div class="da-card">
+        <img class="da-avatar" src="/assets/about_photo.png" alt="Daniel Aveline portrait" />
+        <h3 class="da-name">Daniel Aveline</h3>
+        <p class="da-title">Data Analyst</p>
 
-  <!-- Contact Modal -->
+        <div class="da-actions">
+          <a class="da-pill" href="https://www.linkedin.com/in/danielaveline" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8 8.5h3.8v2.1h.1c.53-1 1.83-2.1 3.77-2.1 4.03 0 4.77 2.65 4.77 6.1V23h-4v-6.4c0-1.52-.03-3.48-2.12-3.48-2.12 0-2.45 1.65-2.45 3.37V23H8V8.5z"/></svg>
+            LinkedIn
+          </a>
+          <a class="da-pill" href="mailto:danielavelinedata@gmail.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.1-.9-2-2-2zm0 3.2l-8 5-8-5V6l8 5 8-5v1.2z"/></svg>
+            Email
+          </a>
+        </div>
+
+        <button class="da-cta" id="openContactModal" type="button">Contact me</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact Modal (page-specific) -->
   <div class="da-modal" id="contactModal" aria-hidden="true" role="dialog" aria-labelledby="contactModalTitle">
     <div class="da-modal__backdrop" id="modalBackdrop"></div>
     <div class="da-modal__panel" role="document">
@@ -132,163 +83,18 @@
     </div>
   </div>
 
-  <footer>
-    © 2025 Daniel Aveline. All rights reserved. •
-    <a href="#" id="openPrivacy" role="button" aria-haspopup="dialog">Privacy Notice</a>
-  </footer>
+  <!-- Global footer + privacy -->
+  <div id="site-footer"></div>
+  <div id="privacy-host"></div>
 
-  <!-- Contact modal logic + GA events -->
-  <script src="assets/contact-modal.js" defer></script>
+  <!-- Page-specific: contact modal logic -->
+  <script src="/assets/contact-modal.js" defer></script>
 
-  <!-- Privacy Notice Modal -->
-  <div class="policy-modal" id="privacyModal" aria-hidden="true" role="dialog" aria-labelledby="privacyTitle">
-    <div class="policy-modal__backdrop" id="privacyBackdrop"></div>
-    <div class="policy-modal__panel" role="document">
-      <button class="policy-modal__close" id="closePrivacy" aria-label="Close">&times;</button>
-      <h3 id="privacyTitle">Privacy Notice</h3>
-      <div class="policy-body">
-        <p><strong>Last updated:</strong> August 9, 2025</p>
-        <h4>1) What I collect</h4>
-        <p>When you visit this site, I may receive standard usage data (pages viewed, approximate location, device/browser type) via analytics tools. If you submit the contact form, I receive the information you enter (name, email, subject, message).</p>
-        <h4>2) Cookies & analytics</h4>
-        <p>I use Google Analytics to understand how visitors use the site. Google Analytics sets cookies and processes usage data. You can learn more about Google’s data practices and controls in their documentation. You can also use your browser settings to block or delete cookies.</p>
-        <h4>3) Contact form</h4>
-        <p>The contact form is powered by Formspree. When you submit the form, the details you provide (name, email, subject, message) are transmitted to deliver your message to me. Do not send sensitive personal information through the form.</p>
-        <h4>4) How I use your information</h4>
-        <ul>
-          <li>To operate and improve this website;</li>
-          <li>To respond to your inquiries and communicate with you;</li>
-          <li>To understand aggregate site usage and performance.</li>
-        </ul>
-        <h4>5) Sharing</h4>
-        <p>I do not sell your personal information. I may share limited data with service providers (e.g., analytics, contact form) to operate the site. Service providers are only permitted to use the data to provide their services to me.</p>
-        <h4>6) Retention</h4>
-        <p>I retain contact messages as long as reasonably necessary to manage our communications. Analytics data is retained according to the settings in the analytics platform.</p>
-        <h4>7) Your choices</h4>
-        <ul>
-          <li>Browser controls to block or delete cookies;</li>
-          <li>Use the contact details below to request access, correction, or deletion of your form submissions if applicable.</li>
-        </ul>
-        <h4>8) Children’s privacy</h4>
-        <p>This site is not directed to children and I do not knowingly collect personal information from children.</p>
-        <h4>9) Changes</h4>
-        <p>I may update this notice from time to time. Updates will be posted on this page with a new “Last updated” date.</p>
-        <h4>10) Contact</h4>
-        <p>Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a></p>
-        <button class="policy-cta" id="closePrivacyCta" type="button">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Privacy Modal Script -->
-  <script>
-    (function(){
-      function openPolicy(){ modal.setAttribute('aria-hidden','false'); }
-      function closePolicy(){ modal.setAttribute('aria-hidden','true'); }
-
-      const modal = document.getElementById('privacyModal');
-      const openBtn = document.getElementById('openPrivacy');
-      const closeBtn = document.getElementById('closePrivacy');
-      const closeCta = document.getElementById('closePrivacyCta');
-      const backdrop = document.getElementById('privacyBackdrop');
-
-      openBtn?.addEventListener('click', function(e){ e.preventDefault(); openPolicy(); });
-      closeBtn?.addEventListener('click', closePolicy);
-      closeCta?.addEventListener('click', closePolicy);
-      backdrop?.addEventListener('click', closePolicy);
-      document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closePolicy(); });
-
-      function gaEvent(name, params){ if (typeof gtag === 'function') gtag('event', name, params || {}); }
-      openBtn?.addEventListener('click', ()=>gaEvent('privacy_opened'));
-      [closeBtn, closeCta, backdrop].forEach(el => el?.addEventListener('click', ()=>gaEvent('privacy_closed')));
-    })();
-  </script>
-
-  <!-- Cookie Consent Banner -->
-  <div id="cookieBanner" class="cookie-banner" hidden>
-    <div class="cookie-banner__inner">
-      <p>
-        I use cookies to understand site usage and improve this website.
-        <a href="#" id="cookieLearnMore">Learn more</a>
-      </p>
-      <div class="cookie-banner__actions">
-        <button id="cookieDecline" class="cookie-btn cookie-btn--ghost" type="button">Decline</button>
-        <button id="cookieAccept" class="cookie-btn" type="button">Accept</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cookie Banner Logic -->
-  <script>
-    (function(){
-      const BANNER_ID = 'cookieBanner';
-      const KEY = 'da_cookie_consent';
-      const banner = document.getElementById(BANNER_ID);
-      const btnAccept = document.getElementById('cookieAccept');
-      const btnDecline = document.getElementById('cookieDecline');
-      const learnMore = document.getElementById('cookieLearnMore');
-      const openPrivacyBtn = document.getElementById('openPrivacy');
-
-      function setConsent(status){
-        try { localStorage.setItem(KEY, status); } catch(_) {}
-        if (typeof gtag === 'function') {
-          const granted = (status === 'granted');
-          gtag('consent', 'update', {
-            'analytics_storage': granted ? 'granted' : 'denied',
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied'
-          });
-        }
-      }
-      function show(){ banner.hidden = false; }
-      function hide(){ banner.hidden = true; }
-
-      const existing = (function(){ try { return localStorage.getItem(KEY); } catch(_) { return null; }})();
-      if (!existing) { show(); }
-
-      btnAccept?.addEventListener('click', function(){
-        setConsent('granted');
-        hide();
-      });
-
-      btnDecline?.addEventListener('click', function(){
-        setConsent('denied');
-        hide();
-      });
-
-      learnMore?.addEventListener('click', function(e){
-        e.preventDefault();
-        openPrivacyBtn?.click();
-      });
-    })();
-  </script>
-
-  <!-- Optional lightweight engagement -->
-  <script>
-    (function(){
-      function send(ev, params){ if (typeof gtag==='function') gtag('event', ev, params||{}); }
-      var seen=new Set();
-      var io=new IntersectionObserver(function(es){
-        es.forEach(function(e){
-          if(e.isIntersecting){
-            var id=e.target.id;
-            if(id && !seen.has(id)){
-              seen.add(id);
-              send('section_view', { section_id: id });
-            }
-          }
-        });
-      }, { threshold: 0.5 });
-      document.querySelectorAll('section[id]').forEach(function(s){ io.observe(s); });
-      document.addEventListener('click', function(e){
-        var t = e.target.closest('a,button'); if(!t) return;
-        var name = t.getAttribute('data-name') || (t.textContent || '').trim();
-        if(name) send('ui_click', { item_name: name });
-      }, { capture: true });
-    })();
-  </script>
+  <!-- Global partial injector + wiring -->
+  <script src="/assets/js/partials.js"></script>
+  <script src="/assets/js/site.js"></script>
 </body>
 </html>
+
 
 
