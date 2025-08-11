@@ -250,9 +250,13 @@ footer a:hover { text-decoration: none; }
 .job-title { font-weight: 700; color: #002244; }
 .company { color: #555; }
 
-/* Page transition */
-body.__fade-enter { opacity: 0; }
+/* Page transition (no flash during hydration) */
+body.__hydrating { opacity: 0; }              /* hide until partials are ready */
 body.__fade-ready { transition: opacity .22s ease; opacity: 1; }
 body.__fade-leave { opacity: 0; transition: opacity .16s ease; }
+
+/* Avoid background flash between pages */
+html, body { background-color: #0e0e0e; }
+
 
 
