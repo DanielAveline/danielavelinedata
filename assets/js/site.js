@@ -1,5 +1,5 @@
 // assets/js/site.js
-// Active link, smooth navigation (View Transitions + fallback), privacy, cookies.
+// Active link, smooth navigation (View Transitions + fallback), mobile nav, privacy, cookies.
 
 window.siteInit = function () {
   // --- Active nav
@@ -16,6 +16,35 @@ window.siteInit = function () {
     else a.removeAttribute("aria-current");
   });
 
+  // --- Mobile nav toggle (matches header partial with #navToggle + #siteNav)
+  const nav = document.getElementById("siteNav");
+  const toggle = document.getElementById("navToggle");
+  if (toggle && nav) {
+    function setOpen(open){
+      nav.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    // Start state: open on desktop, closed on mobile
+    setOpen(window.innerWidth > 780);
+
+    toggle.addEventListener("click", ()=>{
+      const open = nav.getAttribute("aria-expanded") !== "true";
+      setOpen(open);
+    });
+
+    // Close menu after clicking a link (better UX)
+    nav.querySelectorAll("a").forEach(a=>{
+      a.addEventListener("click", ()=> setOpen(false));
+    });
+
+    // Keep in sync on resize
+    let resizeTimer = null;
+    window.addEventListener("resize", ()=>{
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(()=> setOpen(window.innerWidth > 780), 100);
+    });
+  }
+
   // --- Smooth navigation
   const body = document.body;
 
@@ -30,12 +59,10 @@ window.siteInit = function () {
   }
 
   function navigateWithTransition(url){
-    // Use View Transitions if available
     if (document.startViewTransition) {
       document.startViewTransition(() => { location.href = url; });
       return;
     }
-    // Fallback tiny fade
     body.classList.add("__fade-leave");
     setTimeout(()=>{ location.href = url; }, 140);
   }
@@ -43,11 +70,11 @@ window.siteInit = function () {
   document.addEventListener("click",(e)=>{
     const a = e.target.closest('a[href]');
     if (!a) return;
-    if (a.target && a.target !== "_self") return;
-    if (a.hasAttribute("download")) return;
+    if (a.target && a.target !== "_self") return;     // new tab/window
+    if (a.hasAttribute("download")) return;           // downloads
     const href = a.getAttribute("href");
-    if (!href || href.startsWith("#")) return;
-    if (!sameOrigin(a.href)) return;
+    if (!href || href.startsWith("#")) return;        // anchors
+    if (!sameOrigin(a.href)) return;                  // external links
 
     e.preventDefault();
     navigateWithTransition(a.href);
@@ -118,6 +145,7 @@ window.siteInit = function () {
   btnDecline?.addEventListener("click",()=>{ setConsent("denied"); hide(); });
   learnMore?.addEventListener("click",(e)=>{ e.preventDefault(); openPolicy(); });
 };
+
 
 
 
