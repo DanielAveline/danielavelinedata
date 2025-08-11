@@ -7,18 +7,16 @@
 
   <!-- Fonts & site styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="assets/styles.css" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
   <!-- Google tag (gtag.js) with Consent Mode -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
-
-    /* Default: deny analytics until the user accepts via the cookie banner */
     gtag('consent', 'default', {
       'analytics_storage': 'denied',
       'ad_storage': 'denied',
@@ -29,7 +27,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QC4N4GL86C"></script>
   <script>
     gtag('js', new Date());
-    gtag('config', 'G-QC4N4GL86C', { 'anonymize_ip': true });
+    gtag('config', 'G-QC4N4GL86C', { anonymize_ip: true });
   </script>
 
   <!-- Active page underline (white) -->
@@ -43,11 +41,10 @@
 
   <!-- Scroll fix for privacy modal -->
   <style>
-    /* Ensure privacy modal content scrolls within the panel */
     .policy-modal__panel { max-height: 90vh; overflow-y: auto; }
   </style>
 
-  <!-- Cookie banner styles (inline so you can paste this single file) -->
+  <!-- Cookie banner styles -->
   <style>
     .cookie-banner {
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
@@ -89,18 +86,16 @@
     </nav>
   </header>
 
-  <!-- Education section (ORIGINAL CAROUSEL KEPT) -->
+  <!-- Education section -->
   <section id="education">
     <h2 class="section-title">Education</h2>
     <div class="carousel-container edu-carousel-container">
-      <!-- Left arrow button for education carousel -->
       <button class="carousel-btn left" onclick="scrollEduCarousel(-1)">❮</button>
 
-      <!-- Education carousel items -->
       <div class="edu-carousel">
         <!-- Purdue University card -->
         <div class="education-card">
-          <img src="purdue_mdsb_logo.png" alt="Purdue University Mitch Daniels School of Business logo" class="education-logo" />
+          <img src="assets/purdue_mdsb_logo.png" alt="Purdue University Mitch Daniels School of Business logo" class="education-logo" />
           <strong>Purdue University</strong>
           <p>Master’s in Business Analytics</p>
           <p>August 2024 - December 2025</p>
@@ -109,7 +104,7 @@
         </div>
         <!-- Purdue Global card -->
         <div class="education-card">
-          <img src="purdue_global_logo.png" alt="Purdue University Global logo" class="education-logo" />
+          <img src="assets/purdue_global_logo.png" alt="Purdue University Global logo" class="education-logo" />
           <strong>Purdue Global</strong>
           <p>BASc in Data Analytics</p>
           <p>November 2021 - June 2024</p>
@@ -118,7 +113,7 @@
         </div>
         <!-- Jefferson High School card -->
         <div class="education-card">
-          <img src="jefferson_logo.png" alt="Jefferson High School crest" class="education-logo" />
+          <img src="assets/jefferson_logo.png" alt="Jefferson High School crest" class="education-logo" />
           <strong>Jefferson High School</strong>
           <p>High School Diploma</p>
           <p>Computer Science</p>
@@ -126,7 +121,6 @@
         </div>
       </div>
 
-      <!-- Right arrow button for education carousel -->
       <button class="carousel-btn right" onclick="scrollEduCarousel(1)">❯</button>
     </div>
   </section>
@@ -136,7 +130,7 @@
     <a href="#" id="openPrivacy" role="button" aria-haspopup="dialog">Privacy Notice</a>
   </footer>
 
-  <!-- Carousel script (ORIGINAL KEPT) -->
+  <!-- Carousel script -->
   <script>
     // ===== Education carousel =====
     const eduCarousel = document.querySelector('.edu-carousel');
@@ -192,23 +186,13 @@
         <p><strong>Last updated:</strong> August 9, 2025</p>
 
         <h4>1) What I collect</h4>
-        <p>
-          When you visit this site, I may receive standard usage data (pages viewed, approximate location, device/browser type)
-          via analytics tools. If you submit the contact form, I receive the information you enter (name, email, subject, message).
-        </p>
+        <p>When you visit this site, I may receive standard usage data (pages viewed, approximate location, device/browser type) via analytics tools. If you submit the contact form, I receive the information you enter (name, email, subject, message).</p>
 
         <h4>2) Cookies & analytics</h4>
-        <p>
-          I use Google Analytics to understand how visitors use the site. Google Analytics sets cookies and processes usage data.
-          You can learn more about Google’s data practices and controls in their documentation. You can also use your browser
-          settings to block or delete cookies.
-        </p>
+        <p>I use Google Analytics to understand how visitors use the site. Google Analytics sets cookies and processes usage data. You can learn more about Google’s data practices and controls in their documentation. You can also use your browser settings to block or delete cookies.</p>
 
         <h4>3) Contact form</h4>
-        <p>
-          The contact form is powered by Formspree. When you submit the form, the details you provide (name, email, subject, message)
-          are transmitted to deliver your message to me. Do not send sensitive personal information through the form.
-        </p>
+        <p>The contact form is powered by Formspree. When you submit the form, the details you provide (name, email, subject, message) are transmitted to deliver your message to me. Do not send sensitive personal information through the form.</p>
 
         <h4>4) How I use your information</h4>
         <ul>
@@ -218,16 +202,10 @@
         </ul>
 
         <h4>5) Sharing</h4>
-        <p>
-          I do not sell your personal information. I may share limited data with service providers (e.g., analytics, contact form)
-          to operate the site. Service providers are only permitted to use the data to provide their services to me.
-        </p>
+        <p>I do not sell your personal information. I may share limited data with service providers (e.g., analytics, contact form) to operate the site. Service providers are only permitted to use the data to provide their services to me.</p>
 
         <h4>6) Retention</h4>
-        <p>
-          I retain contact messages as long as reasonably necessary to manage our communications. Analytics data is retained according
-          to the settings in the analytics platform.
-        </p>
+        <p>I retain contact messages as long as reasonably necessary to manage our communications. Analytics data is retained according to the settings in the analytics platform.</p>
 
         <h4>7) Your choices</h4>
         <ul>
@@ -236,19 +214,13 @@
         </ul>
 
         <h4>8) Children’s privacy</h4>
-        <p>
-          This site is not directed to children and I do not knowingly collect personal information from children.
-        </p>
+        <p>This site is not directed to children and I do not knowingly collect personal information from children.</p>
 
         <h4>9) Changes</h4>
-        <p>
-          I may update this notice from time to time. Updates will be posted on this page with a new “Last updated” date.
-        </p>
+        <p>I may update this notice from time to time. Updates will be posted on this page with a new “Last updated” date.</p>
 
         <h4>10) Contact</h4>
-        <p>
-          Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a>
-        </p>
+        <p>Email: <a href="mailto:danielavelinedata@gmail.com">danielavelinedata@gmail.com</a></p>
 
         <button class="policy-cta" id="closePrivacyCta" type="button">Close</button>
       </div>
@@ -273,7 +245,6 @@
       backdrop?.addEventListener('click', closePolicy);
       document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closePolicy(); });
 
-      // Optional: GA events if available
       function gaEvent(name, params){ if (typeof gtag === 'function') gtag('event', name, params || {}); }
       openBtn?.addEventListener('click', ()=>gaEvent('privacy_opened'));
       [closeBtn, closeCta, backdrop].forEach(el => el?.addEventListener('click', ()=>gaEvent('privacy_closed')));
@@ -340,7 +311,7 @@
     })();
   </script>
 
-  <!-- Optional lightweight engagement: section views + clicks -->
+  <!-- Optional lightweight engagement -->
   <script>
     (function(){
       function send(ev, params){ if (typeof gtag==='function') gtag('event', ev, params||{}); }
@@ -366,6 +337,7 @@
   </script>
 </body>
 </html>
+
 
 
 
