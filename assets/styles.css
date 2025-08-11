@@ -301,6 +301,29 @@ html, body { background-color: #0e0e0e; }
   }
 }
 
+/* Touch scrolling momentum */
+.carousel, .edu-carousel, .exp-carousel { -webkit-overflow-scrolling: touch; }
+
+/* Comfortable card widths on phones */
+@media (max-width: 900px) {
+  .exp-carousel > .experience-card,
+  .edu-carousel > .education-card,
+  .carousel > .carousel-item {
+    flex: 0 0 85vw; min-width: 85vw; max-width: 85vw;
+  }
+}
+
+/* Hide arrow buttons on very small screens; swipe instead */
+@media (max-width: 520px) {
+  .carousel-btn { display: none; }
+}
 
 
+@media (max-width: 520px) {
+  section { padding: 1.25rem 1rem; }
+  .section-title { font-size: 1.3rem; }
+
+  .about-photo { width: 96px; height: 96px; }
+  .brand p { display: none; }  /* hide long subtitle on very small screens */
+}
 
