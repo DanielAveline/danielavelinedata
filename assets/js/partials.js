@@ -1,32 +1,29 @@
 // assets/js/partials.js
-// Fetch & inject shared partials, then run siteInit()
+// Inject shared partials, then run siteInit(). Prevent flash during hydration.
 
-(async function () {
-  function log(msg, ...args){ console.log(`[partials] ${msg}`, ...args); }
-  async function inject(id, url) {
+(function(){
+  const body = document.body;
+  body.classList.add("__hydrating"); // used by CSS to hold an initial fade
+
+  async function inject(id, url){
     const host = document.getElementById(id);
-    if (!host) { log(`Host #${id} not found`); return; }
-    try {
-      const res = await fetch(url, { cache: "no-cache" });
-      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-      host.innerHTML = await res.text();
-      log(`Injected ${id} from ${url}`);
-    } catch (e) {
-      console.error(`[partials] Failed to inject ${id} from ${url}`, e);
-    }
+    if (!host) return;
+    const res = await fetch(url, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`${url}: ${res.status}`);
+    host.innerHTML = await res.text();
   }
 
-  await Promise.all([
-    inject("site-header",  "/assets/partials/header.html"),
-    inject("site-footer",  "/assets/partials/footer.html"),
-    inject("privacy-host", "/assets/partials/privacy.html"),
-  ]);
-
-  if (typeof window.siteInit === "function") {
-    log("Running siteInit()");
-    window.siteInit();
-  } else {
-    console.warn("[partials] siteInit() not found");
-  }
+  Promise.all([
+    inject("site-header","/assets/partials/header.html"),
+    inject("site-footer","/assets/partials/footer.html"),
+    inject("privacy-host","/assets/partials/privacy.html"),
+  ]).then(()=>{
+    body.classList.remove("__hydrating");     // allow fade-in now
+    if (typeof window.siteInit === "function") window.siteInit();
+  }).catch(err=>{
+    console.error("[partials] failed", err);
+    body.classList.remove("__hydrating");
+    if (typeof window.siteInit === "function") window.siteInit();
+  });
 })();
 
