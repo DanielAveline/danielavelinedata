@@ -5,7 +5,7 @@ window.siteInit = function () {
   // ===== Active nav highlighting =====
   function normalize(path) {
     if (!path || path === "/") return "/aboutme.html";
-    path = path.replace(/\/+$/, ""); // remove trailing slash
+    path = path.replace(/\/+$/, "");
     if (path.toLowerCase().endsWith("/index.html")) return "/aboutme.html";
     return path;
   }
