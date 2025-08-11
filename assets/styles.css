@@ -258,5 +258,49 @@ body.__fade-leave { opacity: 0; transition: opacity .16s ease; }
 /* Avoid background flash between pages */
 html, body { background-color: #0e0e0e; }
 
+/* --- Mobile header --- */
+.nav-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand p { opacity: .8; font-size: .9rem; margin-top: .25rem; }
+
+/* Hide toggle on desktop */
+.nav-toggle { display: none; }
+
+@media (max-width: 780px) {
+  header { text-align: left; }
+  .brand h1 { font-size: 1.3rem; }
+  .brand p { font-size: .85rem; line-height: 1.3; }
+
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; line-height: 1; width: 42px; height: 42px;
+    border-radius: 10px; border: 1px solid rgba(255,255,255,.25);
+    background: transparent; color: #fff; cursor: pointer;
+  }
+
+  /* Collapse the nav into a panel */
+  nav#siteNav {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows .25s ease, padding .25s ease;
+    padding: 0 0;
+    margin-top: .5rem;
+    gap: 0;
+  }
+  nav#siteNav[aria-expanded="true"] {
+    grid-template-rows: 1fr;
+    padding: .5rem 0;
+    gap: .25rem;
+  }
+  nav#siteNav a {
+    padding: .6rem .3rem;
+    display: block;
+    margin: 0;                /* stack links */
+  }
+}
+
+
 
 
