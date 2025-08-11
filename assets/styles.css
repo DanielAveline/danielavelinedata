@@ -1,4 +1,4 @@
-/* Global base styles */
+/* ========== Reset / Base ========== */
 * {
   margin: 0;
   padding: 0;
@@ -6,163 +6,106 @@
   font-family: 'Inter', sans-serif;
 }
 
+html, body { height: 100%; }
+
 body {
-  background-color: #0e0e0e;
+  background: #0e0e0e;
   color: #e0e0e0;
   line-height: 1.6;
+
+  /* Sticky footer layout */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Header styles */
+/* Main content grows; footer sits at the bottom on short pages */
+main { flex: 1 0 auto; }
+
+/* ========== Header / Nav ========== */
 header {
   background: #002244;
-  padding: 2rem;
+  padding: 2rem 1rem;
   text-align: center;
 }
+header h1 { font-size: 2rem; }
 
-header h1 {
-  font-size: 2rem;
-}
-
-/* Navigation links */
-nav {
-  margin-top: 1rem;
-}
-
+nav { margin-top: 1rem; }
 nav a {
   margin: 0 1rem;
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
+  transition: color .2s ease, opacity .2s ease;
 }
-
-/* Global anchor styling */
-/* Style normal and visited links to white so they don't revert to browser defaults */
-a:link,
-a:visited {
-  color: #ffffff;
-  text-decoration: none;
+nav a[aria-current="page"] {
+  border-bottom: 2px solid currentColor;
 }
+nav a:hover { color: #00bfff; }
 
-/* Hover state for links uses theme accent color */
-a:hover {
-  color: #00bfff;
-  text-decoration: underline;
-}
+/* ========== Global links ========== */
+a:link, a:visited { color: #ffffff; text-decoration: none; }
+a:hover { color: #00bfff; text-decoration: underline; }
 
+/* ========== Sections ========== */
 section {
-  padding: 2rem;
+  padding: 2rem 1rem;
   max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
 }
-
 .section-title {
   color: #00bfff;
   margin-bottom: 1rem;
   font-size: 1.5rem;
 }
 
+/* ========== Footer (sticky) ========== */
 footer {
   background: #002244;
   color: #ccc;
   text-align: center;
   padding: 1rem;
-  margin-top: 2rem;
+  margin-top: auto;     /* pushes footer to bottom */
+  opacity: 0.95;
 }
+footer a { color: inherit; text-decoration: underline; }
+footer a:hover { text-decoration: none; }
 
-/* Job title text within cards */
-.job-title {
-  font-weight: bold;
-  color: #002244;
-}
-
-/* Company text within cards */
-.company {
-  color: #555;
-}
-
-/* Carousel layout */
-.carousel-container {
-  position: relative;
+/* ========== About ========== */
+.about-content {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.about-photo {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.about-text { flex: 1; }
+.about-text p { margin-bottom: .8rem; }
 
-overflow: visible;
+/* ========== Tags / keywords (shared) ========== */
+.exp-keywords, .edu-keywords {
+  display: flex; flex-wrap: wrap;
+  gap: 8px; justify-content: center;
+  margin-top: .5rem;
+}
+.keyword-tag {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef5f8;
+  border: 1px solid #d4e2e8;
+  font-size: .85rem;
+  white-space: nowrap;
 }
 
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 1rem;
-  padding: 1rem 0;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-
-display: flex;
-flex-wrap: nowrap;
-overflow-x: auto;
-overflow-y: hidden;
-scroll-snap-type: x mandatory;
-scroll-behavior: smooth;
-gap: 1rem;
-}
-.carousel::-webkit-scrollbar{display:none;}
-
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-
-
-/* Carousel items styled as cards with white backgrounds */
-
-
-/* Slight lift on hover for carousel cards */
-.carousel-item:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
-}
-
-/* Carousel buttons */
-.carousel-btn { }
-
-.carousel-btn:hover {
-  background-color: rgba(0, 191, 255, 0.3);
-}
-
-
-
-
-
-/* Education carousel layout */
-.edu-carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 1rem;
-  padding: 1rem 0;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-}
-
-/* ==== Experience carousel layout (modeled after education) ==== */
-.exp-carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 1rem;
-  padding: 1rem 0;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-
-  /* Prevent cards from wrapping to a new line so they scroll horizontally */
-  flex-wrap: nowrap;
-}
-
-.exp-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-/* Container for experience carousel */
+/* ========== Carousels (shared) ========== */
+.carousel-container,
+.edu-carousel-container,
 .exp-carousel-container {
   position: relative;
   display: flex;
@@ -170,28 +113,48 @@ gap: 1rem;
   overflow: visible;
 }
 
-/* Experience cards mirror the visual style of education cards */
+.carousel,
+.edu-carousel,
+.exp-carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;        /* Firefox */
+}
+.carousel::-webkit-scrollbar,
+.edu-carousel::-webkit-scrollbar,
+.exp-carousel::-webkit-scrollbar { display: none; }  /* WebKit */
+
+.carousel-item,
+.education-card,
 .experience-card {
-  background-color: #ffffff;
+  background: #ffffff;
+  color: #222;
   border-radius: 12px;
   padding: 1.2rem;
   flex: 0 0 calc(50% - 1rem);
   min-width: calc(50% - 1rem);
   max-width: calc(50% - 1rem);
-  color: #222;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
   text-align: center;
   scroll-snap-align: start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+  transition: transform .3s ease, box-shadow .3s ease;
 }
-
+.carousel-item:hover,
+.education-card:hover,
 .experience-card:hover {
   transform: translateY(-6px) scale(1.06);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.22);
 }
 
-/* Company logos inside experience cards */
-.experience-logo {
+/* Logos inside cards (shared) */
+.education-logo,
+.employer-logo {
   display: block;
   height: 90px;
   width: auto;
@@ -200,352 +163,50 @@ gap: 1rem;
   object-fit: contain;
 }
 
-/* Tag container for experience cards */
-.exp-keywords {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 0.5rem;
-}
-
-/* About section layout */
-.about-content {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-/* Portrait styling */
-.about-photo {
-  /* Reduce the photo size so it doesn’t dominate the section */
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-/* Container for the text next to the photo */
-.about-text {
-  flex: 1;
-}
-
-.about-text p {
-  margin-bottom: 0.8rem;
-}
-
-.edu-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-/* Education carousel container inherits base carousel container styles */
-.edu-carousel-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-overflow: visible;
-}
-
-/* Education cards behave like carousel items */
-.education-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1.2rem;
-  flex: 0 0 calc(50% - 1rem);
-  min-width: calc(50% - 1rem);
-  max-width: calc(50% - 1rem);
-  color: #222;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
-  text-align: center;
-  scroll-snap-align: start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Style for education logos inside cards */
-
-
-.education-card:hover {
-  transform: translateY(-6px) scale(1.06);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.22);
-}
-
+/* Education text details */
 .education-card strong {
   color: #002244;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 0.25rem;
-}
-
-.education-card p {
-  color: #555;
-  margin-bottom: 0.5rem;
-}
-/* Removed old education container styles; updated education carousel definitions below */
-
-
-.education-carousel 
-
-.education-carousel .carousel-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-}
-
-.education-carousel img {
-    max-width: 180px;
-    height: auto;
-    margin-bottom: 15px;
-}
-
-
-
-/* Spiced-up education cards */
-.education-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1.2rem;
-  flex: 0 0 calc(50% - 1rem);
-  min-width: calc(50% - 1rem);
-  max-width: calc(50% - 1rem);
-  color: #222;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
-  text-align: center;
-  scroll-snap-align: start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.education-card:hover {
-  transform: translateY(-6px) scale(1.06);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.22);
-}
-
-
-
-
-
-.education-logo {
-  display: block;
-  height: 90px;        /* consistent readable height */
-  width: auto;
-  max-width: 85%;
-  margin: 0 auto 12px auto;
-  object-fit: contain;
-}
-
-
-
-.carousel-container:hover, 
-.edu-carousel-container:hover {
-  cursor: pointer;
-}
-
-
-
-.edu-school {
-  display: block;
-  font-size: 1.1em;
-  margin-bottom: 6px;
-}
-.edu-degree {
-  font-weight: 500;
-  margin-bottom: 4px;
-
-display: block;
-}
-
-.edu-dates {
-  color: #555;
-  font-size: 0.9em;
-
-display: block;
-}
-
-.edu-space {
-  height: 10px;
-}
-.edu-keywords {
-  font-size: 0.85em;
-  color: #333;
-}
-
-
-
-/* Education structured content */
-.edu-name {
   font-weight: 700;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  font-size: 1.05rem;
+  display: block;
+  margin-bottom: .25rem;
 }
+.education-card p { color: #555; margin-bottom: .5rem; }
 
-.edu-degree {
-  font-weight: 600;
-  margin-bottom: 2px;
-  opacity: 0.95;
+/* Experience text details */
+.exp-name { font-weight: 700; margin: 4px 0; font-size: 1.05rem; }
+.exp-title, .exp-dates { display: block; }
+.exp-dates { color: #555; font-size: .9rem; }
 
-display: block;
-}
-
-
-.edu-dates {
-  color: #77858b;
-  font-size: 0.95rem;
-
-display: block;
-}
-
-
-.edu-spacer {
-  height: 10px;
-}
-
-.edu-keywords {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.keyword-tag {
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #eef5f8;
-  border: 1px solid #d4e2e8;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
-.edu-subname {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 4px;
-}
-
-/* Subtitle under Purdue "P" logo */
-.edu-subtitle {
-  margin-top: 4px;
-  font-size: 0.9rem;
-  letter-spacing: 0.2px;
-  color: #6b7a84;
-  font-weight: 600;
-}
-
-
-
+/* Carousel arrows */
 .carousel-btn {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.85);
+  top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.9);
   border: none;
   border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  font-size: 1.4rem;
-  font-weight: bold;
+  width: 42px; height: 42px;
+  font-size: 1.4rem; font-weight: bold;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  transition: background .2s ease, transform .2s ease;
   z-index: 2;
 }
-
 .carousel-btn:hover {
-  background: rgba(240, 240, 240, 0.95);
+  background: rgba(240,240,240,.95);
   transform: translateY(-50%) scale(1.08);
 }
-
-.carousel-btn.left { left: -14px; }
-
+.carousel-btn.left  { left: -14px; }
 .carousel-btn.right { right: -14px; }
 
-.carousel-item {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1.2rem;
-  flex: 0 0 calc(50% - 1rem);
-  min-width: calc(50% - 1rem);
-  max-width: calc(50% - 1rem);
-  color: #222;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
-  text-align: center;
-  scroll-snap-align: start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-flex: 0 0 calc(50% - 1rem);
-min-width: calc(50% - 1rem);
-max-width: calc(50% - 1rem);
-scroll-snap-align: start;
-}
-
-
-.employer-logo {
-  display: block;
-  height: 90px;        /* consistent readable height */
-  width: auto;
-  max-width: 85%;
-  margin: 0 auto 12px auto;
-  object-fit: contain;
-}
-
-.exp-name {
-  font-weight: 700;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  font-size: 1.05rem;
-}
-
-.exp-title {
-  font-weight: 500;
-  margin-bottom: 4px;
-
-display: block;
-}
-
-.exp-dates {
-  color: #555;
-  font-size: 0.9em;
-
-display: block;
-}
-
-/* Sticky footer layout */
-html, body {
-  height: 100%;
-}
-body {
-  min-height: 100dvh;        /* supports mobile address bar changes */
-  display: flex;
-  flex-direction: column;
-}
-footer {
-  margin-top: auto;          /* pushes footer to bottom */
-}
-
-/* Optional: footer styling tune-up */
-footer {
-  padding: 16px;
-  text-align: center;
-  opacity: 0.9;
-}
-footer a {
-  color: inherit;
-  text-decoration: underline;
-}
-footer a:hover {
-  text-decoration: none;
-}
-
-/* Privacy modal */
+/* ========== Privacy Modal (shared) ========== */
 .policy-modal { position: fixed; inset: 0; display: none; z-index: 60; }
 .policy-modal[aria-hidden="false"] { display: block; }
-.policy-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.55); opacity: 0; transition: opacity .2s ease; }
+.policy-modal__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.55);
+  opacity: 0; transition: opacity .2s ease;
+}
 .policy-modal[aria-hidden="false"] .policy-modal__backdrop { opacity: 1; }
 
 .policy-modal__panel {
@@ -562,28 +223,27 @@ footer a:hover {
   transition: transform .2s ease, opacity .2s ease;
   padding: 22px 22px 18px;
 }
-.policy-modal[aria-hidden="false"] .policy-modal__panel { transform: translateY(0); opacity: 1; }
-
+.policy-modal[aria-hidden="false"] .policy-modal__panel {
+  transform: translateY(0); opacity: 1;
+}
 .policy-modal__close {
   position: absolute; right: 10px; top: 6px;
   border: 0; background: transparent; color: #eaf0ff;
   font-size: 28px; cursor: pointer; line-height: 1;
 }
-
 .policy-body h4 { margin: 14px 0 6px; }
 .policy-body p, .policy-body li { color: #cfd8ef; }
 .policy-body ul { margin: 6px 0 10px 18px; }
-
 .policy-cta {
-  margin-top: 14px;
-  width: 100%;
-  border: 0; cursor: pointer; color: white; padding: 12px 16px; border-radius: 999px;
+  margin-top: 14px; width: 100%;
+  border: 0; cursor: pointer; color: white;
+  padding: 12px 16px; border-radius: 999px;
   background: linear-gradient(90deg,#1e3a8a,#3b82f6);
   box-shadow: 0 8px 16px rgba(59,130,246,.35);
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .policy-modal__backdrop, .policy-modal__panel { transition: none !important; }
-}
+/* ========== Misc helpers ========== */
+.job-title { font-weight: 700; color: #002244; }
+.company { color: #555; }
+
 
