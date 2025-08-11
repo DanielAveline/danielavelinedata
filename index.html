@@ -3,11 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <title>Redirecting…</title>
-  <meta http-equiv="refresh" content="0; url=/aboutme.html" />
-  <link rel="canonical" href="/aboutme.html" />
-  <script>location.replace('/aboutme.html');</script>
+
+  <!-- Redirect immediately -->
+  <meta http-equiv="refresh" content="0; url=aboutme.html" />
+
+  <!-- For SEO -->
+  <link rel="canonical" href="aboutme.html" />
+
+  <script>
+    // JS redirect as backup
+    window.location.replace("aboutme.html");
+  </script>
 </head>
 <body>
-  If you’re not redirected, <a href="/aboutme.html">click here</a>.
+  <p>If you’re not redirected automatically, <a href="aboutme.html">click here</a>.</p>
 </body>
 </html>
+
