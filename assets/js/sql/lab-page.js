@@ -27,7 +27,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   els.total.textContent = lesson.steps.length;
   let stepIndex = 0;
 
-  // schema load (retail default)
   async function loadSchema(dataset) {
     const key = dataset.replace('.sqlite','');
     const schemaResp = await fetch(`/assets/sql/metadata/schema-${key}.json`).catch(() => null);
@@ -35,19 +34,14 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       const schema = await schemaResp.json();
       els.schema.textContent = schema.tables.map(t => `${t.name}(${t.columns.map(c=>c.name).join(', ')})`).join('\n');
     } else {
-      els.schema.textContent = 'Schema metadata not found. Tables will still work.';
+      els.schema.textContent = 'Schema metadata not found.';
     }
   }
 
   let engine = null;
   async function ensureEngine(dataset) {
     if (!engine) {
-      try {
-        engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
-      } catch (e) {
-        els.results.textContent = e.message;
-        throw e;
-      }
+      engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
     }
     await engine.loadDB(`/assets/sql/datasets/${dataset}`);
   }
@@ -58,8 +52,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     els.title.textContent = `Lesson: ${lesson.title} (Step ${stepIndex+1} of ${lesson.steps.length})`;
     els.editor.value = s.starter_sql || '';
     els.results.textContent = 'Ready.';
-    const goalSpan = document.getElementById('goalText');
-    if (goalSpan) goalSpan.textContent = s.goal || '';
   }
 
   async function runSQL() {
@@ -79,21 +71,14 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       els.results.textContent = 'Checking...';
       await ensureEngine(lesson.dataset);
       const res = engine.run(els.editor.value);
-      let ok = false, details = '';
+      let ok = false;
       if (s.verify.type === 'rowcount') {
-        const got = res.rows.length;
-        const target = Number(s.verify.value);
-        ok = (s.verify.op === '=' ? got === target : false);
-        details = `Rowcount got ${got}, expected ${s.verify.op} ${target}`;
+        ok = (res.rows.length === Number(s.verify.value));
       } else if (s.verify.type === 'resultset_hash') {
         const hash = await ResultVerifier.hashResult(res, null, s.verify.order_by);
         ok = (hash === s.verify.value);
-        details = `Your hash ${hash}\nExpected ${s.verify.value}`;
       }
-      els.results.textContent = (ok ? '✅ Correct! ' : '❌ Not yet. ') + details;
-      // update progress (simple % of steps)
-      const pct = Math.round(((stepIndex + (ok ? 1 : 0)) / lesson.steps.length) * 100);
-      els.progress.textContent = `${pct}%`;
+      els.results.textContent = ok ? '✅ Correct!' : '❌ Not yet.';
     } catch (e) {
       els.results.textContent = 'Error: ' + e.message;
     }
@@ -114,10 +99,9 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (!rows.length) { els.results.textContent = '(no rows)'; return; }
     const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
     const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
-    els.results.innerHTML = `<div style="max-height:320px;overflow:auto;border:1px solid rgba(0,0,0,.06)"><table>${thead+tbody}</table></div>`;
+    els.results.innerHTML = `<div style="max-height:320px;overflow:auto;"><table>${thead+tbody}</table></div>`;
   }
 
-  // Wire toolbar
   const toolbar = document.querySelector('.toolbar');
   if (toolbar) {
     const [btnRun, btnCheck, btnNext] = toolbar.querySelectorAll('button');
@@ -129,37 +113,5 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
   await loadSchema(lesson.dataset);
   renderStep();
-
-  // --- Keyboard shortcuts ---
-  // Ctrl/Cmd + Enter = Run
-  // Shift + Enter    = Check
-  // Alt  + →         = Next step
-  (function addLabShortcuts() {
-    const toolbar = document.querySelector('.toolbar');
-    if (!toolbar) return;
-    const [btnRun, btnCheck, btnNext] = toolbar.querySelectorAll('button');
-
-    document.addEventListener('keydown', (e) => {
-      const mac = e.metaKey, ctrl = e.ctrlKey;
-      // Run
-      if ((mac || ctrl) && e.key === 'Enter') {
-        e.preventDefault();
-        btnRun?.click();
-        return;
-      }
-      // Check
-      if (e.shiftKey && e.key === 'Enter') {
-        e.preventDefault();
-        btnCheck?.click();
-        return;
-      }
-      // Next step
-      if (e.altKey && (e.key === 'ArrowRight')) {
-        e.preventDefault();
-        btnNext?.click();
-        return;
-      }
-    });
-  })();
 })();
 
