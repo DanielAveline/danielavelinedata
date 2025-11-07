@@ -1,4 +1,3 @@
-
 import { SQLEngine } from '/assets/js/sql/engine.js';
 import { ResultVerifier } from '/assets/js/sql/verify.js';
 
@@ -35,6 +34,8 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (schemaResp && schemaResp.ok) {
       const schema = await schemaResp.json();
       els.schema.textContent = schema.tables.map(t => `${t.name}(${t.columns.map(c=>c.name).join(', ')})`).join('\n');
+    } else {
+      els.schema.textContent = 'Schema metadata not found. Tables will still work.';
     }
   }
 
@@ -57,6 +58,8 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     els.title.textContent = `Lesson: ${lesson.title} (Step ${stepIndex+1} of ${lesson.steps.length})`;
     els.editor.value = s.starter_sql || '';
     els.results.textContent = 'Ready.';
+    const goalSpan = document.getElementById('goalText');
+    if (goalSpan) goalSpan.textContent = s.goal || '';
   }
 
   async function runSQL() {
@@ -126,4 +129,37 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
   await loadSchema(lesson.dataset);
   renderStep();
+
+  // --- Keyboard shortcuts ---
+  // Ctrl/Cmd + Enter = Run
+  // Shift + Enter    = Check
+  // Alt  + →         = Next step
+  (function addLabShortcuts() {
+    const toolbar = document.querySelector('.toolbar');
+    if (!toolbar) return;
+    const [btnRun, btnCheck, btnNext] = toolbar.querySelectorAll('button');
+
+    document.addEventListener('keydown', (e) => {
+      const mac = e.metaKey, ctrl = e.ctrlKey;
+      // Run
+      if ((mac || ctrl) && e.key === 'Enter') {
+        e.preventDefault();
+        btnRun?.click();
+        return;
+      }
+      // Check
+      if (e.shiftKey && e.key === 'Enter') {
+        e.preventDefault();
+        btnCheck?.click();
+        return;
+      }
+      // Next step
+      if (e.altKey && (e.key === 'ArrowRight')) {
+        e.preventDefault();
+        btnNext?.click();
+        return;
+      }
+    });
+  })();
 })();
+
