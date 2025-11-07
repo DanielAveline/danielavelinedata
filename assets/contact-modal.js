@@ -41,3 +41,80 @@
 
   closeAfterSuccess?.addEventListener('click', ()=>closeModal('success_close'));
 })();
+
+
+
+// ===== Accessible modal focus trap (added) =====
+(() => {
+  const modal = document.getElementById('contactModal');
+  if (!modal) return;
+  const closeBtn = document.getElementById('modalClose');
+  const openBtn = document.querySelector('[data-open-contact]') || document.getElementById('openContact');
+  const backdrop = document.getElementById('modalBackdrop');
+  let previouslyFocused = null;
+
+  const focusableSelector = [
+    'a[href]',
+    'button:not([disabled])',
+    'textarea:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])'
+  ].join(',');
+
+  function getFocusable() {
+    return Array.from(modal.querySelectorAll(focusableSelector))
+      .filter(el => (el.offsetParent !== null) || el === closeBtn);
+  }
+
+  function openModal() {
+    previouslyFocused = document.activeElement;
+    modal.removeAttribute('aria-hidden');
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    modal.focus();
+
+    const focusables = getFocusable();
+    (focusables[0] || closeBtn || modal).focus();
+
+    document.addEventListener('keydown', onKeydown);
+  }
+
+  function closeModal() {
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKeydown);
+    if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusables = getFocusable();
+      if (!focusables.length) {
+        e.preventDefault();
+        return;
+      }
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    }
+  }
+
+  openBtn && openBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+  closeBtn && closeBtn.addEventListener('click', (e) => { e.preventDefault(); closeModal(); });
+  backdrop && backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
+
+  // Expose for manual control
+  window.openContactModal = openModal;
+  window.closeContactModal = closeModal;
+})();
