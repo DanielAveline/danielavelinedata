@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# If you want to keep assets crawlable for image indexing, leave them allowed.
+# Disallow: /assets/
+
+Sitemap: https://danielavelinedata.com/sitemap.xml
