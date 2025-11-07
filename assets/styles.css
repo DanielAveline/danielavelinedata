@@ -377,8 +377,6 @@ body.__fade-leave { opacity: 0; transition: opacity .16s ease; }
   }
 }
 
-
-
 /* Utility: visually hidden (for accessibility) */
 .visually-hidden {
   position: absolute !important;
@@ -391,3 +389,135 @@ body.__fade-leave { opacity: 0; transition: opacity .16s ease; }
   white-space: nowrap;
   border: 0;
 }
+
+/* ---------- SQL pages readability polish ---------- */
+:root {
+  --sql-bg: #0b0b0c;          /* page backdrop (your dark theme) */
+  --sql-card: #ffffff;        /* card background */
+  --sql-text: #111213;        /* primary text on cards */
+  --sql-muted: #5b616e;       /* secondary text */
+  --sql-border: rgba(17,17,17,.12);
+  --sql-accent: #2563eb;      /* primary action (blue) */
+  --sql-accent-fg: #ffffff;
+  --sql-soft: rgba(17,17,17,.06);
+}
+
+body.__hydrating { background: var(--sql-bg); }
+
+/* Panels (cards) */
+.panel {
+  background: var(--sql-card) !important;
+  border: 1px solid var(--sql-border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .06) !important;
+  color: var(--sql-text) !important;
+}
+
+/* Headings and section titles */
+.panel h1, .panel h2, .panel h3 {
+  color: var(--sql-text);
+  letter-spacing: .1px;
+}
+.panel .hd { 
+  padding: 1rem 1.25rem !important;
+}
+.panel .bd { 
+  padding: 1rem 1.25rem !important;
+}
+
+/* Meta text: increase contrast & size slightly */
+.meta, .progress, label[for="sqlEditor"], label[for="labEditor"] {
+  color: var(--sql-muted) !important;
+  font-size: .95rem !important;
+}
+
+/* Sidebar list: stronger current item and better hover */
+.list li {
+  padding: .6rem .8rem !important;
+  border-radius: .6rem !important;
+  color: var(--sql-text);
+}
+.list li:hover {
+  background: var(--sql-soft);
+}
+.list li[aria-current="true"] {
+  background: rgba(37, 99, 235, .10) !important; /* blue tint */
+  border: 1px solid rgba(37, 99, 235, .25) !important;
+  font-weight: 600 !important;
+}
+
+/* Toolbar: primary/secondary buttons with real contrast */
+.toolbar { gap: .6rem; flex-wrap: wrap; }
+.toolbar button {
+  padding: .6rem 1rem !important;
+  border-radius: .6rem !important;
+  border: 1px solid var(--sql-border) !important;
+  background: #f7f7f9 !important;
+  color: var(--sql-text) !important;
+}
+.toolbar button:first-child {              /* "Run" as primary */
+  background: var(--sql-accent) !important;
+  border-color: var(--sql-accent) !important;
+  color: var(--sql-accent-fg) !important;
+}
+.toolbar button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .35);
+  outline-offset: 2px;
+}
+
+/* Editor & results: bigger, clearer, monospaced, better borders */
+.editor {
+  min-height: 220px !important;
+  font-size: 14.5px !important;
+  line-height: 1.4 !important;
+  border: 1.5px solid var(--sql-border) !important;
+  background: #fcfcfd !important;
+}
+.editor:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, .45) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+}
+.results {
+  min-height: 160px !important;
+  border: 1.5px solid var(--sql-border) !important;
+  background: #fbfbfc !important;
+}
+
+/* Schema box: stronger contrast */
+.schema {
+  background: #fbfbfd !important;
+  color: #2b2f36 !important;
+  border: 1px solid var(--sql-border) !important;
+}
+
+/* Table styling for query results */
+.results table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+}
+.results thead th {
+  position: sticky; top: 0;
+  background: #f3f4f6;
+  color: #111;
+  text-align: left;
+  padding: .55rem .6rem;
+  border-bottom: 1px solid var(--sql-border);
+}
+.results tbody td {
+  padding: .5rem .6rem;
+  border-bottom: 1px solid rgba(17,17,17,.06);
+}
+.results tbody tr:hover td {
+  background: #f9fafb;
+}
+
+/* Responsive tweaks */
+@media (max-width: 960px) {
+  .sql-wrap, .lab-wrap { padding-top: .5rem; }
+  .editor { min-height: 180px !important; }
+  .toolbar button { flex: 1 1 auto; }
+}
+
