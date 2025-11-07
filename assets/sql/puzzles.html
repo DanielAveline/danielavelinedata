@@ -21,7 +21,7 @@
     .meta { font-size:.9rem; opacity:.7; }
     .schema { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:.9rem; background: #fafafa; border:1px solid rgba(0,0,0,.06); border-radius: .5rem; padding: .75rem; max-height: 220px; overflow:auto; }
     .toolbar { display:flex; gap:.5rem; flex-wrap:wrap; }
-    .toolbar button { padding:.6rem .9rem; border-radius:.6rem; border:1px solid rgba(0,0,0,.12); background:#fff; cursor:not-allowed; opacity:.6; }
+    .toolbar button { padding:.6rem .9rem; border-radius:.6rem; border:1px solid rgba(0,0,0,.12); background:#fff; }
     .editor { width:100%; min-height: 180px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; border:1px solid rgba(0,0,0,.12); border-radius:.6rem; padding: .75rem; }
     .results { border:1px solid rgba(0,0,0,.1); border-radius:.6rem; padding:.75rem; background:#fafafa; min-height:120px; }
     .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -41,10 +41,7 @@
         <div class="meta">A new set every week: Easy, Medium, Hard.</div>
         <hr style="border:none;border-top:1px solid rgba(0,0,0,.06);margin:.75rem 0;">
         <ul id="puzzleList" class="list" role="listbox" aria-label="Available puzzles">
-          <!-- Populated by JS later. Example static items for now: -->
-          <li role="option" aria-current="true">Week 01 — Retail (Easy)</li>
-          <li role="option">Week 01 — Retail (Medium)</li>
-          <li role="option">Week 01 — Retail (Hard)</li>
+          <!-- populated by JS -->
         </ul>
       </div>
     </aside>
@@ -53,23 +50,22 @@
     <section class="panel" aria-label="Puzzle details">
       <div class="hd">
         <div>
-          <h3 id="puzzleTitle">Week 01 — Retail: New Indiana Customers (2024)</h3>
-          <div id="puzzleMeta" class="meta">Difficulty: Easy · Dataset: retail.sqlite</div>
+          <h3 id="puzzleTitle">Loading…</h3>
+          <div id="puzzleMeta" class="meta"></div>
         </div>
         <div class="toolbar" aria-label="Actions">
-          <button type="button" disabled title="Runs your SQL (coming soon)">Run</button>
-          <button type="button" disabled title="Check your result (coming soon)">Check Answer</button>
-          <button type="button" disabled title="Reveal the canonical solution (coming soon)">Reveal Solution</button>
+          <button type="button" title="Run your SQL">Run</button>
+          <button type="button" title="Check against expected result">Check Answer</button>
+          <button type="button" title="Load canonical solution into editor">Reveal Solution</button>
         </div>
       </div>
       <div class="bd">
-        <p id="puzzleGoal"><strong>Goal:</strong> List customer_id, first_name, last_name, joined_date for customers in state='IN' who joined in 2024, ordered by joined_date.</p>
+        <p id="puzzleGoal"><strong>Goal:</strong> </p>
 
         <div class="grid" aria-label="Workspace">
           <div>
             <label for="sqlEditor" class="meta">Your SQL</label>
             <textarea id="sqlEditor" class="editor" placeholder="/* Write your query here */"></textarea>
-            <p class="meta" style="margin:.5rem 0 0;">Ctrl/Cmd + Enter to run (soon)</p>
           </div>
           <div>
             <div class="meta">Results</div>
@@ -81,13 +77,11 @@
         <div class="grid">
           <div>
             <div class="meta">Tables used</div>
-            <ul id="tablesUsed" class="list">
-              <li>customers</li>
-            </ul>
+            <ul id="tablesUsed" class="list"></ul>
           </div>
           <div>
             <div class="meta">Schema</div>
-            <div id="schemaBox" class="schema">customers(customer_id PK, first_name, last_name, email, state, joined_date)</div>
+            <div id="schemaBox" class="schema">Loading schema…</div>
           </div>
         </div>
       </div>
@@ -99,5 +93,6 @@
 
   <script src="/assets/js/partials.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
+  <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
