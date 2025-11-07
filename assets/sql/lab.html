@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL Lab — Learn by Doing</title>
+  <meta name="description" content="Interactive SQL lessons with a browser-based database. Practice SELECT, WHERE, JOINs, and more.">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <style>
+    .lab-wrap { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; display: grid; gap: 1rem; grid-template-columns: 1fr 320px; }
+    .panel { background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.04); }
+    .panel .hd { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(0,0,0,.07); display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+    .panel .bd { padding: 1rem 1.25rem; }
+    .progress { font-size:.9rem; opacity:.8; }
+    .editor { width:100%; min-height: 200px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; border:1px solid rgba(0,0,0,.12); border-radius:.6rem; padding: .75rem; }
+    .results { border:1px solid rgba(0,0,0,.1); border-radius:.6rem; padding:.75rem; background:#fafafa; min-height:140px; }
+    .toolbar button { padding:.6rem .9rem; border-radius:.6rem; border:1px solid rgba(0,0,0,.12); background:#fff; cursor:not-allowed; opacity:.6; }
+    .schema { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:.9rem; background: #fafafa; border:1px solid rgba(0,0,0,.06); border-radius: .5rem; padding: .75rem; max-height: 260px; overflow:auto; }
+    .step-goal { background:#fafafa; border:1px dashed rgba(0,0,0,.1); padding:.75rem; border-radius:.5rem; }
+    @media (max-width: 960px) { .lab-wrap { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="__hydrating">
+  <div id="site-header"></div>
+
+  <main class="lab-wrap" aria-labelledby="labTitle">
+    <section class="panel" aria-label="Lesson workspace">
+      <div class="hd">
+        <div>
+          <h1 id="labTitle">SQL Lab</h1>
+          <div id="lessonTitle" class="progress">Lesson: SELECT & WHERE Basics (Step <span id="stepIndex">1</span> of <span id="stepTotal">3</span>)</div>
+        </div>
+        <div class="toolbar" aria-label="Actions">
+          <button type="button" disabled title="Run your SQL (coming soon)">Run</button>
+          <button type="button" disabled title="Submit / Check (coming soon)">Check Step</button>
+          <button type="button" disabled title="Next step (coming soon)">Next</button>
+        </div>
+      </div>
+      <div class="bd">
+        <div class="step-goal" role="note" aria-live="polite">
+          <strong>Goal:</strong> Return all columns from customers.
+        </div>
+
+        <div style="margin-top:1rem;">
+          <label for="labEditor" class="progress">Your SQL</label>
+          <textarea id="labEditor" class="editor">SELECT * FROM customers;</textarea>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <div class="progress">Results</div>
+          <div id="labResults" class="results" role="region" aria-live="polite">Results will appear here.</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="Schema & Lesson Info">
+      <div class="hd">
+        <h2>Schema</h2>
+      </div>
+      <div class="bd">
+        <div id="schemaBox" class="schema">
+customers(customer_id PK, first_name, last_name, email, state, joined_date)
+orders(order_id PK, customer_id FK, order_date, status)
+order_items(order_id FK, product_id FK, quantity, unit_price)
+products(product_id PK, sku, product_name, category, unit_price)
+payments(payment_id PK, order_id FK, amount, method, paid_at)
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,.06);margin:1rem 0;">
+
+        <div class="progress">
+          <div><strong>Dataset:</strong> retail.sqlite</div>
+          <div><strong>Progress:</strong> <span id="progress">0%</span> (saved locally)</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div id="privacy-host"></div>
+  <div id="site-footer"></div>
+
+  <script src="/assets/js/partials.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

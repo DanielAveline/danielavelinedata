@@ -14,7 +14,7 @@
           "verify": {
             "type": "rowcount",
             "op": "=",
-            "value": "ALL_ROWS"
+            "value": 150
           },
           "hint": null
         },
@@ -24,7 +24,7 @@
           "starter_sql": "SELECT * FROM customers WHERE state = 'IN';",
           "verify": {
             "type": "resultset_hash",
-            "value": null
+            "value": "sha256:136d615e528c928419520cbc56823ec8db545f56cd48cb161e1c5ebed1a2b357"
           },
           "hint": null
         },
@@ -34,7 +34,7 @@
           "starter_sql": "SELECT * FROM customers ORDER BY joined_date DESC, customer_id ASC LIMIT 10;",
           "verify": {
             "type": "resultset_hash",
-            "value": null,
+            "value": "sha256:c2baf1627baf0d29e666a8f4e0e78fa9ac055a989dc57dd7e0d066d881da04aa",
             "order_by": [
               "joined_date DESC",
               "customer_id ASC"

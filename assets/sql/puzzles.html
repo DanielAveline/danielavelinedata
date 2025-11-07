@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL Puzzles — Weekly Challenges</title>
+  <meta name="description" content="Solve weekly SQL puzzles (Easy, Medium, Hard). Run queries in your browser and verify results.">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <style>
+    .sql-wrap { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; display: grid; gap: 1rem; grid-template-columns: 300px 1fr; }
+    .panel { background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.04); }
+    .panel h2, .panel h3 { margin: 0; }
+    .panel .hd { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(0,0,0,.07); display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+    .panel .bd { padding: 1rem 1.25rem; }
+    .list { list-style:none; margin:0; padding:0; }
+    .list li { padding:.5rem .75rem; border-radius:.5rem; cursor:pointer; }
+    .list li[aria-current="true"] { background: rgba(17,17,17,.06); font-weight:600; }
+    .meta { font-size:.9rem; opacity:.7; }
+    .schema { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:.9rem; background: #fafafa; border:1px solid rgba(0,0,0,.06); border-radius: .5rem; padding: .75rem; max-height: 220px; overflow:auto; }
+    .toolbar { display:flex; gap:.5rem; flex-wrap:wrap; }
+    .toolbar button { padding:.6rem .9rem; border-radius:.6rem; border:1px solid rgba(0,0,0,.12); background:#fff; cursor:not-allowed; opacity:.6; }
+    .editor { width:100%; min-height: 180px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; border:1px solid rgba(0,0,0,.12); border-radius:.6rem; padding: .75rem; }
+    .results { border:1px solid rgba(0,0,0,.1); border-radius:.6rem; padding:.75rem; background:#fafafa; min-height:120px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 960px) { .sql-wrap { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="__hydrating">
+  <div id="site-header"></div>
+
+  <main class="sql-wrap" aria-labelledby="pageTitle">
+    <!-- Sidebar: puzzle list -->
+    <aside class="panel" aria-label="Puzzle list">
+      <div class="hd">
+        <h2 id="pageTitle">SQL Puzzles</h2>
+      </div>
+      <div class="bd">
+        <div class="meta">A new set every week: Easy, Medium, Hard.</div>
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,.06);margin:.75rem 0;">
+        <ul id="puzzleList" class="list" role="listbox" aria-label="Available puzzles">
+          <!-- Populated by JS later. Example static items for now: -->
+          <li role="option" aria-current="true">Week 01 — Retail (Easy)</li>
+          <li role="option">Week 01 — Retail (Medium)</li>
+          <li role="option">Week 01 — Retail (Hard)</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main area: puzzle detail -->
+    <section class="panel" aria-label="Puzzle details">
+      <div class="hd">
+        <div>
+          <h3 id="puzzleTitle">Week 01 — Retail: New Indiana Customers (2024)</h3>
+          <div id="puzzleMeta" class="meta">Difficulty: Easy · Dataset: retail.sqlite</div>
+        </div>
+        <div class="toolbar" aria-label="Actions">
+          <button type="button" disabled title="Runs your SQL (coming soon)">Run</button>
+          <button type="button" disabled title="Check your result (coming soon)">Check Answer</button>
+          <button type="button" disabled title="Reveal the canonical solution (coming soon)">Reveal Solution</button>
+        </div>
+      </div>
+      <div class="bd">
+        <p id="puzzleGoal"><strong>Goal:</strong> List customer_id, first_name, last_name, joined_date for customers in state='IN' who joined in 2024, ordered by joined_date.</p>
+
+        <div class="grid" aria-label="Workspace">
+          <div>
+            <label for="sqlEditor" class="meta">Your SQL</label>
+            <textarea id="sqlEditor" class="editor" placeholder="/* Write your query here */"></textarea>
+            <p class="meta" style="margin:.5rem 0 0;">Ctrl/Cmd + Enter to run (soon)</p>
+          </div>
+          <div>
+            <div class="meta">Results</div>
+            <div id="sqlResults" class="results" role="region" aria-live="polite">Results will appear here.</div>
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(0,0,0,.06);margin:1rem 0;">
+        <div class="grid">
+          <div>
+            <div class="meta">Tables used</div>
+            <ul id="tablesUsed" class="list">
+              <li>customers</li>
+            </ul>
+          </div>
+          <div>
+            <div class="meta">Schema</div>
+            <div id="schemaBox" class="schema">customers(customer_id PK, first_name, last_name, email, state, joined_date)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="privacy-host"></div>
+  <div id="site-footer"></div>
+
+  <script src="/assets/js/partials.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

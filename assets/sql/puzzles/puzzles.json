@@ -28,7 +28,7 @@
               "joined_date ASC",
               "customer_id ASC"
             ],
-            "resultset_hash": null,
+            "resultset_hash": "sha256:d6d2569361689bfbe7932e429d45d721720ddaba7b992dd2e4d55d3196dadd6a",
             "assertions": []
           },
           "solution_sql_path": "/assets/sql/solutions/week-01-retail-easy.sql",
@@ -57,7 +57,7 @@
               "total_revenue DESC",
               "product_id ASC"
             ],
-            "resultset_hash": null,
+            "resultset_hash": "sha256:992d7446642b084929064ae656d497d950ebb8988480909f1090bd3742c123f5",
             "assertions": [
               {
                 "type": "rowcount",
@@ -92,7 +92,7 @@
               "total_paid_2024 DESC",
               "customer_id ASC"
             ],
-            "resultset_hash": null,
+            "resultset_hash": "sha256:0cc72e122e5f89ed95578b228911f133f8d343d4e1295bba492672fff381ecc8",
             "assertions": [
               {
                 "type": "column",
