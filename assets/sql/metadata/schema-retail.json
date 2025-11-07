@@ -1,0 +1,183 @@
+{
+  "dataset": "retail.sqlite",
+  "tables": [
+    {
+      "name": "customers",
+      "primary_key": [
+        "customer_id"
+      ],
+      "columns": [
+        {
+          "name": "customer_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "first_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "last_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "email",
+          "type": "TEXT"
+        },
+        {
+          "name": "state",
+          "type": "TEXT"
+        },
+        {
+          "name": "joined_date",
+          "type": "DATE"
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "primary_key": [
+        "order_id"
+      ],
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "customer_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "customers",
+            "columns": [
+              "customer_id"
+            ]
+          }
+        },
+        {
+          "name": "order_date",
+          "type": "DATE"
+        },
+        {
+          "name": "status",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "name": "order_items",
+      "primary_key": [],
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "orders",
+            "columns": [
+              "order_id"
+            ]
+          }
+        },
+        {
+          "name": "product_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "products",
+            "columns": [
+              "product_id"
+            ]
+          }
+        },
+        {
+          "name": "quantity",
+          "type": "INTEGER"
+        },
+        {
+          "name": "unit_price",
+          "type": "NUMERIC"
+        }
+      ]
+    },
+    {
+      "name": "products",
+      "primary_key": [
+        "product_id"
+      ],
+      "columns": [
+        {
+          "name": "product_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "sku",
+          "type": "TEXT"
+        },
+        {
+          "name": "product_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "category",
+          "type": "TEXT"
+        },
+        {
+          "name": "unit_price",
+          "type": "NUMERIC"
+        }
+      ]
+    },
+    {
+      "name": "payments",
+      "primary_key": [
+        "payment_id"
+      ],
+      "columns": [
+        {
+          "name": "payment_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "order_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "orders",
+            "columns": [
+              "order_id"
+            ]
+          }
+        },
+        {
+          "name": "amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "method",
+          "type": "TEXT"
+        },
+        {
+          "name": "paid_at",
+          "type": "DATE"
+        }
+      ]
+    }
+  ],
+  "indexes": [
+    {
+      "table": "orders",
+      "columns": [
+        "customer_id"
+      ]
+    },
+    {
+      "table": "order_items",
+      "columns": [
+        "order_id"
+      ]
+    },
+    {
+      "table": "order_items",
+      "columns": [
+        "product_id"
+      ]
+    }
+  ]
+}

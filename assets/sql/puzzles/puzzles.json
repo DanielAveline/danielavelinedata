@@ -1,0 +1,117 @@
+{
+  "version": "1.0.0",
+  "numeric_precision": 4,
+  "weeks": [
+    {
+      "slug": "week-01-retail",
+      "title": "Week 01 \u2014 Retail",
+      "theme": "Retail",
+      "puzzles": [
+        {
+          "slug": "week-01-retail-easy",
+          "title": "New Indiana Customers (2024)",
+          "difficulty": "easy",
+          "dataset": "retail.sqlite",
+          "goal": "List customer_id, first_name, last_name, joined_date for customers in state='IN' who joined in calendar year 2024, ordered by joined_date.",
+          "tables": [
+            "customers"
+          ],
+          "starter_sql": "/* Write your query here */\n",
+          "expected": {
+            "columns": [
+              "customer_id",
+              "first_name",
+              "last_name",
+              "joined_date"
+            ],
+            "order_by": [
+              "joined_date ASC",
+              "customer_id ASC"
+            ],
+            "resultset_hash": null,
+            "assertions": []
+          },
+          "solution_sql_path": "/assets/sql/solutions/week-01-retail-easy.sql",
+          "notes": "Use WHERE on state and joined_date YEAR=2024; ORDER BY joined_date."
+        },
+        {
+          "slug": "week-01-retail-med",
+          "title": "Top 5 Products by Revenue (2024)",
+          "difficulty": "medium",
+          "dataset": "retail.sqlite",
+          "goal": "Return product_id, product_name, category, total_revenue for 2024, top 5 by revenue.",
+          "tables": [
+            "orders",
+            "order_items",
+            "products"
+          ],
+          "starter_sql": "/* Write your query here */\n",
+          "expected": {
+            "columns": [
+              "product_id",
+              "product_name",
+              "category",
+              "total_revenue"
+            ],
+            "order_by": [
+              "total_revenue DESC",
+              "product_id ASC"
+            ],
+            "resultset_hash": null,
+            "assertions": [
+              {
+                "type": "rowcount",
+                "op": "=",
+                "value": 5
+              }
+            ]
+          },
+          "solution_sql_path": "/assets/sql/solutions/week-01-retail-med.sql",
+          "notes": "SUM(order_items.quantity * order_items.unit_price) joined through orders in 2024."
+        },
+        {
+          "slug": "week-01-retail-hard",
+          "title": "High-Value Repeat Buyers (2024)",
+          "difficulty": "hard",
+          "dataset": "retail.sqlite",
+          "goal": "Customers with \u22653 orders in 2024 and total payments \u2265 $2,500 in 2024; return customer_id, full_name, orders_2024, total_paid_2024 sorted by total_paid_2024 desc.",
+          "tables": [
+            "customers",
+            "orders",
+            "payments"
+          ],
+          "starter_sql": "/* Write your query here */\n",
+          "expected": {
+            "columns": [
+              "customer_id",
+              "full_name",
+              "orders_2024",
+              "total_paid_2024"
+            ],
+            "order_by": [
+              "total_paid_2024 DESC",
+              "customer_id ASC"
+            ],
+            "resultset_hash": null,
+            "assertions": [
+              {
+                "type": "column",
+                "name": "orders_2024",
+                "op": ">=",
+                "value": 3
+              },
+              {
+                "type": "column",
+                "name": "total_paid_2024",
+                "op": ">=",
+                "value": 2500
+              }
+            ]
+          },
+          "solution_sql_path": "/assets/sql/solutions/week-01-retail-hard.sql",
+          "notes": "Aggregate by customer over payments in 2024; join orders for order count in 2024."
+        }
+      ]
+    }
+  ]
+}

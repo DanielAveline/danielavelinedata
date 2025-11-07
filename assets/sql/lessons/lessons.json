@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "lessons": [
+    {
+      "slug": "sql-basics-select-01",
+      "title": "SELECT & WHERE Basics",
+      "dataset": "retail.sqlite",
+      "completion_badge": "Basics I",
+      "steps": [
+        {
+          "id": "s1",
+          "goal": "Return all columns from customers.",
+          "starter_sql": "SELECT * FROM customers;",
+          "verify": {
+            "type": "rowcount",
+            "op": "=",
+            "value": "ALL_ROWS"
+          },
+          "hint": null
+        },
+        {
+          "id": "s2",
+          "goal": "Filter to customers from Indiana.",
+          "starter_sql": "SELECT * FROM customers WHERE state = 'IN';",
+          "verify": {
+            "type": "resultset_hash",
+            "value": null
+          },
+          "hint": null
+        },
+        {
+          "id": "s3",
+          "goal": "Top 10 most recent customers by joined_date (tie-break by customer_id).",
+          "starter_sql": "SELECT * FROM customers ORDER BY joined_date DESC, customer_id ASC LIMIT 10;",
+          "verify": {
+            "type": "resultset_hash",
+            "value": null,
+            "order_by": [
+              "joined_date DESC",
+              "customer_id ASC"
+            ]
+          },
+          "hint": null
+        }
+      ]
+    }
+  ]
+}

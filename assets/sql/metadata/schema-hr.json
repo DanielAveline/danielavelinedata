@@ -1,0 +1,145 @@
+{
+  "dataset": "hr.sqlite",
+  "tables": [
+    {
+      "name": "employees",
+      "primary_key": [
+        "emp_id"
+      ],
+      "columns": [
+        {
+          "name": "emp_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "first_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "last_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "hire_date",
+          "type": "DATE"
+        },
+        {
+          "name": "dept_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "departments",
+            "columns": [
+              "dept_id"
+            ]
+          }
+        },
+        {
+          "name": "job_title",
+          "type": "TEXT"
+        },
+        {
+          "name": "salary",
+          "type": "NUMERIC"
+        }
+      ]
+    },
+    {
+      "name": "departments",
+      "primary_key": [
+        "dept_id"
+      ],
+      "columns": [
+        {
+          "name": "dept_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "dept_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "region",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "name": "salaries",
+      "primary_key": [],
+      "columns": [
+        {
+          "name": "emp_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "employees",
+            "columns": [
+              "emp_id"
+            ]
+          }
+        },
+        {
+          "name": "effective_date",
+          "type": "DATE"
+        },
+        {
+          "name": "salary",
+          "type": "NUMERIC"
+        }
+      ]
+    },
+    {
+      "name": "projects",
+      "primary_key": [
+        "project_id"
+      ],
+      "columns": [
+        {
+          "name": "project_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "project_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "start_date",
+          "type": "DATE"
+        },
+        {
+          "name": "end_date",
+          "type": "DATE"
+        }
+      ]
+    },
+    {
+      "name": "project_assignments",
+      "primary_key": [],
+      "columns": [
+        {
+          "name": "project_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "projects",
+            "columns": [
+              "project_id"
+            ]
+          }
+        },
+        {
+          "name": "emp_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "employees",
+            "columns": [
+              "emp_id"
+            ]
+          }
+        },
+        {
+          "name": "allocation_pct",
+          "type": "NUMERIC"
+        }
+      ]
+    }
+  ]
+}

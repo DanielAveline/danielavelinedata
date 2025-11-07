@@ -1,0 +1,157 @@
+{
+  "dataset": "movies.sqlite",
+  "tables": [
+    {
+      "name": "titles",
+      "primary_key": [
+        "title_id"
+      ],
+      "columns": [
+        {
+          "name": "title_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "name": "year",
+          "type": "INTEGER"
+        },
+        {
+          "name": "duration_min",
+          "type": "INTEGER"
+        },
+        {
+          "name": "primary_genre",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "name": "ratings",
+      "primary_key": [],
+      "columns": [
+        {
+          "name": "title_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "titles",
+            "columns": [
+              "title_id"
+            ]
+          }
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "users",
+            "columns": [
+              "user_id"
+            ]
+          }
+        },
+        {
+          "name": "rating",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "rated_at",
+          "type": "DATE"
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "primary_key": [
+        "user_id"
+      ],
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "country",
+          "type": "TEXT"
+        },
+        {
+          "name": "join_date",
+          "type": "DATE"
+        }
+      ]
+    },
+    {
+      "name": "genres",
+      "primary_key": [],
+      "columns": [
+        {
+          "name": "title_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "titles",
+            "columns": [
+              "title_id"
+            ]
+          }
+        },
+        {
+          "name": "genre",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "name": "people",
+      "primary_key": [
+        "person_id"
+      ],
+      "columns": [
+        {
+          "name": "person_id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "name",
+          "type": "TEXT"
+        },
+        {
+          "name": "birth_year",
+          "type": "INTEGER"
+        }
+      ]
+    },
+    {
+      "name": "casts",
+      "primary_key": [],
+      "columns": [
+        {
+          "name": "title_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "titles",
+            "columns": [
+              "title_id"
+            ]
+          }
+        },
+        {
+          "name": "person_id",
+          "type": "INTEGER",
+          "fk": {
+            "table": "people",
+            "columns": [
+              "person_id"
+            ]
+          }
+        },
+        {
+          "name": "role",
+          "type": "TEXT"
+        }
+      ]
+    }
+  ]
+}
