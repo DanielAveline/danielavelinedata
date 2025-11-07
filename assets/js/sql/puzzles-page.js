@@ -1,4 +1,3 @@
-
 import { SQLEngine } from '/assets/js/sql/engine.js';
 import { ResultVerifier } from '/assets/js/sql/verify.js';
 
@@ -36,7 +35,11 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     li.role = 'option';
     li.textContent = `${week.title} (${p.difficulty[0].toUpperCase() + p.difficulty.slice(1)})`;
     li.dataset.slug = p.slug;
-    li.addEventListener('click', () => loadPuzzle(p));
+    li.addEventListener('click', () => {
+      els.list.querySelectorAll('li[aria-current="true"]').forEach(x => x.removeAttribute('aria-current'));
+      li.setAttribute('aria-current', 'true');
+      loadPuzzle(p);
+    });
     els.list.appendChild(li);
   }
   if (els.list.firstElementChild) els.list.firstElementChild.setAttribute('aria-current', 'true');
@@ -51,6 +54,9 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
         const cols = t.columns.map(c => c.name + (c.name === (t.primary_key||[])[0] ? ' PK' : '')).join(', ');
         return `${t.name}(${cols})`;
       }).join('\n');
+    } else {
+      // fallback text
+      els.schema.textContent = 'Schema metadata not found. Tables will still work.';
     }
   }
 
@@ -137,4 +143,51 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
   // auto-load first puzzle
   if (puzzleItems[0]) loadPuzzle(puzzleItems[0]);
+
+  // --- Keyboard shortcuts ---
+  // Ctrl/Cmd + Enter = Run
+  // Shift + Enter    = Check
+  // Alt  + →         = Next puzzle in the list
+  (function addPuzzleShortcuts() {
+    const toolbar = document.querySelector('.toolbar');
+    if (!toolbar) return;
+    const [btnRun, btnCheck] = toolbar.querySelectorAll('button');
+
+    function selectNextPuzzle() {
+      const list = document.getElementById('puzzleList');
+      if (!list) return;
+      const items = Array.from(list.querySelectorAll('li[role="option"]'));
+      if (!items.length) return;
+      const idx = items.findIndex(li => li.getAttribute('aria-current') === 'true');
+      const next = (idx >= 0 && idx < items.length - 1) ? items[idx + 1] : items[0];
+      items.forEach(li => li.removeAttribute('aria-current'));
+      next.setAttribute('aria-current', 'true');
+      next.click();
+      const meta = document.getElementById('puzzleMeta');
+      if (meta) meta.insertAdjacentHTML('beforeend', ' • (Alt+→)');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const mac = e.metaKey, ctrl = e.ctrlKey;
+      // Run
+      if ((mac || ctrl) && e.key === 'Enter') {
+        e.preventDefault();
+        btnRun?.click();
+        return;
+      }
+      // Check
+      if (e.shiftKey && e.key === 'Enter') {
+        e.preventDefault();
+        btnCheck?.click();
+        return;
+      }
+      // Next puzzle
+      if (e.altKey && (e.key === 'ArrowRight')) {
+        e.preventDefault();
+        selectNextPuzzle();
+        return;
+      }
+    });
+  })();
 })();
+
