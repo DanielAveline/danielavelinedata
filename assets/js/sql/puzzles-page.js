@@ -9,7 +9,8 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     goal: document.getElementById('puzzleGoal'),
     editorTA: document.getElementById('sqlEditor'),
     results: document.getElementById('sqlResults'),
-    schema: document.getElementById('schemaBox')
+    schema: document.getElementById('schemaBox'),
+    btnClear: document.getElementById('btnClearResults')
   };
   if (!els.tree) return;
 
@@ -118,9 +119,14 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     'July','August','September','October','November','December'
   ];
 
-  // Render Month → Week tree
+  // Determine current month (local time)
+  const now = new Date();
+  const currentMonthIndex = now.getMonth(); // 0-11
+
+  // Render Month → Week tree, highlight current month
   const monthHtml = months.map((name, idx) => {
     const isDecember = idx === 11;
+    const isCurrent = idx === currentMonthIndex;
     const weeksHtml = isDecember
       ? `
         <ul class="weeks" role="group">
@@ -129,9 +135,11 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
               ${w.title || 'Week 01 — Retail'}
             </li>`).join('')}
         </ul>
-      ` : `<div class="meta" style="padding:.5rem .65rem;">(coming soon)</div>`;
+      `
+      : `<div class="meta" style="padding:.5rem .65rem;">(coming soon)</div>`;
     const open = isDecember ? ' open' : '';
-    return `<details${open}><summary>${name}</summary>${weeksHtml}</details>`;
+    const cls = isCurrent ? ' class="current-month"' : '';
+    return `<details${open}${cls}><summary>${name}</summary>${weeksHtml}</details>`;
   }).join('');
   els.tree.innerHTML = monthHtml;
 
@@ -195,7 +203,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       try {
         engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
       } catch (e) {
-        els.results.textContent = 'e.message';
+        els.results.textContent = 'Error loading SQL engine: ' + (e.message || e);
         throw e;
       }
     }
@@ -239,7 +247,10 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
     els.title.textContent = `${w.title || 'Week 01 — Retail'}`;
     els.meta.textContent = `Difficulty: ${(w.puzzles?.[0]?.difficulty || 'easy')} · Dataset: ${w.puzzles?.[0]?.dataset || 'retail.sqlite'}`;
-    els.goal.innerHTML = `<strong>Goal:</strong> ${w.puzzles?.[0]?.goal || 'Open the week and run queries.'}`;
+
+    // Goal: legible callout
+    const goalText = (w.puzzles?.[0]?.goal) || 'Open the week and run queries.';
+    els.goal.innerHTML = `<strong>Goal:</strong> ${goalText}`;
 
     const dataset = w.puzzles?.[0]?.dataset || 'retail.sqlite';
     await loadSchema(dataset);
@@ -298,9 +309,19 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     };
   }
 
+  // Clear Results button
+  if (els.btnClear) {
+    els.btnClear.addEventListener('click', () => {
+      els.results.innerHTML = '';
+      // keep focus accessible
+      els.btnClear.blur();
+    });
+  }
+
   // Load default (first week under December)
   loadWeekByIndex(0);
 })();
+
 
 
 
