@@ -7,11 +7,25 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     title: document.getElementById('puzzleTitle'),
     meta: document.getElementById('puzzleMeta'),
     goal: document.getElementById('puzzleGoal'),
-    editor: document.getElementById('sqlEditor'),
+    editorTA: document.getElementById('sqlEditor'),
     results: document.getElementById('sqlResults'),
     schema: document.getElementById('schemaBox')
   };
   if (!els.tree) return;
+
+  // --- CodeMirror setup (line numbers, SQL mode, tabs, etc.)
+  let editorCM = window.CodeMirror.fromTextArea(els.editorTA, {
+    mode: 'text/x-sql',
+    theme: 'eclipse',
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    indentWithTabs: true,
+    smartIndent: true,
+    tabSize: 2,
+    indentUnit: 2,
+    lineWrapping: true
+  });
 
   // Load puzzles.json
   const puzzlesResp = await fetch('/assets/sql/puzzles.json').catch(() => null);
@@ -22,19 +36,16 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const puzzlesData = await puzzlesResp.json();
   ResultVerifier.setPrecision(puzzlesData.numeric_precision || 4);
 
-  // We’ll place all current weeks into December by default (future weeks can carry a month field)
+  // Use December for the first release; others scaffolded
   const weeks = Array.isArray(puzzlesData.weeks) ? puzzlesData.weeks : [];
   const months = [
     'January','February','March','April','May','June',
     'July','August','September','October','November','December'
   ];
 
-  // Render the Month → Week tree
+  // Render Month → Week tree
   const monthHtml = months.map((name, idx) => {
     const isDecember = idx === 11;
-    const disabledNote = !isDecember ? '<div class="meta" style="padding:.5rem .65rem;">(coming soon)</div>' : '';
-
-    // December gets the actual weeks list
     const weeksHtml = isDecember
       ? `
         <ul class="weeks" role="group">
@@ -43,23 +54,13 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
               ${w.title || 'Week 01 — Retail'}
             </li>`).join('')}
         </ul>
-      `
-      : disabledNote;
-
-    // Keep December expanded by default
+      ` : `<div class="meta" style="padding:.5rem .65rem;">(coming soon)</div>`;
     const open = isDecember ? ' open' : '';
-
-    return `
-      <details${open}>
-        <summary>${name}</summary>
-        ${weeksHtml}
-      </details>
-    `;
+    return `<details${open}><summary>${name}</summary>${weeksHtml}</details>`;
   }).join('');
-
   els.tree.innerHTML = monthHtml;
 
-  // Event handling for week clicks
+  // Wire week clicks
   const weekItems = els.tree.querySelectorAll('.weeks li[role="treeitem"]');
   weekItems.forEach((li, i) => {
     li.addEventListener('click', () => {
@@ -67,15 +68,13 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       li.setAttribute('aria-current', 'true');
       loadWeekByIndex(i);
     });
-    li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); }});
+    li.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); }
+    });
   });
+  if (weekItems[0]) weekItems[0].setAttribute('aria-current', 'true');
 
-  // Default: select first week in December if available
-  if (weekItems[0]) {
-    weekItems[0].setAttribute('aria-current', 'true');
-  }
-
-  // ---------- Schema loader: dataset name (without .sqlite) + accordion ----------
+  // --- Schema loader: dataset name (UI without ".sqlite") + accordion
   async function loadSchema(dataset) {
     const displayName = dataset.replace(/\.sqlite$/i, '');
     const schemaResp = await fetch(`/assets/sql/metadata/schema-${displayName}.json`).catch(() => null);
@@ -114,7 +113,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     }
   }
 
-  // ---------- SQL engine ----------
+  // --- SQL engine
   let engine = null;
   async function ensureEngineAndDB(dataset) {
     if (!engine) {
@@ -135,7 +134,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
     const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
     els.results.innerHTML = `
-      <div style="height: 480px; overflow:auto; border:1px solid rgba(17,17,17,.06); border-radius:10px;">
+      <div style="height: 420px; overflow:auto; border:1px solid rgba(17,17,17,.06); border-radius:10px;">
         <table>${thead+tbody}</table>
       </div>`;
   }
@@ -147,11 +146,13 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     els.title.textContent = `${w.title || 'Week 01 — Retail'}`;
     els.meta.textContent = `Difficulty: ${(w.puzzles?.[0]?.difficulty || 'easy')} · Dataset: ${w.puzzles?.[0]?.dataset || 'retail.sqlite'}`;
     els.goal.innerHTML = `<strong>Goal:</strong> ${w.puzzles?.[0]?.goal || 'Open the week and run queries.'}`;
-    els.editor.value = (w.puzzles?.[0]?.starter_sql) || '/* Write your query here */';
 
-    // Derive dataset from first puzzle in the week
     const dataset = w.puzzles?.[0]?.dataset || 'retail.sqlite';
     await loadSchema(dataset);
+
+    // Starter SQL to the editor
+    editorCM.setValue((w.puzzles?.[0]?.starter_sql) || '/* Write your query here */');
+    editorCM.refresh();
 
     const toolbar = document.querySelector('.toolbar');
     if (!toolbar) return;
@@ -163,10 +164,11 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       try {
         els.results.textContent = 'Running...';
         await ensureEngineAndDB(dataset);
-        const res = engine.run(els.editor.value);
+        const res = engine.run(editorCM.getValue());
         renderResults(res);
       } catch (e) {
-        els.results.textContent = 'Error: ' + e.message;
+        // Show error with line hint if available
+        els.results.innerHTML = `<div style="color:#b91c1c;">Error: ${e.message || e}</div>`;
       }
     };
 
@@ -174,9 +176,8 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       try {
         els.results.textContent = 'Checking...';
         await ensureEngineAndDB(dataset);
-        const res = engine.run(els.editor.value);
+        const res = engine.run(editorCM.getValue());
 
-        // If your weeks include expected output per puzzle, we use the first puzzle's expected
         const p = w.puzzles?.[0] || {};
         const userHash = await ResultVerifier.hashResult(res, p.expected?.columns, p.expected?.order_by);
         const assertions = ResultVerifier.evalAssertions(res, p.expected?.assertions || []);
@@ -186,7 +187,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
           ${userHash ? `<div class="meta">Your hash: <code>${userHash}</code></div>` : ''}
           ${p.expected?.resultset_hash ? `<div class="meta">Expected: <code>${p.expected.resultset_hash}</code></div>` : ''}`;
       } catch (e) {
-        els.results.textContent = 'Error: ' + e.message;
+        els.results.innerHTML = `<div style="color:#b91c1c;">Error: ${e.message || e}</div>`;
       }
     };
   }
