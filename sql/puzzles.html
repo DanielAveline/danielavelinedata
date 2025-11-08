@@ -18,11 +18,11 @@
   <style>
     /* Wider main, bigger schema column, tighter left nav */
     .puzzles-wrap {
-      max-width: 1560px;              /* wide overall canvas */
+      max-width: 1560px;
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: 200px 320px minmax(0, 1fr); /* Puzzles | Schema | Main (wide) */
+      grid-template-columns: 200px 320px minmax(0, 1fr); /* Puzzles | Schema | Main */
       gap: 1rem;
     }
     .panel { background: #fff; color: #111; }
@@ -36,6 +36,36 @@
       padding: .75rem 1rem;
     }
     .hd-bar h2 { margin: 0; font-size: 1.05rem; }
+
+    /* ---------- Reusable buttons ---------- */
+    .btn {
+      appearance: none;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      padding: .55rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+      line-height: 1;
+      user-select: none;
+    }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+    .btn:focus-visible { outline: 2px dashed #00bfff; outline-offset: 3px; }
+
+    .btn-primary {
+      background: #2563eb;          /* vivid blue */
+      color: #fff;
+      border-color: #2563eb;
+      box-shadow: 0 1px 2px rgba(0,0,0,.06);
+    }
+    .btn-primary:hover { background: #1e52c8; border-color: #1e52c8; }
+
+    .btn-outline {
+      background: #fff;
+      color: #111;
+      border-color: rgba(17,17,17,.15);
+    }
+    .btn-outline:hover { background: #f7f8fa; border-color: rgba(17,17,17,.25); }
 
     /* ---------- Left: Month → Week tree ---------- */
     .sidebar { padding: 0; }
@@ -89,7 +119,7 @@
       color: #fff;
     }
 
-    /* ---------- Middle: Schema accordion (bigger) ---------- */
+    /* ---------- Middle: Schema accordion ---------- */
     .schema-panel { padding: 0; }
     .schema-box-wrap { padding: .75rem 1rem 1rem; }
     .schema-accordion {
@@ -97,7 +127,7 @@
       border: 1px solid rgba(17,17,17,.12);
       border-radius: 10px;
       background: #fbfbfd;
-      max-height: 74vh;         /* tall and scrollable */
+      max-height: 74vh;
       overflow: auto;
     }
     .schema-dataset { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
@@ -138,7 +168,7 @@
       border-radius:6px; font-size:.75em; background:#eef2ff; color:#3730a3; border:1px solid #e0e7ff;
     }
 
-    /* ---------- Right: main content (editor/results) ---------- */
+    /* ---------- Right: main content ---------- */
     .main-panel { padding: 0; }
     .main-head { padding: .9rem 1rem .75rem; }
     .main-meta { color: #5b616e; }
@@ -146,7 +176,7 @@
 
     .stack { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 
-    /* Goal callout (more legible) */
+    /* Goal callout */
     .goal-callout {
       border: 1px solid rgba(0,34,68,.15);
       background: #f6f9ff;
@@ -162,7 +192,7 @@
 
     /* CodeMirror editor */
     .CodeMirror {
-      height: 420px;           /* tall editor */
+      height: 420px;
       border: 1.5px solid rgba(17,17,17,.12);
       border-radius: 10px;
       background: #fcfcfd;
@@ -173,7 +203,7 @@
     .results { min-height: 380px; }
     .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: .6rem; }
 
-    /* --------- Editor error visuals --------- */
+    /* Editor error visuals */
     .cm-error-line { background: #ffe8e8 !important; }
     .cm-error-range { background: rgba(185, 28, 28, .10); }
     .CodeMirror-gutters .err-gutter { width: 14px; }
@@ -182,7 +212,7 @@
       background: #b91c1c; margin: 0 3px;
     }
 
-    /* --------- Results status bar (rows/cols) --------- */
+    /* Results status bar (rows/cols) */
     .results .result-meta {
       display: flex;
       align-items: center;
@@ -196,7 +226,7 @@
       margin-bottom: .5rem;
     }
 
-    /* Simple action row under results */
+    /* Actions under results */
     .results-actions {
       display: flex;
       gap: .6rem;
@@ -224,7 +254,7 @@
         <div id="monthTree" role="tree" aria-label="Months and weeks"></div>
       </aside>
 
-      <!-- Middle: Schema (bigger) -->
+      <!-- Middle: Schema -->
       <aside class="panel schema-panel">
         <div class="hd-bar"><h2>Schema</h2></div>
         <div class="schema-box-wrap">
@@ -249,8 +279,8 @@
 
               <!-- Buttons under editor -->
               <div class="toolbar">
-                <button disabled>Run</button>
-                <button disabled>Check Answer</button>
+                <button class="btn btn-primary" disabled>Run</button>
+                <button class="btn btn-outline" disabled>Check Answer</button>
               </div>
             </div>
 
@@ -260,7 +290,7 @@
 
               <!-- Actions under results -->
               <div class="results-actions">
-                <button id="btnClearResults" type="button">Clear Results</button>
+                <button id="btnClearResults" class="btn btn-outline" type="button">Clear Results</button>
               </div>
             </div>
           </div>
