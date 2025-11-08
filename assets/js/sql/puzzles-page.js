@@ -13,7 +13,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   };
   if (!els.tree) return;
 
-  // --- CodeMirror setup (line numbers, SQL mode, tabs, etc.)
+  // --- CodeMirror setup (line numbers, gutter for errors)
   let editorCM = window.CodeMirror.fromTextArea(els.editorTA, {
     mode: 'text/x-sql',
     theme: 'eclipse',
@@ -24,8 +24,83 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     smartIndent: true,
     tabSize: 2,
     indentUnit: 2,
-    lineWrapping: true
+    lineWrapping: true,
+    gutters: ['CodeMirror-linenumbers', 'err-gutter']
   });
+
+  // ------- Error helpers -------
+  function clearEditorErrors() {
+    const doc = editorCM.getDoc();
+    const last = doc.lineCount();
+    for (let i = 0; i < last; i++) {
+      editorCM.removeLineClass(i, 'background', 'cm-error-line');
+      editorCM.setGutterMarker(i, 'err-gutter', null);
+    }
+    if (window.__errMarks) window.__errMarks.forEach(m => m.clear());
+    window.__errMarks = [];
+  }
+
+  function markError(fromPos, toPos) {
+    const doc = editorCM.getDoc();
+    const mark = doc.markText(fromPos, toPos, { className: 'cm-error-range' });
+    (window.__errMarks ||= []).push(mark);
+
+    editorCM.addLineClass(fromPos.line, 'background', 'cm-error-line');
+    const dot = document.createElement('div');
+    dot.className = 'cm-error-marker';
+    editorCM.setGutterMarker(fromPos.line, 'err-gutter', dot);
+    editorCM.scrollIntoView({ from: fromPos, to: toPos }, 100);
+  }
+
+  // Split SQL into executable statements + source ranges (respects quotes)
+  function splitSqlStatements(doc) {
+    const text = doc.getValue();
+    const parts = [];
+    let start = 0, inS = false, inD = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i], prev = text[i - 1];
+
+      if (ch === "'" && !inD && prev !== '\\') inS = !inS;
+      else if (ch === '"' && !inS && prev !== '\\') inD = !inD;
+
+      if (ch === ';' && !inS && !inD) {
+        const raw = text.slice(start, i);
+        const trimmed = raw.trim();
+        if (trimmed) {
+          const leadingWS = raw.match(/^\s*/)[0].length;
+          const from = editorCM.posFromIndex(start + leadingWS);
+          const to = editorCM.posFromIndex(i); // before ;
+          parts.push({ sql: trimmed, from, to });
+        }
+        start = i + 1;
+      }
+    }
+    const rawTail = text.slice(start);
+    const trimmedTail = rawTail.trim();
+    if (trimmedTail) {
+      const leadingWS = rawTail.match(/^\s*/)[0].length;
+      const from = editorCM.posFromIndex(start + leadingWS);
+      const to = editorCM.posFromIndex(text.length);
+      parts.push({ sql: trimmedTail, from, to });
+    }
+    return parts;
+  }
+
+  // Run many statements, stop on first error; return { ok, res, err, pos }
+  function runSqlSafely(engine) {
+    const stmts = splitSqlStatements(editorCM.getDoc());
+    let lastRes = null;
+
+    for (const s of stmts) {
+      try {
+        lastRes = engine.run(s.sql);
+      } catch (e) {
+        return { ok: false, err: e, pos: s };
+      }
+    }
+    return { ok: true, res: lastRes || { columns: [], rows: [] } };
+  }
 
   // Load puzzles.json
   const puzzlesResp = await fetch('/assets/sql/puzzles.json').catch(() => null);
@@ -36,7 +111,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const puzzlesData = await puzzlesResp.json();
   ResultVerifier.setPrecision(puzzlesData.numeric_precision || 4);
 
-  // Use December for the first release; others scaffolded
+  // First release in December; other months scaffolded
   const weeks = Array.isArray(puzzlesData.weeks) ? puzzlesData.weeks : [];
   const months = [
     'January','February','March','April','May','June',
@@ -150,7 +225,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     const dataset = w.puzzles?.[0]?.dataset || 'retail.sqlite';
     await loadSchema(dataset);
 
-    // Starter SQL to the editor
     editorCM.setValue((w.puzzles?.[0]?.starter_sql) || '/* Write your query here */');
     editorCM.refresh();
 
@@ -162,25 +236,38 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
     btnRun.onclick = async () => {
       try {
+        clearEditorErrors();
         els.results.textContent = 'Running...';
         await ensureEngineAndDB(dataset);
-        const res = engine.run(editorCM.getValue());
-        renderResults(res);
+        const out = runSqlSafely(engine);
+        if (!out.ok) {
+          const line = out.pos.from.line + 1;
+          markError(out.pos.from, out.pos.to);
+          els.results.innerHTML = `<div style="color:#b91c1c;">Error near line ${line}: ${out.err.message || out.err}</div>`;
+          return;
+        }
+        renderResults(out.res);
       } catch (e) {
-        // Show error with line hint if available
         els.results.innerHTML = `<div style="color:#b91c1c;">Error: ${e.message || e}</div>`;
       }
     };
 
     btnCheck.onclick = async () => {
       try {
+        clearEditorErrors();
         els.results.textContent = 'Checking...';
         await ensureEngineAndDB(dataset);
-        const res = engine.run(editorCM.getValue());
+        const out = runSqlSafely(engine);
+        if (!out.ok) {
+          const line = out.pos.from.line + 1;
+          markError(out.pos.from, out.pos.to);
+          els.results.innerHTML = `<div style="color:#b91c1c;">Error near line ${line}: ${out.err.message || out.err}</div>`;
+          return;
+        }
 
         const p = w.puzzles?.[0] || {};
-        const userHash = await ResultVerifier.hashResult(res, p.expected?.columns, p.expected?.order_by);
-        const assertions = ResultVerifier.evalAssertions(res, p.expected?.assertions || []);
+        const userHash = await ResultVerifier.hashResult(out.res, p.expected?.columns, p.expected?.order_by);
+        const assertions = ResultVerifier.evalAssertions(out.res, p.expected?.assertions || []);
         const ok = (userHash === p.expected?.resultset_hash) && assertions.ok;
 
         els.results.innerHTML = `<div>${ok ? '✅ Correct!' : '❌ Not correct yet.'}</div>
@@ -195,6 +282,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   // Load default (first week under December)
   loadWeekByIndex(0);
 })();
+
 
 
 
