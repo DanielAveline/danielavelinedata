@@ -42,12 +42,12 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   }
   if (els.list.firstElementChild) els.list.firstElementChild.setAttribute('aria-current', 'true');
 
-  // --- Schema loader: dataset name + accordion (one table per dropdown)
+  // --- Schema loader: dataset name (no ".sqlite") + accordion
   async function loadSchema(dataset) {
-    const key = dataset.replace('.sqlite','');
+    const displayName = dataset.replace(/\.sqlite$/i, '');  // strip extension for UI
+    const key = displayName;                                // metadata files use same base
     const schemaResp = await fetch(`/assets/sql/metadata/schema-${key}.json`).catch(() => null);
 
-    // Helper to render one table block
     const renderTable = (t) => {
       const cols = (t.columns || []).map(c => {
         const isPk = Array.isArray(t.primary_key) && t.primary_key.includes(c.name);
@@ -68,15 +68,14 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       const schema = await schemaResp.json();
       els.schema.innerHTML = `
         <div class="schema-accordion">
-          <div class="schema-dataset">Database: ${dataset}</div>
+          <div class="schema-dataset">Database: ${displayName}</div>
           ${schema.tables.map(renderTable).join('')}
         </div>
       `;
     } else {
-      // Fallback when metadata JSON isn’t present
       els.schema.innerHTML = `
         <div class="schema-accordion">
-          <div class="schema-dataset">Database: ${dataset}</div>
+          <div class="schema-dataset">Database: ${displayName}</div>
           <p class="meta" style="margin:.25rem 0 0;">(schema metadata not found)</p>
         </div>
       `;
@@ -145,7 +144,11 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (!rows.length) { els.results.textContent = '(no rows)'; return; }
     const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
     const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
-    els.results.innerHTML = `<div style="max-height:340px;overflow:auto;border:1px solid rgba(17,17,17,.06)"><table>${thead+tbody}</table></div>`;
+    // Taller scroll window so most tables fit without cramping
+    els.results.innerHTML = `
+      <div style="height: 420px; overflow:auto; border:1px solid rgba(17,17,17,.06); border-radius:10px;">
+        <table>${thead+tbody}</table>
+      </div>`;
   }
 
   if (puzzleItems[0]) loadPuzzle(puzzleItems[0]);
