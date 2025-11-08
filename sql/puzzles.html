@@ -6,15 +6,23 @@
   <title>SQL Puzzles</title>
   <link rel="stylesheet" href="/assets/styles.css"/>
 
+  <!-- CodeMirror 5 (SQL mode) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/eclipse.css">
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/sql/sql.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.js"></script>
+
   <!-- Page-scoped layout & polish -->
   <style>
     /* Wider main, bigger schema column, tighter left nav */
     .puzzles-wrap {
-      max-width: 1440px;
+      max-width: 1560px;              /* wider overall */
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: 220px 320px 1fr;  /* Puzzles | Schema (wider) | Main */
+      grid-template-columns: 200px 320px minmax(0, 1fr); /* Puzzles | Schema | Main (much wider) */
       gap: 1rem;
     }
     .panel { background: #fff; color: #111; }
@@ -71,9 +79,7 @@
       border: 1px solid rgba(37,99,235,.25);
       font-weight: 600;
     }
-    .weeks li.is-disabled {
-      opacity: .45; cursor: not-allowed;
-    }
+    .weeks li.is-disabled { opacity: .45; cursor: not-allowed; }
 
     /* ---------- Middle: Schema accordion (bigger) ---------- */
     .schema-panel { padding: 0; }
@@ -83,7 +89,7 @@
       border: 1px solid rgba(17,17,17,.12);
       border-radius: 10px;
       background: #fbfbfd;
-      max-height: 72vh;              /* taller and scrollable */
+      max-height: 74vh;         /* taller and scrollable */
       overflow: auto;
     }
     .schema-dataset { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
@@ -130,16 +136,28 @@
     .main-meta { color: #5b616e; }
     .main-body { padding: .5rem 1rem 1rem; }
 
-    .stack { display: grid; grid-template-columns: 1fr; gap: .9rem; }
-    .editor { width: 100%; min-height: 360px; resize: vertical; }
-    .results { min-height: 360px; }
+    .stack { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    /* CodeMirror sizing */
+    .CodeMirror {
+      height: 420px;           /* tall editor */
+      border: 1.5px solid rgba(17,17,17,.12);
+      border-radius: 10px;
+      background: #fcfcfd;
+      font-size: 14.5px;
+      line-height: 1.4;
+    }
+    .results {
+      min-height: 380px;
+    }
 
-    .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: .6rem; }
 
     /* Mobile */
     @media (max-width: 1100px) {
       .puzzles-wrap { grid-template-columns: 1fr; }
       .schema-accordion { max-height: none; }
+      .CodeMirror { height: 360px; }
+      .results { min-height: 320px; }
     }
   </style>
 </head>
@@ -176,7 +194,7 @@
           <div class="stack">
             <div>
               <label for="sqlEditor" class="meta" style="display:block;margin-bottom:.25rem;">Your SQL</label>
-              <textarea id="sqlEditor" class="editor"></textarea>
+              <textarea id="sqlEditor"></textarea>
 
               <!-- Buttons under editor -->
               <div class="toolbar">
@@ -201,6 +219,7 @@
   <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
+
 
 
 
