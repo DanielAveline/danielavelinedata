@@ -14,7 +14,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   };
   if (!els.tree) return;
 
-  // --- CodeMirror setup (line numbers, gutter for errors)
+  // CodeMirror
   let editorCM = window.CodeMirror.fromTextArea(els.editorTA, {
     mode: 'text/x-sql',
     theme: 'eclipse',
@@ -29,7 +29,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     gutters: ['CodeMirror-linenumbers', 'err-gutter']
   });
 
-  // ------- Error helpers -------
+  // Error helpers
   function clearEditorErrors() {
     const last = editorCM.getDoc().lineCount();
     for (let i = 0; i < last; i++) {
@@ -39,7 +39,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (window.__errMarks) window.__errMarks.forEach(m => m.clear());
     window.__errMarks = [];
   }
-
   function markError(fromPos, toPos) {
     const mark = editorCM.getDoc().markText(fromPos, toPos, { className: 'cm-error-range' });
     (window.__errMarks ||= []).push(mark);
@@ -50,7 +49,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     editorCM.scrollIntoView({ from: fromPos, to: toPos }, 100);
   }
 
-  // Split SQL into executable statements + source ranges (respects quotes)
+  // Split into statements
   function splitSqlStatements(doc) {
     const text = doc.getValue();
     const parts = [];
@@ -58,7 +57,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
     for (let i = 0; i < text.length; i++) {
       const ch = text[i], prev = text[i - 1];
-
       if (ch === "'" && !inD && prev !== '\\') inS = !inS;
       else if (ch === '"' && !inS && prev !== '\\') inD = !inD;
 
@@ -85,19 +83,15 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     return parts;
   }
 
-  // Run many statements, stop on first error; return { ok, res, err, pos }
+  // Run statements
   function runSqlSafely(engine) {
     const stmts = splitSqlStatements(editorCM.getDoc());
     let lastRes = null;
-
     for (const s of stmts) {
-      try {
-        lastRes = engine.run(s.sql);
-      } catch (e) {
-        return { ok: false, err: e, pos: s };
-      }
+      try { lastRes = engine.run(s.sql); }
+      catch (e) { return { ok:false, err:e, pos:s }; }
     }
-    return { ok: true, res: lastRes || { columns: [], rows: [] } };
+    return { ok:true, res:lastRes || { columns:[], rows:[] } };
   }
 
   // Load puzzles.json
@@ -109,37 +103,25 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const puzzlesData = await puzzlesResp.json();
   ResultVerifier.setPrecision(puzzlesData.numeric_precision || 4);
 
-  // First release in December; other months scaffolded
+  // Month tree
   const weeks = Array.isArray(puzzlesData.weeks) ? puzzlesData.weeks : [];
-  const months = [
-    'January','February','March','April','May','June',
-    'July','August','September','October','November','December'
-  ];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const currentMonthIndex = new Date().getMonth();
 
-  // Determine current month (local)
-  const currentMonthIndex = new Date().getMonth(); // 0-11
-
-  // Render Month → Week tree, highlight current month
   const monthHtml = months.map((name, idx) => {
     const isDecember = idx === 11;
     const isCurrent = idx === currentMonthIndex;
     const weeksHtml = isDecember
-      ? `
-        <ul class="weeks" role="group">
-          ${weeks.map(w => `
-            <li role="treeitem" tabindex="0" data-week-slug="${w.slug || 'week-01-retail'}">
-              ${w.title || 'Week 01 — Retail'}
-            </li>`).join('')}
-        </ul>
-      `
+      ? `<ul class="weeks" role="group">
+          ${weeks.map(w => `<li role="treeitem" tabindex="0" data-week-slug="${w.slug || 'week-01-retail'}">${w.title || 'Week 01 — Retail'}</li>`).join('')}
+         </ul>`
       : `<div class="meta" style="padding:.5rem .65rem;">(coming soon)</div>`;
     const open = isDecember ? ' open' : '';
-    const cls = isCurrent ? ' class="current-month"' : '';
+    const cls  = isCurrent ? ' class="current-month"' : '';
     return `<details${open}${cls}><summary>${name}</summary>${weeksHtml}</details>`;
   }).join('');
   els.tree.innerHTML = monthHtml;
 
-  // Wire week clicks
   const weekItems = els.tree.querySelectorAll('.weeks li[role="treeitem"]');
   weekItems.forEach((li, i) => {
     li.addEventListener('click', () => {
@@ -153,10 +135,10 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   });
   if (weekItems[0]) weekItems[0].setAttribute('aria-current', 'true');
 
-  // --- Schema loader: dataset name (UI without ".sqlite") + accordion
+  // Schema loader
   async function loadSchema(dataset) {
     const displayName = dataset.replace(/\.sqlite$/i, '');
-    const schemaResp = await fetch(`/assets/sql/metadata/schema-${displayName}.json`).catch(() => null);
+    const resp = await fetch(`/assets/sql/metadata/schema-${displayName}.json`).catch(() => null);
 
     const renderTable = (t) => {
       const cols = (t.columns || []).map(c => {
@@ -164,78 +146,50 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
         const type = c.type ? ` ${c.type}` : '';
         return `<span class="col-line">${c.name}${type}${isPk ? ' <span class="pk">PK</span>' : ''}</span>`;
       }).join('');
-      return `
-        <details class="tbl">
-          <summary>${t.name}</summary>
-          <div class="tbl-body">
-            ${cols || '<span class="col-line">(no columns listed)</span>'}
-          </div>
-        </details>
-      `;
+      return `<details class="tbl"><summary>${t.name}</summary><div class="tbl-body">${cols || '<span class="col-line">(no columns listed)</span>'}</div></details>`;
     };
 
-    if (schemaResp && schemaResp.ok) {
-      const schema = await schemaResp.json();
-      els.schema.innerHTML = `
-        <div class="schema-accordion">
-          <div class="schema-dataset">Database: ${displayName}</div>
-          ${schema.tables.map(renderTable).join('')}
-        </div>
-      `;
+    if (resp && resp.ok) {
+      const schema = await resp.json();
+      els.schema.innerHTML = `<div class="schema-accordion">
+        <div class="schema-dataset">Database: ${displayName}</div>
+        ${schema.tables.map(renderTable).join('')}
+      </div>`;
     } else {
-      els.schema.innerHTML = `
-        <div class="schema-accordion">
-          <div class="schema-dataset">Database: ${displayName}</div>
-          <p class="meta" style="margin:.25rem 0 0;">(schema metadata not found)</p>
-        </div>
-      `;
+      els.schema.innerHTML = `<div class="schema-accordion">
+        <div class="schema-dataset">Database: ${displayName}</div>
+        <p class="meta" style="margin:.25rem 0 0;">(schema metadata not found)</p>
+      </div>`;
     }
   }
 
-  // --- SQL engine
+  // SQL engine
   let engine = null;
   async function ensureEngineAndDB(dataset) {
     if (!engine) {
-      try {
-        engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
-      } catch (e) {
-        els.results.textContent = 'Error loading SQL engine: ' + (e.message || e);
-        throw e;
-      }
+      engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
     }
     await engine.loadDB(`/assets/sql/datasets/${dataset}`);
   }
 
-  // -------- Results renderer with row/column counts --------
+  // Results renderer with row/column counts
   function renderResults(res) {
     const cols = res.columns || [];
-    dream:
     const rows = res.rows || [];
     const rowCount = rows.length;
 
     if (!rowCount) {
       els.results.innerHTML = `
-        <div class="result-meta">
-          <span>${rowCount} rows</span>
-          <span>${cols.length} ${cols.length === 1 ? 'column' : 'columns'}</span>
-        </div>
-        <div style="height: 200px; display:flex; align-items:center; justify-content:center; color:#64748b;">
-          (no rows)
-        </div>`;
+        <div class="result-meta"><span>${rowCount} rows</span><span>${cols.length} ${cols.length === 1 ? 'column' : 'columns'}</span></div>
+        <div style="height:200px;display:flex;align-items:center;justify-content:center;color:#64748b;">(no rows)</div>`;
       return;
     }
 
     const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
     const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c] ?? '')}</td>`).join('')}</tr>`).join('')}</tbody>`;
-
     els.results.innerHTML = `
-      <div class="result-meta">
-        <span>${rowCount} ${rowCount === 1 ? 'row' : 'rows'}</span>
-        <span>${cols.length} ${cols.length === 1 ? 'column' : 'columns'}</span>
-      </div>
-      <div style="height: 420px; overflow:auto; border:1px solid rgba(17,17,17,.06); border-radius:10px;">
-        <table>${thead + tbody}</table>
-      </div>`;
+      <div class="result-meta"><span>${rowCount} ${rowCount===1?'row':'rows'}</span><span>${cols.length} ${cols.length===1?'column':'columns'}</span></div>
+      <div style="height:420px;overflow:auto;border:1px solid rgba(17,17,17,.06);border-radius:10px;"><table>${thead+tbody}</table></div>`;
   }
 
   async function loadWeekByIndex(weekIdx) {
@@ -244,30 +198,24 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
     els.title.textContent = `${w.title || 'Week 01 — Retail'}`;
 
-    // Build goal callout content with difficulty + dataset (no .sqlite)
     const dataset = (w.puzzles?.[0]?.dataset || 'retail.sqlite');
     const datasetDisplay = dataset.replace(/\.sqlite$/i, '');
     const difficulty = (w.puzzles?.[0]?.difficulty || 'easy');
-
     const goalText = (w.puzzles?.[0]?.goal) || 'Open the week and run queries.';
+
     els.goal.innerHTML = `<strong>Goal:</strong> ${goalText}<br/>
-      <span class="meta" style="color:#334155; display:inline-block; margin-top:.4rem;">
-        <strong>Difficulty:</strong> ${difficulty} &nbsp;•&nbsp;
-        <strong>Dataset:</strong> ${datasetDisplay}
+      <span class="meta" style="color:#334155;display:inline-block;margin-top:.4rem;">
+        <strong>Difficulty:</strong> ${difficulty} &nbsp;•&nbsp; <strong>Dataset:</strong> ${datasetDisplay}
       </span>`;
 
     await loadSchema(dataset);
 
-    // Update "Your SQL" label to include dataset name (no .sqlite)
     els.sqlLabel.textContent = `Your SQL — dataset: ${datasetDisplay}`;
-
     editorCM.setValue((w.puzzles?.[0]?.starter_sql) || '/* Write your query here */');
     editorCM.refresh();
 
-    // Enable toolbar buttons
     const toolbar = document.querySelector('.toolbar');
-    if (!toolbar) return;
-    toolbar.querySelectorAll('button').forEach(b => { b.disabled = false; b.style.cursor = 'pointer'; });
+    toolbar.querySelectorAll('button').forEach(b => { b.disabled = false; b.style.cursor='pointer'; });
 
     const [btnRun, btnCheck] = toolbar.querySelectorAll('button');
 
@@ -316,15 +264,12 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     };
   }
 
-  // Clear Results button (returns container to blank)
+  // Clear results
   if (els.btnClear) {
-    els.btnClear.addEventListener('click', () => {
-      els.results.innerHTML = '';
-      els.btnClear.blur();
-    });
+    els.btnClear.addEventListener('click', () => { els.results.innerHTML = ''; els.btnClear.blur(); });
   }
 
-  // Load default (first week under December)
+  // Default load
   loadWeekByIndex(0);
 })();
 
