@@ -8,13 +8,13 @@
 
   <!-- Page-scoped layout & polish -->
   <style>
-    /* 3-column layout on desktop: Puzzles | Schema | Main */
+    /* Wider main column; side panels tighter and slightly left-aligned */
     .puzzles-wrap {
-      max-width: 1200px;
+      max-width: 1400px;                 /* was 1200px */
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: 260px 280px 1fr;
+      grid-template-columns: 220px 240px 1fr;  /* Puzzles | Schema | Main (wider) */
       gap: 1rem;
     }
     .panel { background: #fff; color: #111; }
@@ -46,9 +46,7 @@
       border-radius: 10px;
       background: #fbfbfd;
     }
-    .schema-dataset {
-      font-weight: 700; color: #0f172a; margin-bottom: .5rem;
-    }
+    .schema-dataset { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
     .schema-accordion details {
       border: 1px solid rgba(17,17,17,.08);
       border-radius: 8px;
@@ -87,7 +85,7 @@
       border-radius:6px; font-size:.75em; background:#eef2ff; color:#3730a3; border:1px solid #e0e7ff;
     }
 
-    /* Right: main content */
+    /* Right: main content (wider + taller editor/results) */
     .main-panel { padding: 0; }
     .main-head { padding: .9rem 1rem .75rem; }
     .main-meta { color: #5b616e; }
@@ -101,10 +99,12 @@
     }
     .editor {
       width: 100%;
-      min-height: 220px;
+      min-height: 360px;      /* taller editor (was 220px) */
       resize: vertical;
     }
-    .results { min-height: 180px; }
+    .results {
+      min-height: 320px;      /* taller default */
+    }
 
     /* Toolbar under editor */
     .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; }
@@ -112,6 +112,8 @@
     /* Mobile: collapse to one column */
     @media (max-width: 1100px) {
       .puzzles-wrap { grid-template-columns: 1fr; }
+      .editor { min-height: 300px; }
+      .results { min-height: 280px; }
     }
   </style>
 </head>
@@ -154,7 +156,6 @@
               <div class="toolbar">
                 <button disabled>Run</button>
                 <button disabled>Check Answer</button>
-                <!-- Reveal Solution removed -->
               </div>
             </div>
 
@@ -174,5 +175,6 @@
   <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
+
 
 
