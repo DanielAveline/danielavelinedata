@@ -258,6 +258,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     editorCM.setValue((w.puzzles?.[0]?.starter_sql) || '/* Write your query here */');
     editorCM.refresh();
 
+    // Enable toolbar buttons
     const toolbar = document.querySelector('.toolbar');
     if (!toolbar) return;
     toolbar.querySelectorAll('button').forEach(b => { b.disabled = false; b.style.cursor = 'pointer'; });
@@ -309,11 +310,10 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     };
   }
 
-  // Clear Results button
+  // Clear Results button (returns container to blank)
   if (els.btnClear) {
     els.btnClear.addEventListener('click', () => {
       els.results.innerHTML = '';
-      // keep focus accessible
       els.btnClear.blur();
     });
   }
