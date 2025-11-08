@@ -5,8 +5,8 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const els = {
     tree: document.getElementById('monthTree'),
     title: document.getElementById('puzzleTitle'),
-    meta: document.getElementById('puzzleMeta'),
     goal: document.getElementById('puzzleGoal'),
+    sqlLabel: document.getElementById('sqlLabel'),
     editorTA: document.getElementById('sqlEditor'),
     results: document.getElementById('sqlResults'),
     schema: document.getElementById('schemaBox'),
@@ -31,8 +31,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
   // ------- Error helpers -------
   function clearEditorErrors() {
-    const doc = editorCM.getDoc();
-    const last = doc.lineCount();
+    const last = editorCM.getDoc().lineCount();
     for (let i = 0; i < last; i++) {
       editorCM.removeLineClass(i, 'background', 'cm-error-line');
       editorCM.setGutterMarker(i, 'err-gutter', null);
@@ -42,10 +41,8 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   }
 
   function markError(fromPos, toPos) {
-    const doc = editorCM.getDoc();
-    const mark = doc.markText(fromPos, toPos, { className: 'cm-error-range' });
+    const mark = editorCM.getDoc().markText(fromPos, toPos, { className: 'cm-error-range' });
     (window.__errMarks ||= []).push(mark);
-
     editorCM.addLineClass(fromPos.line, 'background', 'cm-error-line');
     const dot = document.createElement('div');
     dot.className = 'cm-error-marker';
@@ -71,7 +68,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
         if (trimmed) {
           const leadingWS = raw.match(/^\s*/)[0].length;
           const from = editorCM.posFromIndex(start + leadingWS);
-          const to = editorCM.posFromIndex(i); // before ;
+          const to = editorCM.posFromIndex(i);
           parts.push({ sql: trimmed, from, to });
         }
         start = i + 1;
@@ -119,9 +116,8 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     'July','August','September','October','November','December'
   ];
 
-  // Determine current month (local time)
-  const now = new Date();
-  const currentMonthIndex = now.getMonth(); // 0-11
+  // Determine current month (local)
+  const currentMonthIndex = new Date().getMonth(); // 0-11
 
   // Render Month → Week tree, highlight current month
   const monthHtml = months.map((name, idx) => {
@@ -213,6 +209,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   // -------- Results renderer with row/column counts --------
   function renderResults(res) {
     const cols = res.columns || [];
+    dream:
     const rows = res.rows || [];
     const rowCount = rows.length;
 
@@ -246,14 +243,23 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (!w) return;
 
     els.title.textContent = `${w.title || 'Week 01 — Retail'}`;
-    els.meta.textContent = `Difficulty: ${(w.puzzles?.[0]?.difficulty || 'easy')} · Dataset: ${w.puzzles?.[0]?.dataset || 'retail.sqlite'}`;
 
-    // Goal: legible callout
+    // Build goal callout content with difficulty + dataset (no .sqlite)
+    const dataset = (w.puzzles?.[0]?.dataset || 'retail.sqlite');
+    const datasetDisplay = dataset.replace(/\.sqlite$/i, '');
+    const difficulty = (w.puzzles?.[0]?.difficulty || 'easy');
+
     const goalText = (w.puzzles?.[0]?.goal) || 'Open the week and run queries.';
-    els.goal.innerHTML = `<strong>Goal:</strong> ${goalText}`;
+    els.goal.innerHTML = `<strong>Goal:</strong> ${goalText}<br/>
+      <span class="meta" style="color:#334155; display:inline-block; margin-top:.4rem;">
+        <strong>Difficulty:</strong> ${difficulty} &nbsp;•&nbsp;
+        <strong>Dataset:</strong> ${datasetDisplay}
+      </span>`;
 
-    const dataset = w.puzzles?.[0]?.dataset || 'retail.sqlite';
     await loadSchema(dataset);
+
+    // Update "Your SQL" label to include dataset name (no .sqlite)
+    els.sqlLabel.textContent = `Your SQL — dataset: ${datasetDisplay}`;
 
     editorCM.setValue((w.puzzles?.[0]?.starter_sql) || '/* Write your query here */');
     editorCM.refresh();
@@ -321,6 +327,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   // Load default (first week under December)
   loadWeekByIndex(0);
 })();
+
 
 
 
