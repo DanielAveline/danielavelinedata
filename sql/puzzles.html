@@ -8,18 +8,18 @@
 
   <!-- Page-scoped layout & polish -->
   <style>
-    /* Wider main column; side panels tighter and slightly left-aligned */
+    /* Wider main, bigger schema column, tighter left nav */
     .puzzles-wrap {
-      max-width: 1400px;                 /* was 1200px */
+      max-width: 1440px;
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: 220px 240px 1fr;  /* Puzzles | Schema | Main (wider) */
+      grid-template-columns: 220px 320px 1fr;  /* Puzzles | Schema (wider) | Main */
       gap: 1rem;
     }
     .panel { background: #fff; color: #111; }
 
-    /* Lighter title bar */
+    /* Header bars */
     .hd-bar {
       background: #f7f8fa;
       border-bottom: 1px solid rgba(17,17,17,.10);
@@ -29,22 +29,62 @@
     }
     .hd-bar h2 { margin: 0; font-size: 1.05rem; }
 
-    /* Left: puzzles list */
+    /* ---------- Left: Month → Week tree ---------- */
     .sidebar { padding: 0; }
     .sidebar .meta { margin: .5rem 1rem .75rem; color: #5b616e; }
-    .list { list-style: none; padding: .5rem .6rem .9rem; }
-    .list li { cursor: pointer; padding: .55rem .65rem; border-radius: .6rem; }
-    .list li + li { margin-top: .25rem; }
+    #monthTree { padding: .5rem .6rem 1rem; }
+    #monthTree details {
+      border: 1px solid rgba(17,17,17,.08);
+      border-radius: 10px;
+      background: #fff;
+      margin: .5rem 0;
+      overflow: hidden;
+    }
+    #monthTree summary {
+      cursor: pointer;
+      list-style: none;
+      padding: .55rem .7rem;
+      font-weight: 700;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    #monthTree summary::-webkit-details-marker { display: none; }
+    #monthTree summary::before {
+      content: '▸';
+      transform: rotate(0deg);
+      transition: transform .15s ease;
+      opacity: .75;
+    }
+    #monthTree details[open] > summary::before { transform: rotate(90deg); }
+    .weeks {
+      padding: .5rem .6rem .7rem;
+      border-top: 1px solid rgba(17,17,17,.06);
+    }
+    .weeks li {
+      list-style: none;
+      margin: .25rem 0;
+      padding: .5rem .55rem;
+      border-radius: .6rem;
+      cursor: pointer;
+    }
+    .weeks li[aria-current="true"] {
+      background: rgba(37,99,235,.10);
+      border: 1px solid rgba(37,99,235,.25);
+      font-weight: 600;
+    }
+    .weeks li.is-disabled {
+      opacity: .45; cursor: not-allowed;
+    }
 
-    /* Middle: schema accordion */
+    /* ---------- Middle: Schema accordion (bigger) ---------- */
     .schema-panel { padding: 0; }
     .schema-box-wrap { padding: .75rem 1rem 1rem; }
-    .schema-box { padding: 0; background: transparent; border: 0; }
     .schema-accordion {
       padding: .75rem 1rem 1rem;
       border: 1px solid rgba(17,17,17,.12);
       border-radius: 10px;
       background: #fbfbfd;
+      max-height: 72vh;              /* taller and scrollable */
+      overflow: auto;
     }
     .schema-dataset { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
     .schema-accordion details {
@@ -64,7 +104,6 @@
     .schema-accordion summary::-webkit-details-marker { display: none; }
     .schema-accordion summary::before {
       content: '▸';
-      display: inline-block;
       transform: rotate(0deg);
       transition: transform .15s ease;
       opacity: .75;
@@ -85,35 +124,22 @@
       border-radius:6px; font-size:.75em; background:#eef2ff; color:#3730a3; border:1px solid #e0e7ff;
     }
 
-    /* Right: main content (wider + taller editor/results) */
+    /* ---------- Right: main content (editor/results) ---------- */
     .main-panel { padding: 0; }
     .main-head { padding: .9rem 1rem .75rem; }
     .main-meta { color: #5b616e; }
     .main-body { padding: .5rem 1rem 1rem; }
 
-    /* Stack editor and results vertically for a bigger, single-flow feel */
-    .stack {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: .9rem;
-    }
-    .editor {
-      width: 100%;
-      min-height: 360px;      /* taller editor (was 220px) */
-      resize: vertical;
-    }
-    .results {
-      min-height: 320px;      /* taller default */
-    }
+    .stack { display: grid; grid-template-columns: 1fr; gap: .9rem; }
+    .editor { width: 100%; min-height: 360px; resize: vertical; }
+    .results { min-height: 360px; }
 
-    /* Toolbar under editor */
     .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; }
 
-    /* Mobile: collapse to one column */
+    /* Mobile */
     @media (max-width: 1100px) {
       .puzzles-wrap { grid-template-columns: 1fr; }
-      .editor { min-height: 300px; }
-      .results { min-height: 280px; }
+      .schema-accordion { max-height: none; }
     }
   </style>
 </head>
@@ -122,18 +148,18 @@
 
   <main>
     <section class="puzzles-wrap">
-      <!-- Left: SQL Puzzles -->
+      <!-- Left: SQL Puzzles (Month → Week tree) -->
       <aside class="panel sidebar">
         <div class="hd-bar"><h2>SQL Puzzles</h2></div>
         <p class="meta">A new set every week: Easy, Medium, Hard.</p>
-        <ul id="puzzleList" class="list" role="listbox" aria-label="Puzzles"></ul>
+        <div id="monthTree" role="tree" aria-label="Months and weeks"></div>
       </aside>
 
-      <!-- Middle: Schema -->
+      <!-- Middle: Schema (bigger) -->
       <aside class="panel schema-panel">
         <div class="hd-bar"><h2>Schema</h2></div>
         <div class="schema-box-wrap">
-          <div id="schemaBox" class="schema-box"></div>
+          <div id="schemaBox"></div>
         </div>
       </aside>
 
@@ -152,7 +178,7 @@
               <label for="sqlEditor" class="meta" style="display:block;margin-bottom:.25rem;">Your SQL</label>
               <textarea id="sqlEditor" class="editor"></textarea>
 
-              <!-- Buttons: under the editor -->
+              <!-- Buttons under editor -->
               <div class="toolbar">
                 <button disabled>Run</button>
                 <button disabled>Check Answer</button>
@@ -175,6 +201,7 @@
   <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
+
 
 
 
