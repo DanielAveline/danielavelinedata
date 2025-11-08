@@ -9,7 +9,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     goal: document.getElementById('puzzleGoal'),
     editor: document.getElementById('sqlEditor'),
     results: document.getElementById('sqlResults'),
-    tables: document.getElementById('tablesUsed'),
     schema: document.getElementById('schemaBox')
   };
 
@@ -27,7 +26,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const week = puzzlesData.weeks?.[0];
   const puzzleItems = week?.puzzles || [];
 
-  // Sidebar
+  // Render: puzzles list
   els.list.innerHTML = '';
   for (const p of puzzleItems) {
     const li = document.createElement('li');
@@ -43,16 +42,15 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   }
   if (els.list.firstElementChild) els.list.firstElementChild.setAttribute('aria-current', 'true');
 
-  // Schema
+  // Load schema metadata (one table per line)
   async function loadSchema(dataset) {
     const key = dataset.replace('.sqlite','');
     const schemaResp = await fetch(`/assets/sql/metadata/schema-${key}.json`).catch(() => null);
     if (schemaResp && schemaResp.ok) {
       const schema = await schemaResp.json();
-      els.schema.textContent = schema.tables.map(t => {
-        const cols = t.columns.map(c => c.name + (c.name === (t.primary_key||[])[0] ? ' PK' : '')).join(', ');
-        return `${t.name}(${cols})`;
-      }).join('\n');
+      els.schema.textContent = schema.tables
+        .map(t => t.name + '(' + t.columns.map(c => c.name + (t.primary_key?.includes(c.name) ? ' PK' : '')).join(', ') + ')')
+        .join('\n');
     } else {
       els.schema.textContent = 'Schema metadata not found.';
     }
@@ -62,7 +60,12 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   let engine = null;
   async function ensureEngineAndDB(dataset) {
     if (!engine) {
-      engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
+      try {
+        engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
+      } catch (e) {
+        els.results.textContent = e.message;
+        throw e;
+      }
     }
     await engine.loadDB(`/assets/sql/datasets/${dataset}`);
   }
@@ -72,12 +75,13 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     els.meta.textContent = `Difficulty: ${p.difficulty} · Dataset: ${p.dataset}`;
     els.goal.innerHTML = `<strong>Goal:</strong> ${p.goal}`;
     els.editor.value = p.starter_sql || '/* Write your query here */';
-    els.tables.innerHTML = (p.tables||[]).map(t => `<li>${t}</li>`).join('');
+
     await loadSchema(p.dataset);
 
     const toolbar = document.querySelector('.toolbar');
     if (!toolbar) return;
     toolbar.querySelectorAll('button').forEach(b => { b.disabled = false; b.style.cursor = 'pointer'; });
+
     const [btnRun, btnCheck, btnReveal] = toolbar.querySelectorAll('button');
 
     btnRun.onclick = async () => {
@@ -96,12 +100,13 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
         els.results.textContent = 'Checking...';
         await ensureEngineAndDB(p.dataset);
         const res = engine.run(els.editor.value);
-        const userHash = await ResultVerifier.hashResult(res, p.expected.columns, p.expected.order_by);
-        const assertions = ResultVerifier.evalAssertions(res, p.expected.assertions || []);
-        const ok = (userHash === p.expected.resultset_hash) && assertions.ok;
+        // hash compare + optional assertions
+        const userHash = await ResultVerifier.hashResult(res, p.expected?.columns, p.expected?.order_by);
+        const assertions = ResultVerifier.evalAssertions(res, p.expected?.assertions || []);
+        const ok = (userHash === p.expected?.resultset_hash) && assertions.ok;
         els.results.innerHTML = `<div>${ok ? '✅ Correct!' : '❌ Not correct yet.'}</div>
-          <div class="meta">Your hash: <code>${userHash}</code></div>
-          <div class="meta">Expected: <code>${p.expected.resultset_hash}</code></div>`;
+          ${userHash ? `<div class="meta">Your hash: <code>${userHash}</code></div>` : ''}
+          ${p.expected?.resultset_hash ? `<div class="meta">Expected: <code>${p.expected.resultset_hash}</code></div>` : ''}`;
       } catch (e) {
         els.results.textContent = 'Error: ' + e.message;
       }
@@ -125,7 +130,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (!rows.length) { els.results.textContent = '(no rows)'; return; }
     const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
     const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
-    els.results.innerHTML = `<div style="max-height:320px;overflow:auto;"><table>${thead+tbody}</table></div>`;
+    els.results.innerHTML = `<div style="max-height:320px;overflow:auto;border:1px solid rgba(17,17,17,.06)"><table>${thead+tbody}</table></div>`;
   }
 
   if (puzzleItems[0]) loadPuzzle(puzzleItems[0]);
