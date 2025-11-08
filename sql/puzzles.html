@@ -16,26 +16,34 @@
 
   <!-- Page-scoped layout & polish -->
   <style>
-    /* Wider main, bigger schema column, tighter left nav */
+    :root{
+      --brand-blue:#002244;            /* header + current month */
+      --btn-blue:#2563eb;              /* primary button */
+      --ink:#111;
+      --panel-shadow:0 1px 2px rgba(0,0,0,.06);
+    }
+
+    /* Layout: Puzzles | Schema | Main */
     .puzzles-wrap {
       max-width: 1560px;
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: 200px 320px minmax(0, 1fr); /* Puzzles | Schema | Main */
+      grid-template-columns: 200px 320px minmax(0, 1fr);
       gap: 1rem;
     }
-    .panel { background: #fff; color: #111; }
+    .panel { background: #fff; color: var(--ink); border-radius: 10px; overflow: hidden; }
 
-    /* Header bars */
+    /* Unified header bars (aligned + same color) */
     .hd-bar {
-      background: #f7f8fa;
-      border-bottom: 1px solid rgba(17,17,17,.10);
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      padding: .75rem 1rem;
+      background: var(--brand-blue);
+      color: #fff;
+      padding: .9rem 1rem;
+      display: flex;
+      align-items: center;
+      min-height: 56px;
     }
-    .hd-bar h2 { margin: 0; font-size: 1.05rem; }
+    .hd-bar h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
 
     /* ---------- Reusable buttons ---------- */
     .btn {
@@ -48,27 +56,26 @@
       transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
       line-height: 1;
       user-select: none;
+      box-shadow: var(--panel-shadow);
     }
     .btn:disabled { opacity: .6; cursor: not-allowed; }
     .btn:focus-visible { outline: 2px dashed #00bfff; outline-offset: 3px; }
 
     .btn-primary {
-      background: #2563eb;          /* vivid blue */
+      background: var(--btn-blue);
       color: #fff;
-      border-color: #2563eb;
-      box-shadow: 0 1px 2px rgba(0,0,0,.06);
+      border-color: var(--btn-blue);
     }
     .btn-primary:hover { background: #1e52c8; border-color: #1e52c8; }
 
     .btn-outline {
       background: #fff;
-      color: #111;
+      color: var(--ink);
       border-color: rgba(17,17,17,.15);
     }
     .btn-outline:hover { background: #f7f8fa; border-color: rgba(17,17,17,.25); }
 
     /* ---------- Left: Month → Week tree ---------- */
-    .sidebar { padding: 0; }
     .sidebar .meta { margin: .5rem 1rem .75rem; color: #5b616e; }
     #monthTree { padding: .5rem .6rem 1rem; }
     #monthTree details {
@@ -84,7 +91,7 @@
       padding: .55rem .7rem;
       font-weight: 700;
       display: flex; align-items: center; gap: .5rem;
-      color: #111;
+      color: var(--ink);
     }
     #monthTree summary::-webkit-details-marker { display: none; }
     #monthTree summary::before {
@@ -113,14 +120,13 @@
     }
     .weeks li.is-disabled { opacity: .45; cursor: not-allowed; }
 
-    /* Current month highlight (match header blue) */
+    /* Current month highlight (matches header blue) */
     #monthTree details.current-month > summary {
-      background: #002244;
+      background: var(--brand-blue);
       color: #fff;
     }
 
     /* ---------- Middle: Schema accordion ---------- */
-    .schema-panel { padding: 0; }
     .schema-box-wrap { padding: .75rem 1rem 1rem; }
     .schema-accordion {
       padding: .75rem 1rem 1rem;
@@ -169,26 +175,22 @@
     }
 
     /* ---------- Right: main content ---------- */
-    .main-panel { padding: 0; }
-    .main-head { padding: .9rem 1rem .75rem; }
-    .main-meta { color: #5b616e; }
     .main-body { padding: .5rem 1rem 1rem; }
-
     .stack { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 
-    /* Goal callout */
+    /* Goal callout (with difficulty + dataset) */
     .goal-callout {
       border: 1px solid rgba(0,34,68,.15);
       background: #f6f9ff;
-      border-left: 6px solid #002244;
-      padding: .75rem .9rem;
+      border-left: 6px solid var(--brand-blue);
+      padding: .8rem .95rem;
       border-radius: 10px;
       color: #0f172a;
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.55;
       margin: 0 0 .9rem;
     }
-    .goal-callout strong { color: #002244; }
+    .goal-callout strong { color: var(--brand-blue); }
 
     /* CodeMirror editor */
     .CodeMirror {
@@ -265,8 +267,7 @@
       <!-- Right: Main -->
       <article class="panel main-panel">
         <div class="hd-bar">
-          <h2 id="puzzleTitle" style="margin:0 0 .1rem;"></h2>
-          <div id="puzzleMeta" class="main-meta"></div>
+          <h2 id="puzzleTitle" style="margin:0;"></h2>
         </div>
 
         <div class="main-body">
@@ -274,7 +275,7 @@
 
           <div class="stack">
             <div>
-              <label for="sqlEditor" class="meta" style="display:block;margin-bottom:.25rem;">Your SQL</label>
+              <label id="sqlLabel" for="sqlEditor" class="meta" style="display:block;margin-bottom:.25rem;">Your SQL</label>
               <textarea id="sqlEditor"></textarea>
 
               <!-- Buttons under editor -->
@@ -305,6 +306,7 @@
   <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
+
 
 
 
