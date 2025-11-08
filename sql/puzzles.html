@@ -29,31 +29,62 @@
     }
     .hd-bar h2 { margin: 0; font-size: 1.05rem; }
 
-    /* Left sidebar: puzzles */
+    /* Left: puzzles list */
     .sidebar { padding: 0; }
     .sidebar .meta { margin: .5rem 1rem .75rem; color: #5b616e; }
     .list { list-style: none; padding: .5rem .6rem .9rem; }
     .list li { cursor: pointer; padding: .55rem .65rem; border-radius: .6rem; }
     .list li + li { margin-top: .25rem; }
 
-    /* Middle: schema */
+    /* Middle: schema accordion */
     .schema-panel { padding: 0; }
     .schema-box-wrap { padding: .75rem 1rem 1rem; }
-    .schema-box {
+    .schema-box { padding: 0; background: transparent; border: 0; }
+    .schema-accordion {
+      padding: .75rem 1rem 1rem;
       border: 1px solid rgba(17,17,17,.12);
       border-radius: 10px;
       background: #fbfbfd;
-      padding: .6rem .7rem;
-      white-space: pre-wrap; /* one table per line */
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: .9rem;
-      color: #2b2f36;
-      min-height: 120px;
     }
     .schema-dataset {
+      font-weight: 700; color: #0f172a; margin-bottom: .5rem;
+    }
+    .schema-accordion details {
+      border: 1px solid rgba(17,17,17,.08);
+      border-radius: 8px;
+      background: #fff;
+      margin: .5rem 0;
+      overflow: hidden;
+    }
+    .schema-accordion summary {
+      list-style: none;
+      cursor: pointer;
+      padding: .6rem .75rem;
       font-weight: 600;
-      color: #0f172a;
-      margin-bottom: .4rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .schema-accordion summary::-webkit-details-marker { display: none; }
+    .schema-accordion summary::before {
+      content: '▸';
+      display: inline-block;
+      transform: rotate(0deg);
+      transition: transform .15s ease;
+      opacity: .75;
+    }
+    .schema-accordion details[open] summary::before { transform: rotate(90deg); }
+    .schema-accordion .tbl-body {
+      border-top: 1px solid rgba(17,17,17,.06);
+      background: #fafbff;
+      padding: .55rem .75rem .7rem;
+      font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+      font-size: .9rem;
+      color: #2b2f36;
+      white-space: pre-wrap;
+    }
+    .schema-accordion .col-line { display: block; padding: .15rem 0; }
+    .schema-accordion .pk {
+      display:inline-block; margin-left:.35rem; padding:.05rem .35rem;
+      border-radius:6px; font-size:.75em; background:#eef2ff; color:#3730a3; border:1px solid #e0e7ff;
     }
 
     /* Right: main content */
@@ -62,7 +93,7 @@
     .main-meta { color: #5b616e; }
     .main-body { padding: .5rem 1rem 1rem; }
 
-    /* Stack editor and results vertically for a “bigger box” feel */
+    /* Stack editor and results vertically for a bigger, single-flow feel */
     .stack {
       display: grid;
       grid-template-columns: 1fr;
@@ -143,4 +174,5 @@
   <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
+
 
