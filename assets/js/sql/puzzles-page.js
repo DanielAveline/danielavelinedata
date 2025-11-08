@@ -195,22 +195,41 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
       try {
         engine = await SQLEngine.create('/assets/sql/sql-wasm.wasm', '/assets/sql/sql-wasm.js');
       } catch (e) {
-        els.results.textContent = e.message;
+        els.results.textContent = 'e.message';
         throw e;
       }
     }
     await engine.loadDB(`/assets/sql/datasets/${dataset}`);
   }
 
+  // -------- Results renderer with row/column counts --------
   function renderResults(res) {
-    const cols = res.columns;
-    const rows = res.rows;
-    if (!rows.length) { els.results.textContent = '(no rows)'; return; }
+    const cols = res.columns || [];
+    const rows = res.rows || [];
+    const rowCount = rows.length;
+
+    if (!rowCount) {
+      els.results.innerHTML = `
+        <div class="result-meta">
+          <span>${rowCount} rows</span>
+          <span>${cols.length} ${cols.length === 1 ? 'column' : 'columns'}</span>
+        </div>
+        <div style="height: 200px; display:flex; align-items:center; justify-content:center; color:#64748b;">
+          (no rows)
+        </div>`;
+      return;
+    }
+
     const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
-    const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
+    const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c] ?? '')}</td>`).join('')}</tr>`).join('')}</tbody>`;
+
     els.results.innerHTML = `
+      <div class="result-meta">
+        <span>${rowCount} ${rowCount === 1 ? 'row' : 'rows'}</span>
+        <span>${cols.length} ${cols.length === 1 ? 'column' : 'columns'}</span>
+      </div>
       <div style="height: 420px; overflow:auto; border:1px solid rgba(17,17,17,.06); border-radius:10px;">
-        <table>${thead+tbody}</table>
+        <table>${thead + tbody}</table>
       </div>`;
   }
 
@@ -282,6 +301,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   // Load default (first week under December)
   loadWeekByIndex(0);
 })();
+
 
 
 
