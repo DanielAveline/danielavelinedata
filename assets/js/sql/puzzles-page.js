@@ -3,7 +3,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
 (async function () {
   const els = {
-    list: document.getElementById('puzzleList'),
+    tree: document.getElementById('monthTree'),
     title: document.getElementById('puzzleTitle'),
     meta: document.getElementById('puzzleMeta'),
     goal: document.getElementById('puzzleGoal'),
@@ -11,8 +11,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     results: document.getElementById('sqlResults'),
     schema: document.getElementById('schemaBox')
   };
-
-  if (!els.list) return;
+  if (!els.tree) return;
 
   // Load puzzles.json
   const puzzlesResp = await fetch('/assets/sql/puzzles.json').catch(() => null);
@@ -23,30 +22,63 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const puzzlesData = await puzzlesResp.json();
   ResultVerifier.setPrecision(puzzlesData.numeric_precision || 4);
 
-  const week = puzzlesData.weeks?.[0];
-  const puzzleItems = week?.puzzles || [];
+  // We’ll place all current weeks into December by default (future weeks can carry a month field)
+  const weeks = Array.isArray(puzzlesData.weeks) ? puzzlesData.weeks : [];
+  const months = [
+    'January','February','March','April','May','June',
+    'July','August','September','October','November','December'
+  ];
 
-  // Render the puzzles list
-  els.list.innerHTML = '';
-  for (const p of puzzleItems) {
-    const li = document.createElement('li');
-    li.role = 'option';
-    li.textContent = `${week.title} (${p.difficulty[0].toUpperCase() + p.difficulty.slice(1)})`;
-    li.dataset.slug = p.slug;
+  // Render the Month → Week tree
+  const monthHtml = months.map((name, idx) => {
+    const isDecember = idx === 11;
+    const disabledNote = !isDecember ? '<div class="meta" style="padding:.5rem .65rem;">(coming soon)</div>' : '';
+
+    // December gets the actual weeks list
+    const weeksHtml = isDecember
+      ? `
+        <ul class="weeks" role="group">
+          ${weeks.map(w => `
+            <li role="treeitem" tabindex="0" data-week-slug="${w.slug || 'week-01-retail'}">
+              ${w.title || 'Week 01 — Retail'}
+            </li>`).join('')}
+        </ul>
+      `
+      : disabledNote;
+
+    // Keep December expanded by default
+    const open = isDecember ? ' open' : '';
+
+    return `
+      <details${open}>
+        <summary>${name}</summary>
+        ${weeksHtml}
+      </details>
+    `;
+  }).join('');
+
+  els.tree.innerHTML = monthHtml;
+
+  // Event handling for week clicks
+  const weekItems = els.tree.querySelectorAll('.weeks li[role="treeitem"]');
+  weekItems.forEach((li, i) => {
     li.addEventListener('click', () => {
-      els.list.querySelectorAll('li[aria-current="true"]').forEach(x => x.removeAttribute('aria-current'));
+      weekItems.forEach(x => x.removeAttribute('aria-current'));
       li.setAttribute('aria-current', 'true');
-      loadPuzzle(p);
+      loadWeekByIndex(i);
     });
-    els.list.appendChild(li);
-  }
-  if (els.list.firstElementChild) els.list.firstElementChild.setAttribute('aria-current', 'true');
+    li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); }});
+  });
 
-  // --- Schema loader: dataset name (no ".sqlite") + accordion
+  // Default: select first week in December if available
+  if (weekItems[0]) {
+    weekItems[0].setAttribute('aria-current', 'true');
+  }
+
+  // ---------- Schema loader: dataset name (without .sqlite) + accordion ----------
   async function loadSchema(dataset) {
-    const displayName = dataset.replace(/\.sqlite$/i, '');  // strip extension for UI
-    const key = displayName;                                // metadata files use same base
-    const schemaResp = await fetch(`/assets/sql/metadata/schema-${key}.json`).catch(() => null);
+    const displayName = dataset.replace(/\.sqlite$/i, '');
+    const schemaResp = await fetch(`/assets/sql/metadata/schema-${displayName}.json`).catch(() => null);
 
     const renderTable = (t) => {
       const cols = (t.columns || []).map(c => {
@@ -82,7 +114,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     }
   }
 
-  // SQL engine
+  // ---------- SQL engine ----------
   let engine = null;
   async function ensureEngineAndDB(dataset) {
     if (!engine) {
@@ -96,13 +128,30 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     await engine.loadDB(`/assets/sql/datasets/${dataset}`);
   }
 
-  async function loadPuzzle(p) {
-    els.title.textContent = `${week.title}: ${p.title}`;
-    els.meta.textContent = `Difficulty: ${p.difficulty} · Dataset: ${p.dataset}`;
-    els.goal.innerHTML = `<strong>Goal:</strong> ${p.goal}`;
-    els.editor.value = p.starter_sql || '/* Write your query here */';
+  function renderResults(res) {
+    const cols = res.columns;
+    const rows = res.rows;
+    if (!rows.length) { els.results.textContent = '(no rows)'; return; }
+    const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
+    const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
+    els.results.innerHTML = `
+      <div style="height: 480px; overflow:auto; border:1px solid rgba(17,17,17,.06); border-radius:10px;">
+        <table>${thead+tbody}</table>
+      </div>`;
+  }
 
-    await loadSchema(p.dataset);
+  async function loadWeekByIndex(weekIdx) {
+    const w = weeks[weekIdx] || weeks[0];
+    if (!w) return;
+
+    els.title.textContent = `${w.title || 'Week 01 — Retail'}`;
+    els.meta.textContent = `Difficulty: ${(w.puzzles?.[0]?.difficulty || 'easy')} · Dataset: ${w.puzzles?.[0]?.dataset || 'retail.sqlite'}`;
+    els.goal.innerHTML = `<strong>Goal:</strong> ${w.puzzles?.[0]?.goal || 'Open the week and run queries.'}`;
+    els.editor.value = (w.puzzles?.[0]?.starter_sql) || '/* Write your query here */';
+
+    // Derive dataset from first puzzle in the week
+    const dataset = w.puzzles?.[0]?.dataset || 'retail.sqlite';
+    await loadSchema(dataset);
 
     const toolbar = document.querySelector('.toolbar');
     if (!toolbar) return;
@@ -113,7 +162,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     btnRun.onclick = async () => {
       try {
         els.results.textContent = 'Running...';
-        await ensureEngineAndDB(p.dataset);
+        await ensureEngineAndDB(dataset);
         const res = engine.run(els.editor.value);
         renderResults(res);
       } catch (e) {
@@ -124,11 +173,15 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     btnCheck.onclick = async () => {
       try {
         els.results.textContent = 'Checking...';
-        await ensureEngineAndDB(p.dataset);
+        await ensureEngineAndDB(dataset);
         const res = engine.run(els.editor.value);
+
+        // If your weeks include expected output per puzzle, we use the first puzzle's expected
+        const p = w.puzzles?.[0] || {};
         const userHash = await ResultVerifier.hashResult(res, p.expected?.columns, p.expected?.order_by);
         const assertions = ResultVerifier.evalAssertions(res, p.expected?.assertions || []);
         const ok = (userHash === p.expected?.resultset_hash) && assertions.ok;
+
         els.results.innerHTML = `<div>${ok ? '✅ Correct!' : '❌ Not correct yet.'}</div>
           ${userHash ? `<div class="meta">Your hash: <code>${userHash}</code></div>` : ''}
           ${p.expected?.resultset_hash ? `<div class="meta">Expected: <code>${p.expected.resultset_hash}</code></div>` : ''}`;
@@ -138,20 +191,9 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     };
   }
 
-  function renderResults(res) {
-    const cols = res.columns;
-    const rows = res.rows;
-    if (!rows.length) { els.results.textContent = '(no rows)'; return; }
-    const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
-    const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
-    // Taller scroll window so most tables fit without cramping
-    els.results.innerHTML = `
-      <div style="height: 420px; overflow:auto; border:1px solid rgba(17,17,17,.06); border-radius:10px;">
-        <table>${thead+tbody}</table>
-      </div>`;
-  }
-
-  if (puzzleItems[0]) loadPuzzle(puzzleItems[0]);
+  // Load default (first week under December)
+  loadWeekByIndex(0);
 })();
+
 
 
