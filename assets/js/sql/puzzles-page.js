@@ -26,7 +26,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const week = puzzlesData.weeks?.[0];
   const puzzleItems = week?.puzzles || [];
 
-  // Render: puzzles list
+  // Render the puzzles list
   els.list.innerHTML = '';
   for (const p of puzzleItems) {
     const li = document.createElement('li');
@@ -42,17 +42,20 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   }
   if (els.list.firstElementChild) els.list.firstElementChild.setAttribute('aria-current', 'true');
 
-  // Load schema metadata (one table per line)
+  // Schema loader: show dataset name and each table on its own line
   async function loadSchema(dataset) {
     const key = dataset.replace('.sqlite','');
     const schemaResp = await fetch(`/assets/sql/metadata/schema-${key}.json`).catch(() => null);
     if (schemaResp && schemaResp.ok) {
       const schema = await schemaResp.json();
-      els.schema.textContent = schema.tables
-        .map(t => t.name + '(' + t.columns.map(c => c.name + (t.primary_key?.includes(c.name) ? ' PK' : '')).join(', ') + ')')
-        .join('\n');
+      const header = `Database: ${dataset}`;
+      const lines = schema.tables.map(t => {
+        const cols = t.columns.map(c => c.name + (t.primary_key?.includes(c.name) ? ' PK' : '')).join(', ');
+        return `${t.name}(${cols})`;
+      });
+      els.schema.textContent = [header, ...lines].join('\n');
     } else {
-      els.schema.textContent = 'Schema metadata not found.';
+      els.schema.textContent = `Database: ${dataset}\n(no schema metadata found)`;
     }
   }
 
@@ -82,7 +85,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (!toolbar) return;
     toolbar.querySelectorAll('button').forEach(b => { b.disabled = false; b.style.cursor = 'pointer'; });
 
-    const [btnRun, btnCheck, btnReveal] = toolbar.querySelectorAll('button');
+    const [btnRun, btnCheck] = toolbar.querySelectorAll('button');
 
     btnRun.onclick = async () => {
       try {
@@ -100,7 +103,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
         els.results.textContent = 'Checking...';
         await ensureEngineAndDB(p.dataset);
         const res = engine.run(els.editor.value);
-        // hash compare + optional assertions
         const userHash = await ResultVerifier.hashResult(res, p.expected?.columns, p.expected?.order_by);
         const assertions = ResultVerifier.evalAssertions(res, p.expected?.assertions || []);
         const ok = (userHash === p.expected?.resultset_hash) && assertions.ok;
@@ -111,17 +113,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
         els.results.textContent = 'Error: ' + e.message;
       }
     };
-
-    btnReveal.onclick = async () => {
-      const resp = await fetch(p.solution_sql_path).catch(() => null);
-      if (!resp || !resp.ok) {
-        els.results.textContent = 'No solution file found.';
-        return;
-      }
-      const sql = await resp.text();
-      els.editor.value = sql;
-      els.results.textContent = 'Canonical solution loaded into editor.';
-    };
   }
 
   function renderResults(res) {
@@ -130,7 +121,7 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     if (!rows.length) { els.results.textContent = '(no rows)'; return; }
     const thead = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>`;
     const tbody = `<tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${String(r[c]??'')}</td>`).join('')}</tr>`).join('')}</tbody>`;
-    els.results.innerHTML = `<div style="max-height:320px;overflow:auto;border:1px solid rgba(17,17,17,.06)"><table>${thead+tbody}</table></div>`;
+    els.results.innerHTML = `<div style="max-height:340px;overflow:auto;border:1px solid rgba(17,17,17,.06)"><table>${thead+tbody}</table></div>`;
   }
 
   if (puzzleItems[0]) loadPuzzle(puzzleItems[0]);
