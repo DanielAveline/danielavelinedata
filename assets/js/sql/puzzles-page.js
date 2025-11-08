@@ -42,20 +42,44 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   }
   if (els.list.firstElementChild) els.list.firstElementChild.setAttribute('aria-current', 'true');
 
-  // Schema loader: show dataset name and each table on its own line
+  // --- Schema loader: dataset name + accordion (one table per dropdown)
   async function loadSchema(dataset) {
     const key = dataset.replace('.sqlite','');
     const schemaResp = await fetch(`/assets/sql/metadata/schema-${key}.json`).catch(() => null);
+
+    // Helper to render one table block
+    const renderTable = (t) => {
+      const cols = (t.columns || []).map(c => {
+        const isPk = Array.isArray(t.primary_key) && t.primary_key.includes(c.name);
+        const type = c.type ? ` ${c.type}` : '';
+        return `<span class="col-line">${c.name}${type}${isPk ? ' <span class="pk">PK</span>' : ''}</span>`;
+      }).join('');
+      return `
+        <details class="tbl">
+          <summary>${t.name}</summary>
+          <div class="tbl-body">
+            ${cols || '<span class="col-line">(no columns listed)</span>'}
+          </div>
+        </details>
+      `;
+    };
+
     if (schemaResp && schemaResp.ok) {
       const schema = await schemaResp.json();
-      const header = `Database: ${dataset}`;
-      const lines = schema.tables.map(t => {
-        const cols = t.columns.map(c => c.name + (t.primary_key?.includes(c.name) ? ' PK' : '')).join(', ');
-        return `${t.name}(${cols})`;
-      });
-      els.schema.textContent = [header, ...lines].join('\n');
+      els.schema.innerHTML = `
+        <div class="schema-accordion">
+          <div class="schema-dataset">Database: ${dataset}</div>
+          ${schema.tables.map(renderTable).join('')}
+        </div>
+      `;
     } else {
-      els.schema.textContent = `Database: ${dataset}\n(no schema metadata found)`;
+      // Fallback when metadata JSON isn’t present
+      els.schema.innerHTML = `
+        <div class="schema-accordion">
+          <div class="schema-dataset">Database: ${dataset}</div>
+          <p class="meta" style="margin:.25rem 0 0;">(schema metadata not found)</p>
+        </div>
+      `;
     }
   }
 
@@ -126,4 +150,5 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
 
   if (puzzleItems[0]) loadPuzzle(puzzleItems[0]);
 })();
+
 
