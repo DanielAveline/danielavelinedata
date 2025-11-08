@@ -54,6 +54,7 @@
       padding: .55rem .7rem;
       font-weight: 700;
       display: flex; align-items: center; gap: .5rem;
+      color: #111;
     }
     #monthTree summary::-webkit-details-marker { display: none; }
     #monthTree summary::before {
@@ -61,6 +62,7 @@
       transform: rotate(0deg);
       transition: transform .15s ease;
       opacity: .75;
+      color: inherit;
     }
     #monthTree details[open] > summary::before { transform: rotate(90deg); }
     .weeks {
@@ -80,6 +82,12 @@
       font-weight: 600;
     }
     .weeks li.is-disabled { opacity: .45; cursor: not-allowed; }
+
+    /* Current month highlight (match header blue) */
+    #monthTree details.current-month > summary {
+      background: #002244;
+      color: #fff;
+    }
 
     /* ---------- Middle: Schema accordion (bigger) ---------- */
     .schema-panel { padding: 0; }
@@ -138,6 +146,20 @@
 
     .stack { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 
+    /* Goal callout (more legible) */
+    .goal-callout {
+      border: 1px solid rgba(0,34,68,.15);
+      background: #f6f9ff;
+      border-left: 6px solid #002244;
+      padding: .75rem .9rem;
+      border-radius: 10px;
+      color: #0f172a;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 0 0 .9rem;
+    }
+    .goal-callout strong { color: #002244; }
+
     /* CodeMirror editor */
     .CodeMirror {
       height: 420px;           /* tall editor */
@@ -172,6 +194,13 @@
       border-radius: 8px;
       background: #f8fafc;
       margin-bottom: .5rem;
+    }
+
+    /* Simple action row under results */
+    .results-actions {
+      display: flex;
+      gap: .6rem;
+      margin-top: .6rem;
     }
 
     /* Mobile */
@@ -211,7 +240,7 @@
         </div>
 
         <div class="main-body">
-          <p id="puzzleGoal" class="main-meta" style="margin:0 0 .8rem;"></p>
+          <div id="puzzleGoal" class="goal-callout"></div>
 
           <div class="stack">
             <div>
@@ -228,6 +257,11 @@
             <div>
               <label class="meta" style="display:block;margin-bottom:.25rem;">Results</label>
               <div id="sqlResults" class="results panel" style="padding:.6rem;"></div>
+
+              <!-- Actions under results -->
+              <div class="results-actions">
+                <button id="btnClearResults" type="button">Clear Results</button>
+              </div>
             </div>
           </div>
         </div>
@@ -241,6 +275,7 @@
   <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
+
 
 
 
