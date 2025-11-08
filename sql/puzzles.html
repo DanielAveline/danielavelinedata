@@ -6,72 +6,81 @@
   <title>SQL Puzzles</title>
   <link rel="stylesheet" href="/assets/styles.css"/>
 
-  <!-- Page-scoped layout tweaks -->
+  <!-- Page-scoped layout & polish -->
   <style>
-    /* 3-column layout on desktop */
+    /* 3-column layout on desktop: Puzzles | Schema | Main */
     .puzzles-wrap {
       max-width: 1200px;
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: 260px 280px 1fr; /* Puzzles | Schema | Main */
+      grid-template-columns: 260px 280px 1fr;
       gap: 1rem;
     }
     .panel { background: #fff; color: #111; }
 
-    .sidebar { padding: .75rem .9rem; }
-    .sidebar .hd { margin-bottom: .25rem; }
-    .sidebar .meta { margin: 0 0 .6rem; }
+    /* Lighter title bar */
+    .hd-bar {
+      background: #f7f8fa;
+      border-bottom: 1px solid rgba(17,17,17,.10);
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      padding: .75rem 1rem;
+    }
+    .hd-bar h2 { margin: 0; font-size: 1.05rem; }
 
-    /* Puzzles list */
-    .list { list-style: none; }
-    .list li { cursor: pointer; }
+    /* Left sidebar: puzzles */
+    .sidebar { padding: 0; }
+    .sidebar .meta { margin: .5rem 1rem .75rem; color: #5b616e; }
+    .list { list-style: none; padding: .5rem .6rem .9rem; }
+    .list li { cursor: pointer; padding: .55rem .65rem; border-radius: .6rem; }
     .list li + li { margin-top: .25rem; }
 
-    /* Schema panel */
-    .schema-panel { padding: .75rem .9rem; }
+    /* Middle: schema */
+    .schema-panel { padding: 0; }
+    .schema-box-wrap { padding: .75rem 1rem 1rem; }
     .schema-box {
-      margin-top: .5rem;
       border: 1px solid rgba(17,17,17,.12);
       border-radius: 10px;
       background: #fbfbfd;
       padding: .6rem .7rem;
-      white-space: pre-wrap; /* show each table on its own line */
+      white-space: pre-wrap; /* one table per line */
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       font-size: .9rem;
       color: #2b2f36;
       min-height: 120px;
     }
+    .schema-dataset {
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: .4rem;
+    }
 
-    /* Main column */
-    .main-panel { padding: .9rem 1rem; }
-    .grid-2 {
+    /* Right: main content */
+    .main-panel { padding: 0; }
+    .main-head { padding: .9rem 1rem .75rem; }
+    .main-meta { color: #5b616e; }
+    .main-body { padding: .5rem 1rem 1rem; }
+
+    /* Stack editor and results vertically for a “bigger box” feel */
+    .stack {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      align-items: start;
+      grid-template-columns: 1fr;
+      gap: .9rem;
     }
     .editor {
       width: 100%;
       min-height: 220px;
       resize: vertical;
     }
-    .results {
-      min-height: 160px;
-    }
-    .toolbar {
-      display: flex; gap: .6rem; margin: .6rem 0 1rem;
-      flex-wrap: wrap;
-    }
+    .results { min-height: 180px; }
 
-    /* Mobile / tablet */
+    /* Toolbar under editor */
+    .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+    /* Mobile: collapse to one column */
     @media (max-width: 1100px) {
-      .puzzles-wrap {
-        grid-template-columns: 1fr; /* stack */
-      }
-      .grid-2 {
-        grid-template-columns: 1fr; /* stack editor and results */
-      }
+      .puzzles-wrap { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -82,45 +91,42 @@
     <section class="puzzles-wrap">
       <!-- Left: SQL Puzzles -->
       <aside class="panel sidebar">
-        <div class="hd">
-          <h2 style="margin:0;">SQL Puzzles</h2>
-        </div>
+        <div class="hd-bar"><h2>SQL Puzzles</h2></div>
         <p class="meta">A new set every week: Easy, Medium, Hard.</p>
         <ul id="puzzleList" class="list" role="listbox" aria-label="Puzzles"></ul>
       </aside>
 
       <!-- Middle: Schema -->
       <aside class="panel schema-panel">
-        <div class="hd">
-          <h2 style="margin:0;">Schema</h2>
+        <div class="hd-bar"><h2>Schema</h2></div>
+        <div class="schema-box-wrap">
+          <div id="schemaBox" class="schema-box"></div>
         </div>
-        <div id="schemaBox" class="schema-box"></div>
       </aside>
 
-      <!-- Right: Main puzzle -->
+      <!-- Right: Main -->
       <article class="panel main-panel">
-        <header class="hd" style="padding:0;">
-          <h2 id="puzzleTitle" style="margin:0 0 .4rem;"></h2>
-          <div id="puzzleMeta" class="meta"></div>
-        </header>
+        <div class="hd-bar">
+          <h2 id="puzzleTitle" style="margin:0 0 .1rem;"></h2>
+          <div id="puzzleMeta" class="main-meta"></div>
+        </div>
 
-        <div class="bd" style="padding-top:.75rem;">
-          <p id="puzzleGoal" class="meta" style="margin:0 0 .8rem;"></p>
+        <div class="main-body">
+          <p id="puzzleGoal" class="main-meta" style="margin:0 0 .8rem;"></p>
 
-          <div class="grid-2">
+          <div class="stack">
             <div>
               <label for="sqlEditor" class="meta" style="display:block;margin-bottom:.25rem;">Your SQL</label>
               <textarea id="sqlEditor" class="editor"></textarea>
 
-              <!-- Buttons now under the editor -->
+              <!-- Buttons: under the editor -->
               <div class="toolbar">
                 <button disabled>Run</button>
                 <button disabled>Check Answer</button>
-                <button disabled>Reveal Solution</button>
+                <!-- Reveal Solution removed -->
               </div>
             </div>
 
-            <!-- Results to the right on desktop, below on mobile -->
             <div>
               <label class="meta" style="display:block;margin-bottom:.25rem;">Results</label>
               <div id="sqlResults" class="results panel" style="padding:.6rem;"></div>
