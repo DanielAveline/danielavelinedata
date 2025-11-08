@@ -18,11 +18,11 @@
   <style>
     /* Wider main, bigger schema column, tighter left nav */
     .puzzles-wrap {
-      max-width: 1560px;              /* wider overall */
+      max-width: 1560px;              /* wide overall canvas */
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: 200px 320px minmax(0, 1fr); /* Puzzles | Schema | Main (much wider) */
+      grid-template-columns: 200px 320px minmax(0, 1fr); /* Puzzles | Schema | Main (wide) */
       gap: 1rem;
     }
     .panel { background: #fff; color: #111; }
@@ -89,7 +89,7 @@
       border: 1px solid rgba(17,17,17,.12);
       border-radius: 10px;
       background: #fbfbfd;
-      max-height: 74vh;         /* taller and scrollable */
+      max-height: 74vh;         /* tall and scrollable */
       overflow: auto;
     }
     .schema-dataset { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
@@ -137,7 +137,8 @@
     .main-body { padding: .5rem 1rem 1rem; }
 
     .stack { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-    /* CodeMirror sizing */
+
+    /* CodeMirror editor */
     .CodeMirror {
       height: 420px;           /* tall editor */
       border: 1.5px solid rgba(17,17,17,.12);
@@ -146,11 +147,18 @@
       font-size: 14.5px;
       line-height: 1.4;
     }
-    .results {
-      min-height: 380px;
-    }
 
+    .results { min-height: 380px; }
     .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: .6rem; }
+
+    /* --------- Editor error visuals --------- */
+    .cm-error-line { background: #ffe8e8 !important; }
+    .cm-error-range { background: rgba(185, 28, 28, .10); }
+    .CodeMirror-gutters .err-gutter { width: 14px; }
+    .cm-error-marker {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #b91c1c; margin: 0 3px;
+    }
 
     /* Mobile */
     @media (max-width: 1100px) {
@@ -219,6 +227,7 @@
   <script type="module" src="/assets/js/sql/puzzles-page.js"></script>
 </body>
 </html>
+
 
 
 
