@@ -21,28 +21,48 @@
       --ink:#111;
     }
 
-    /* Layout: Puzzles | Schema | Main */
+    /* ====== LAYOUT: Schema | Main | Puzzles ====== */
     .puzzles-wrap {
       max-width: 1560px;
       margin: 1.25rem auto 2rem;
       padding: 0 1rem;
+
       display: grid;
-      grid-template-columns: 200px 320px minmax(0, 1fr);
+      grid-template-columns: 320px minmax(0, 1fr) 220px; /* LEFT schema | CENTER main | RIGHT puzzles */
+      grid-template-areas:
+        "schema main puzzles";
       gap: 1rem;
     }
+
     .panel { background: #fff; color: var(--ink); border-radius: 10px; overflow: hidden; }
 
-    /* Unified header bars */
+    /* Make each section take its grid area (we keep HTML order; CSS places them) */
+    .sidebar      { grid-area: puzzles; } /* right */
+    .schema-panel { grid-area: schema; }  /* left  */
+    .main-panel   { grid-area: main; }    /* center */
+
+    /* Mobile: stack in a sensible order (main first) */
+    @media (max-width: 1100px){
+      .puzzles-wrap{
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "main"
+          "schema"
+          "puzzles";
+      }
+    }
+
+    /* ====== Unified header bars ====== */
     .hd-bar {
       background: var(--brand-blue);
-      color: #fff;                          /* WHITE TEXT */
+      color: #fff;
       padding: .9rem 1rem;
       display: flex; align-items: center;
       min-height: 56px;
     }
     .hd-bar h2 { margin: 0; font-size: 1.05rem; font-weight: 700; color:#fff; }
 
-    /* Buttons */
+    /* ====== Buttons ====== */
     .btn {
       appearance: none; border-radius: 14px; padding: .55rem 1rem;
       font-weight: 600; cursor: pointer; border:1px solid transparent;
@@ -55,7 +75,7 @@
     .btn-outline { background:#fff; color:var(--ink); border-color:rgba(17,17,17,.15); }
     .btn-outline:hover { background:#f7f8fa; border-color:rgba(17,17,17,.25); }
 
-    /* Left: Month → Week tree */
+    /* ====== RIGHT: Month → Week tree (sidebar moved to the right) ====== */
     .sidebar .meta { margin:.5rem 1rem .75rem; color:#5b616e; }
     #monthTree { padding:.5rem .6rem 1rem; }
     #monthTree details {
@@ -73,11 +93,9 @@
     .weeks li{ list-style:none; margin:.25rem 0; padding:.5rem .55rem; border-radius:.6rem; cursor:pointer; }
     .weeks li[aria-current="true"]{ background:rgba(37,99,235,.10); border:1px solid rgba(37,99,235,.25); font-weight:600; }
     .weeks li.is-disabled{ opacity:.45; cursor:not-allowed; }
-
-    /* Current month highlight */
     #monthTree details.current-month > summary { background: var(--brand-blue); color:#fff; }
 
-    /* Schema accordion */
+    /* ====== LEFT: Schema accordion ====== */
     .schema-box-wrap{ padding:.75rem 1rem 1rem; }
     .schema-accordion{
       padding:.75rem 1rem 1rem; border:1px solid rgba(17,17,17,.12); border-radius:10px;
@@ -93,9 +111,9 @@
     .schema-accordion .col-line{ display:block; padding:.15rem 0;}
     .schema-accordion .pk{ display:inline-block; margin-left:.35rem; padding:.05rem .35rem; border-radius:6px; font-size:.75em; background:#eef2ff; color:#3730a3; border:1px solid #e0e7ff;}
 
-    /* Main */
+    /* ====== CENTER: Main (Your SQL) ====== */
     .main-body{ padding:.5rem 1rem 1rem; }
-    .stack{ display:grid; grid-template-columns:1fr; gap:1rem; }
+    .stack{ display:grid; grid-template-columns: 1fr; gap: 1rem; }
 
     .goal-callout{
       border:1px solid rgba(0,34,68,.15); background:#f6f9ff; border-left:6px solid var(--brand-blue);
@@ -103,7 +121,6 @@
     }
     .goal-callout strong{ color:var(--brand-blue); }
 
-    /* CodeMirror */
     .CodeMirror{
       height: 420px; border:1.5px solid rgba(17,17,17,.12); border-radius:10px; background:#fcfcfd;
       font-size:14.5px; line-height:1.4;
@@ -112,26 +129,16 @@
     .toolbar{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.6rem; }
     .results{ min-height:380px; }
 
-    /* Error visuals */
     .cm-error-line{ background:#ffe8e8 !important; }
     .cm-error-range{ background:rgba(185,28,28,.10); }
     .CodeMirror-gutters .err-gutter{ width:14px; }
     .cm-error-marker{ width:8px; height:8px; border-radius:50%; background:#b91c1c; margin:0 3px; }
 
-    /* Results meta */
     .results .result-meta{
       display:flex; align-items:center; justify-content:space-between; font-size:.9rem; color:#475569;
       padding:.35rem .5rem; border:1px solid rgba(17,17,17,.08); border-radius:8px; background:#f8fafc; margin-bottom:.5rem;
     }
-
     .results-actions{ display:flex; gap:.6rem; margin-top:.6rem; }
-
-    @media (max-width:1100px){
-      .puzzles-wrap{ grid-template-columns:1fr; }
-      .schema-accordion{ max-height:none; }
-      .CodeMirror{ height:360px; }
-      .results{ min-height:320px; }
-    }
   </style>
 </head>
 <body class="__hydrating __fade-ready">
@@ -139,14 +146,16 @@
 
   <main>
     <section class="puzzles-wrap">
-      <!-- Left: SQL Puzzles -->
+      <!-- HTML order unchanged; CSS grid places them -->
+
+      <!-- (was left) SQL Puzzles -> now right column -->
       <aside class="panel sidebar">
         <div class="hd-bar"><h2>SQL Puzzles</h2></div>
         <p class="meta">A new set every week: Easy, Medium, Hard.</p>
         <div id="monthTree" role="tree" aria-label="Months and weeks"></div>
       </aside>
 
-      <!-- Middle: Schema -->
+      <!-- (was middle) Schema -> now left column -->
       <aside class="panel schema-panel">
         <div class="hd-bar"><h2>Schema</h2></div>
         <div class="schema-box-wrap">
@@ -154,7 +163,7 @@
         </div>
       </aside>
 
-      <!-- Right: Main -->
+      <!-- Main stays main, now center column -->
       <article class="panel main-panel">
         <div class="hd-bar"><h2 id="puzzleTitle" style="margin:0;"></h2></div>
 
