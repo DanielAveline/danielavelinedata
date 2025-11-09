@@ -29,7 +29,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     gutters: ['CodeMirror-linenumbers', 'err-gutter']
   });
 
-  // Error helpers
   function clearEditorErrors() {
     const last = editorCM.getDoc().lineCount();
     for (let i = 0; i < last; i++) {
@@ -49,7 +48,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     editorCM.scrollIntoView({ from: fromPos, to: toPos }, 100);
   }
 
-  // Split into statements
   function splitSqlStatements(doc) {
     const text = doc.getValue();
     const parts = [];
@@ -83,7 +81,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     return parts;
   }
 
-  // Run statements
   function runSqlSafely(engine) {
     const stmts = splitSqlStatements(editorCM.getDoc());
     let lastRes = null;
@@ -94,7 +91,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     return { ok:true, res:lastRes || { columns:[], rows:[] } };
   }
 
-  // Load puzzles.json
   const puzzlesResp = await fetch('/assets/sql/puzzles.json').catch(() => null);
   if (!puzzlesResp || !puzzlesResp.ok) {
     els.results.textContent = 'puzzles.json not found. Place it at /assets/sql/puzzles.json';
@@ -103,7 +99,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   const puzzlesData = await puzzlesResp.json();
   ResultVerifier.setPrecision(puzzlesData.numeric_precision || 4);
 
-  // Month tree
   const weeks = Array.isArray(puzzlesData.weeks) ? puzzlesData.weeks : [];
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const currentMonthIndex = new Date().getMonth();
@@ -135,7 +130,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
   });
   if (weekItems[0]) weekItems[0].setAttribute('aria-current', 'true');
 
-  // Schema loader
   async function loadSchema(dataset) {
     const displayName = dataset.replace(/\.sqlite$/i, '');
     const resp = await fetch(`/assets/sql/metadata/schema-${displayName}.json`).catch(() => null);
@@ -163,7 +157,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     }
   }
 
-  // SQL engine
   let engine = null;
   async function ensureEngineAndDB(dataset) {
     if (!engine) {
@@ -172,7 +165,6 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     await engine.loadDB(`/assets/sql/datasets/${dataset}`);
   }
 
-  // Results renderer with row/column counts
   function renderResults(res) {
     const cols = res.columns || [];
     const rows = res.rows || [];
@@ -264,12 +256,10 @@ import { ResultVerifier } from '/assets/js/sql/verify.js';
     };
   }
 
-  // Clear results
   if (els.btnClear) {
     els.btnClear.addEventListener('click', () => { els.results.innerHTML = ''; els.btnClear.blur(); });
   }
 
-  // Default load
   loadWeekByIndex(0);
 })();
 
