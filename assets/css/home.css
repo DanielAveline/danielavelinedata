@@ -1,50 +1,71 @@
 /* Homepage-only redesign (safe: scoped to .home-page) */
 
 :root{
-  /* NEW palette */
+  /* Palette */
   --home-bg: #0b1220;
-  --home-surface: #0f1b2e;
+  --home-surface: rgba(15, 27, 46, .55);
   --home-card: #f5f7fb;
   --home-ink: #0f172a;
 
-  --home-accent: #22c55e;         /* green */
-  --home-accent-2: #38bdf8;       /* sky */
-  --home-nav: #152238;            /* left nav */
-  --home-nav-hover: #1b2c4b;
+  --home-accent: #38bdf8;        /* sky */
+  --home-nav: rgba(21, 34, 56, .72);
+  --home-nav-hover: rgba(27, 44, 75, .85);
 
-  --home-border: rgba(255,255,255,.14);
+  --home-border: rgba(255,255,255,.18);
+  --home-outline: rgba(255,255,255,.35);  /* WHITE OUTLINE */
   --home-shadow: 0 18px 55px rgba(0,0,0,.45);
+
+  --radius-lg: 18px;
+  --radius-md: 14px;
 }
 
 body.home-page {
   background: var(--home-bg);
 }
 
-/* Hide global header area on home (keeps footer partial working) */
-.home-hide-global-header {
-  display: none !important;
-}
+/* Hide global header on home only */
+.home-hide-global-header { display: none !important; }
 
+/* ====== OUTER PAGE FRAME (white outline like your example) ====== */
 .home-shell{
   min-height: calc(100vh - 60px);
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 22px;
+  grid-template-columns: auto 1fr;
+  gap: 26px;
   padding: 26px;
+
+  /* This is the outer framed container */
+  border-radius: 22px;
+  border: 2px solid var(--home-outline);       /* <-- white outline */
+  background: radial-gradient(1200px 600px at 55% 15%, rgba(56,189,248,.14), transparent 60%),
+              radial-gradient(900px 450px at 15% 55%, rgba(255,255,255,.06), transparent 60%),
+              rgba(255,255,255,.02);
+  box-shadow: var(--home-shadow);
 }
 
-/* LEFT NAV */
+/* ====== LEFT NAV AREA should fit the buttons (not full height) ====== */
 .home-leftnav{
-  background: var(--home-nav);
-  border-radius: 16px;
-  box-shadow: var(--home-shadow);
-  padding: 18px;
-  border: 1px solid var(--home-border);
+  /* no giant column background */
+  background: transparent;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+
+  align-self: start;               /* hug content */
 }
 
 .home-nav{
   display: grid;
   gap: 14px;
+
+  /* Background behind nav that hugs the buttons */
+  background: var(--home-nav);
+  border: 1px solid var(--home-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+
+  width: 220px;                    /* stable width like your mock */
 }
 
 .home-nav__item{
@@ -59,7 +80,7 @@ body.home-page {
   border-radius: 12px;
   padding: 14px 14px;
   color: #dbeafe;
-  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
 }
 
 .home-nav__item:hover{
@@ -69,12 +90,12 @@ body.home-page {
 }
 
 .home-nav__item.is-active{
-  border-color: rgba(56,189,248,.55);
+  border-color: rgba(56,189,248,.65);
   box-shadow: 0 0 0 3px rgba(56,189,248,.16);
 }
 
 .home-nav__icon{
-  font-size: 20px;
+  font-size: 18px;
   display: inline-flex;
   width: 34px;
   height: 34px;
@@ -85,25 +106,31 @@ body.home-page {
 }
 
 .home-nav__label{
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: .2px;
-  color: #38bdf8;
+  color: var(--home-accent);
 }
 
-/* MAIN */
+/* ====== MAIN WRAP ====== */
 .home-main{
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
-  border-radius: 18px;
-  border: 1px solid var(--home-border);
-  box-shadow: var(--home-shadow);
-  padding: 22px;
+  background: rgba(255,255,255,.03);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 44px rgba(0,0,0,.35);
+  padding: 20px;
 }
 
+/* hero */
 .home-hero{
   display: grid;
   justify-items: center;
   gap: 14px;
   margin-bottom: 18px;
+
+  background: rgba(0,34,68,.70);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,.16);
+  padding: 18px 18px 14px;
 }
 
 .home-namecard{
@@ -112,35 +139,32 @@ body.home-page {
   border-radius: 16px;
   border: 1px solid rgba(15,23,42,.12);
   box-shadow: 0 10px 30px rgba(0,0,0,.18);
-  padding: 18px 18px 14px;
+  padding: 16px 18px 12px;
   text-align: center;
 }
 
 .home-namecard h1{
   margin: 0;
-  font-size: 46px;
+  font-size: 44px;
   line-height: 1.05;
   color: #0f172a;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: .4px;
 }
 
 .home-subtitle{
   margin-top: 8px;
   color: #334155;
-  font-weight: 650;
-  font-size: 13px;
+  font-weight: 750;
+  font-size: 12.5px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
 }
+.home-subtitle .dot{ opacity: .6; }
 
-.home-subtitle .dot{
-  opacity: .6;
-}
-
-/* SOCIAL ROW */
+/* social row */
 .home-social{
   display: flex;
   gap: 14px;
@@ -177,12 +201,13 @@ body.home-page {
   box-shadow: 0 14px 26px rgba(0,0,0,.18);
 }
 
-/* GRID */
+/* ====== GRID ====== */
 .home-grid{
   display: grid;
   grid-template-columns: 1.2fr 1fr 0.9fr;
   gap: 18px;
   align-items: stretch;
+  margin-top: 16px;
 }
 
 .home-card{
@@ -193,8 +218,9 @@ body.home-page {
   overflow: hidden;
 }
 
+/* Standard card header */
 .home-card__header{
-  padding: 16px 16px 12px;
+  padding: 14px 16px 12px;
   background: rgba(15,23,42,.06);
   border-bottom: 1px solid rgba(15,23,42,.10);
 }
@@ -202,18 +228,36 @@ body.home-page {
 .home-card__header h2{
   margin: 0;
   font-size: 28px;
-  font-weight: 850;
+  font-weight: 900;
   color: #0f172a;
 }
 
+/* ====== NEWS header should look like nav buttons ====== */
 .home-card__header--news{
-  text-align: center;
-}
-.home-card__header--news h2{
-  letter-spacing: 2px;
-  color: #0ea5e9;
+  /* remove flat header look */
+  background: transparent;
+  border-bottom: 0;
+  padding: 16px;
+  display: grid;
+  justify-items: center;
 }
 
+.home-card__header--news h2{
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 2px;
+  color: var(--home-accent);
+
+  /* mimic nav item style */
+  background: rgba(21, 34, 56, .80);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 12px;
+  padding: 12px 10px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.22);
+}
+
+/* Card body */
 .home-card__body{
   padding: 16px;
   color: #0f172a;
@@ -222,9 +266,7 @@ body.home-page {
 }
 
 /* Photo */
-.home-card--photo .home-card__body{
-  padding: 12px;
-}
+.home-card--photo .home-card__body{ padding: 12px; }
 .home-photo-wrap{
   display: flex;
   align-items: center;
@@ -232,14 +274,14 @@ body.home-page {
 }
 .home-photo{
   width: 100%;
-  max-height: 520px;
+  max-height: 560px;
   object-fit: cover;
   border-radius: 14px;
-  border: 6px solid rgba(255,255,255,.9);
+  border: 6px solid rgba(255,255,255,.92);
   box-shadow: 0 16px 40px rgba(0,0,0,.22);
 }
 
-/* News */
+/* News list */
 .home-news{
   list-style: none;
   padding: 0;
@@ -247,22 +289,17 @@ body.home-page {
   display: grid;
   gap: 10px;
 }
-.home-news__placeholder{
-  color: #64748b;
-}
+.home-news__placeholder{ color: #64748b; }
 
 /* Responsive */
 @media (max-width: 1200px){
-  .home-grid{
-    grid-template-columns: 1fr;
-  }
-  .home-photo{
-    max-height: 560px;
-  }
+  .home-grid{ grid-template-columns: 1fr; }
 }
-
 @media (max-width: 920px){
   .home-shell{
     grid-template-columns: 1fr;
+    padding: 18px;
+    gap: 18px;
   }
+  .home-nav{ width: 100%; }
 }
