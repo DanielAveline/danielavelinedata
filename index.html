@@ -1,22 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Redirecting…</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daniel Aveline | Home</title>
 
-  <!-- Redirect immediately -->
-  <meta http-equiv="refresh" content="0; url=aboutme.html" />
-
-  <!-- For SEO -->
-  <link rel="canonical" href="aboutme.html" />
-
-  <script>
-    // JS redirect as backup
-    window.location.replace("aboutme.html");
-  </script>
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/css/home.css" />
 </head>
-<body>
-  <p>If you’re not redirected automatically, <a href="aboutme.html">click here</a>.</p>
+
+<body class="__hydrating __fade-ready home-page">
+  <!-- Keep partials loaded so footer stays consistent -->
+  <div id="site-header" class="home-hide-global-header"></div>
+
+  <main class="home-shell">
+    <!-- Left Nav -->
+    <aside class="home-leftnav" aria-label="Primary navigation">
+      <nav class="home-nav">
+        <a class="home-nav__item" href="/experience.html">
+          <span class="home-nav__icon" aria-hidden="true">💼</span>
+          <span class="home-nav__label">Work History</span>
+        </a>
+
+        <a class="home-nav__item" href="/education.html">
+          <span class="home-nav__icon" aria-hidden="true">🎓</span>
+          <span class="home-nav__label">Education</span>
+        </a>
+
+        <a class="home-nav__item" href="/sql/puzzles.html">
+          <span class="home-nav__icon" aria-hidden="true">🧩</span>
+          <span class="home-nav__label">SQL Puzzles</span>
+        </a>
+
+        <a class="home-nav__item is-active" href="/index.html" aria-current="page">
+          <span class="home-nav__icon" aria-hidden="true">🏠</span>
+          <span class="home-nav__label">Home</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <section class="home-main">
+      <!-- Top center name card -->
+      <header class="home-hero">
+        <div class="home-namecard">
+          <h1>Daniel Aveline</h1>
+          <div class="home-subtitle">
+            <span>MBA in Business Data Analytics</span>
+            <span class="dot">|</span>
+            <span>Data Analytics Professional</span>
+            <span class="dot">|</span>
+            <span>Experienced Team Leader</span>
+          </div>
+        </div>
+
+        <!-- Social row (opens Coming Soon in new tab) -->
+        <div class="home-social" aria-label="Social links">
+          <a class="social-btn" href="/coming-soon.html?item=LinkedIn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (coming soon)">in</a>
+          <a class="social-btn" href="/coming-soon.html?item=Email" target="_blank" rel="noopener noreferrer" aria-label="Email (coming soon)">✉️</a>
+          <a class="social-btn" href="/coming-soon.html?item=GitHub" target="_blank" rel="noopener noreferrer" aria-label="GitHub (coming soon)">🐙</a>
+          <a class="social-btn" href="/coming-soon.html?item=TikTok" target="_blank" rel="noopener noreferrer" aria-label="TikTok (coming soon)">🎵</a>
+          <a class="social-btn" href="/coming-soon.html?item=YouTube" target="_blank" rel="noopener noreferrer" aria-label="YouTube (coming soon)">▶️</a>
+        </div>
+      </header>
+
+      <!-- Grid: About | Photo | News -->
+      <div class="home-grid">
+        <!-- About -->
+        <section class="home-card">
+          <div class="home-card__header">
+            <h2>About Me</h2>
+          </div>
+          <div class="home-card__body">
+            <p>
+              I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics
+              and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques,
+              data-driven problem-solving, and strategic decision-making. My background in leadership
+              equips me to manage projects effectively and drive team success.
+            </p>
+            <p>
+              Passionate about transforming complex data into actionable insights, I am proficient in
+              advanced analytics tools and thrive on using data to enhance organizational performance.
+              Currently, I work as a Consumer Reporting Analyst at First Merchants Bank, focusing on
+              analytics, reporting, and compliance to support growth and efficiency.
+            </p>
+          </div>
+        </section>
+
+        <!-- Photo -->
+        <section class="home-card home-card--photo" aria-label="Featured photo">
+          <div class="home-card__body home-photo-wrap">
+            <!-- Put your exact image here -->
+            <img
+              src="/assets/images/IMG_2475.JPG"
+              alt="Daniel Aveline in a suit outdoors"
+              class="home-photo"
+              loading="eager"
+            />
+          </div>
+        </section>
+
+        <!-- News -->
+        <section class="home-card">
+          <div class="home-card__header home-card__header--news">
+            <h2>NEWS</h2>
+          </div>
+          <div class="home-card__body">
+            <ul id="newsList" class="home-news">
+              <li class="home-news__placeholder">Coming soon — this will load from JSON.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/assets/js/partials.js" defer></script>
+  <script src="/assets/js/home-news.js" defer></script>
 </body>
 </html>
+
 
