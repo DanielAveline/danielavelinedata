@@ -57,25 +57,25 @@
           </div>
         </div>
 
-        <!-- SOCIAL ICONS -->
+        <!-- SOCIAL ICONS (PNG is the tile; no double border) -->
         <div class="home-socialbar" aria-label="Social links">
-          <a class="social-tile" href="/coming-soon.html?item=LinkedIn" target="_blank" rel="noopener noreferrer">
+          <a class="social-tile" href="/coming-soon.html?item=LinkedIn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (coming soon)">
             <img src="/assets/images/linkedin.png" alt="LinkedIn" />
           </a>
 
-          <a class="social-tile" href="/coming-soon.html?item=Email" target="_blank" rel="noopener noreferrer">
+          <a class="social-tile" href="/coming-soon.html?item=Email" target="_blank" rel="noopener noreferrer" aria-label="Email (coming soon)">
             <img src="/assets/images/email.png" alt="Email" />
           </a>
 
-          <a class="social-tile" href="/coming-soon.html?item=GitHub" target="_blank" rel="noopener noreferrer">
+          <a class="social-tile" href="/coming-soon.html?item=GitHub" target="_blank" rel="noopener noreferrer" aria-label="GitHub (coming soon)">
             <img src="/assets/images/github.png" alt="GitHub" />
           </a>
 
-          <a class="social-tile" href="/coming-soon.html?item=TikTok" target="_blank" rel="noopener noreferrer">
+          <a class="social-tile" href="/coming-soon.html?item=TikTok" target="_blank" rel="noopener noreferrer" aria-label="TikTok (coming soon)">
             <img src="/assets/images/tiktok.png" alt="TikTok" />
           </a>
 
-          <a class="social-tile" href="/coming-soon.html?item=YouTube" target="_blank" rel="noopener noreferrer">
+          <a class="social-tile" href="/coming-soon.html?item=YouTube" target="_blank" rel="noopener noreferrer" aria-label="YouTube (coming soon)">
             <img src="/assets/images/youtube.png" alt="YouTube" />
           </a>
         </div>
@@ -92,20 +92,27 @@
               <p>
                 I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics
                 and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques,
-                data-driven problem-solving, and strategic decision-making.
+                data-driven problem-solving, and strategic decision-making. My background in leadership equips
+                me to manage projects effectively and drive team success.
               </p>
               <p>
-                Passionate about transforming complex data into actionable insights, I am proficient in
-                advanced analytics tools and thrive on using data to enhance organizational performance.
-                Currently, I work as a Consumer Reporting Analyst at First Merchants Bank.
+                Passionate about transforming complex data into actionable insights, I am proficient in advanced
+                analytics tools and thrive on using data to enhance organizational performance. Currently, I work
+                as a Consumer Reporting Analyst at First Merchants Bank, focusing on analytics, reporting, and
+                compliance to support growth and efficiency.
               </p>
             </div>
           </section>
 
           <!-- PHOTO -->
-          <section class="home-card photo-card">
+          <section class="home-card photo-card" aria-label="Featured photo">
             <div class="home-photo-wrap">
-              <img src="/assets/images/IMG_2475.JPG" alt="Daniel Aveline in a suit outdoors" />
+              <!-- Fallback handles case/extension differences on GitHub Pages -->
+              <img
+                src="/assets/images/IMG_2475.JPG"
+                alt="Daniel Aveline in a suit outdoors"
+                onerror="this.onerror=null; this.src='/assets/images/img_2475.jpg';"
+              />
             </div>
           </section>
 
@@ -133,6 +140,7 @@
   <script src="/assets/js/home-news.js" defer></script>
 </body>
 </html>
+
 
 
 
