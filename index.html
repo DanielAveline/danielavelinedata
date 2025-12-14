@@ -9,110 +9,112 @@
   <link rel="stylesheet" href="/assets/css/home.css" />
 </head>
 
-<body class="__hydrating __fade-ready home-page">
-  <!-- Keep partials loaded so footer stays consistent -->
+<body class="home-page">
+  <!-- keep footer partial, but hide header on home -->
   <div id="site-header" class="home-hide-global-header"></div>
 
-  <main class="home-shell">
-    <!-- Left Nav -->
-    <aside class="home-leftnav" aria-label="Primary navigation">
-      <nav class="home-nav">
-        <a class="home-nav__item" href="/experience.html">
-          <span class="home-nav__icon" aria-hidden="true">💼</span>
-          <span class="home-nav__label">Work History</span>
-        </a>
+  <main class="home-frame">
+    <div class="home-layout">
+      <!-- LEFT NAV -->
+      <aside class="home-left">
+        <nav class="home-nav" aria-label="Homepage navigation">
+          <a class="home-nav-btn" href="/experience.html">
+            <span class="home-nav-ico">👔</span>
+            <span class="home-nav-text">Work History</span>
+          </a>
 
-        <a class="home-nav__item" href="/education.html">
-          <span class="home-nav__icon" aria-hidden="true">🎓</span>
-          <span class="home-nav__label">Education</span>
-        </a>
+          <a class="home-nav-btn" href="/education.html">
+            <span class="home-nav-ico">🎓</span>
+            <span class="home-nav-text">Education</span>
+          </a>
 
-        <a class="home-nav__item" href="/sql/puzzles.html">
-          <span class="home-nav__icon" aria-hidden="true">🧩</span>
-          <span class="home-nav__label">SQL Puzzles</span>
-        </a>
+          <a class="home-nav-btn" href="/sql/puzzles.html">
+            <span class="home-nav-ico">🧩</span>
+            <span class="home-nav-text">SQL Puzzles</span>
+          </a>
 
-        <a class="home-nav__item is-active" href="/index.html" aria-current="page">
-          <span class="home-nav__icon" aria-hidden="true">🏠</span>
-          <span class="home-nav__label">Home</span>
-        </a>
-      </nav>
-    </aside>
+          <a class="home-nav-btn is-active" href="/index.html" aria-current="page">
+            <span class="home-nav-ico">🏠</span>
+            <span class="home-nav-text">Home</span>
+          </a>
+        </nav>
+      </aside>
 
-    <!-- Main -->
-    <section class="home-main">
-      <!-- Top center name card -->
-      <header class="home-hero">
+      <!-- CENTER -->
+      <section class="home-center">
         <div class="home-namecard">
           <h1>Daniel Aveline</h1>
-          <div class="home-subtitle">
-            <span>MBA in Business Data Analytics</span>
-            <span class="dot">|</span>
-            <span>Data Analytics Professional</span>
-            <span class="dot">|</span>
-            <span>Experienced Team Leader</span>
+          <div class="home-namecard-rule"></div>
+          <div class="home-sub">
+            <div>| MBA in Business Data Analytics |</div>
+            <div>| Data Analytics Professional |</div>
+            <div>| Experienced Team Leader |</div>
           </div>
         </div>
 
-        <!-- Social row (opens Coming Soon in new tab) -->
-        <div class="home-social" aria-label="Social links">
-          <a class="social-btn" href="/coming-soon.html?item=LinkedIn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (coming soon)">in</a>
-          <a class="social-btn" href="/coming-soon.html?item=Email" target="_blank" rel="noopener noreferrer" aria-label="Email (coming soon)">✉️</a>
-          <a class="social-btn" href="/coming-soon.html?item=GitHub" target="_blank" rel="noopener noreferrer" aria-label="GitHub (coming soon)">🐙</a>
-          <a class="social-btn" href="/coming-soon.html?item=TikTok" target="_blank" rel="noopener noreferrer" aria-label="TikTok (coming soon)">🎵</a>
-          <a class="social-btn" href="/coming-soon.html?item=YouTube" target="_blank" rel="noopener noreferrer" aria-label="YouTube (coming soon)">▶️</a>
+        <!-- SOCIAL ICONS (exact style: white tiles) -->
+        <div class="home-socialbar" aria-label="Social links">
+          <!-- Put your icon PNGs here -->
+          <a class="social-tile" href="/coming-soon.html?item=LinkedIn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (coming soon)">
+            <img src="/assets/images/home-icons/linkedin.png" alt="" />
+          </a>
+          <a class="social-tile" href="/coming-soon.html?item=Email" target="_blank" rel="noopener noreferrer" aria-label="Email (coming soon)">
+            <img src="/assets/images/home-icons/email.png" alt="" />
+          </a>
+          <a class="social-tile" href="/coming-soon.html?item=GitHub" target="_blank" rel="noopener noreferrer" aria-label="GitHub (coming soon)">
+            <img src="/assets/images/home-icons/github.png" alt="" />
+          </a>
+          <a class="social-tile" href="/coming-soon.html?item=TikTok" target="_blank" rel="noopener noreferrer" aria-label="TikTok (coming soon)">
+            <img src="/assets/images/home-icons/tiktok.png" alt="" />
+          </a>
+          <a class="social-tile" href="/coming-soon.html?item=YouTube" target="_blank" rel="noopener noreferrer" aria-label="YouTube (coming soon)">
+            <img src="/assets/images/home-icons/youtube.png" alt="" />
+          </a>
         </div>
-      </header>
 
-      <!-- Grid: About | Photo | News -->
-      <div class="home-grid">
-        <!-- About -->
-        <section class="home-card">
-          <div class="home-card__header">
-            <h2>About Me</h2>
-          </div>
-          <div class="home-card__body">
-            <p>
-              I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics
-              and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques,
-              data-driven problem-solving, and strategic decision-making. My background in leadership
-              equips me to manage projects effectively and drive team success.
-            </p>
-            <p>
-              Passionate about transforming complex data into actionable insights, I am proficient in
-              advanced analytics tools and thrive on using data to enhance organizational performance.
-              Currently, I work as a Consumer Reporting Analyst at First Merchants Bank, focusing on
-              analytics, reporting, and compliance to support growth and efficiency.
-            </p>
-          </div>
-        </section>
+        <div class="home-bottomgrid">
+          <!-- ABOUT -->
+          <section class="home-card about-card">
+            <div class="home-card-hd">
+              <h2>About Me</h2>
+            </div>
+            <div class="home-card-bd">
+              <p>
+                I am a dedicated data analytics professional with a Bachelor’s in Science and Data Analytics
+                and an MBA in Business Data Analytics. I bring a strong foundation in analytical techniques,
+                data-driven problem-solving, and strategic decision-making. My background in leadership
+                equips me to manage projects effectively and drive team success.
+              </p>
+              <p>
+                Passionate about transforming complex data into actionable insights, I am proficient in
+                advanced analytics tools and thrive on using data to enhance organizational performance.
+                Currently, I work as a Consumer Reporting Analyst at First Merchants Bank, focusing on
+                analytics, reporting, and compliance to support growth and efficiency.
+              </p>
+            </div>
+          </section>
 
-        <!-- Photo -->
-        <section class="home-card home-card--photo" aria-label="Featured photo">
-          <div class="home-card__body home-photo-wrap">
-            <!-- Put your exact image here -->
-            <img
-              src="/assets/images/IMG_2475.JPG"
-              alt="Daniel Aveline in a suit outdoors"
-              class="home-photo"
-              loading="eager"
-            />
-          </div>
-        </section>
+          <!-- PHOTO -->
+          <section class="home-card photo-card" aria-label="Featured photo">
+            <div class="home-photo-wrap">
+              <img src="/assets/images/IMG_2475.JPG" alt="Daniel Aveline in a suit outdoors" />
+            </div>
+          </section>
 
-        <!-- News -->
-        <section class="home-card">
-          <div class="home-card__header home-card__header--news">
-            <h2>NEWS</h2>
-          </div>
-          <div class="home-card__body">
-            <ul id="newsList" class="home-news">
-              <li class="home-news__placeholder">Coming soon — this will load from JSON.</li>
-            </ul>
-          </div>
-        </section>
-      </div>
-    </section>
+          <!-- NEWS -->
+          <section class="home-card news-card">
+            <div class="news-hd">
+              <h2>NEWS</h2>
+            </div>
+            <div class="home-card-bd">
+              <ul id="newsList" class="news-list">
+                <li class="news-empty">Coming soon — this will load from JSON.</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
   </main>
 
   <div id="site-footer"></div>
