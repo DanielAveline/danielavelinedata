@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coming Soon</title>
+  <link rel="stylesheet" href="/assets/styles.css"/>
+  <style>
+    body{ background:#0b1220; color:#eaf0ff; }
+    .cs-wrap{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+    .cs-card{
+      width:min(760px, 94vw);
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:18px;
+      padding:22px;
+      box-shadow:0 22px 60px rgba(0,0,0,.45);
+      text-align:center;
+    }
+    h1{ margin:0 0 10px; font-size:40px; }
+    p{ margin:0; opacity:.9; }
+    .tag{
+      display:inline-block;
+      margin-top:12px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(56,189,248,.15);
+      border:1px solid rgba(56,189,248,.35);
+      color:#bfe9ff;
+      font-weight:700;
+    }
+  </style>
+</head>
+<body>
+  <main class="cs-wrap">
+    <div class="cs-card">
+      <h1>Coming Soon</h1>
+      <p>This link will go live after launch.</p>
+      <div id="label" class="tag">Link</div>
+    </div>
+  </main>
+
+  <script>
+    const p = new URLSearchParams(location.search);
+    const item = p.get("item") || "Link";
+    document.getElementById("label").textContent = item;
+    document.title = item + " — Coming Soon";
+  </script>
+</body>
+</html>
