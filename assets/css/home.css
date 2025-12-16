@@ -1,250 +1,322 @@
-/* HARD RESET FOR HOME ONLY (so nothing old can fight it) */
-body.home-page {
-  margin: 0;
-  background: #0a0f18;
-  color: #111;
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+/* Homepage-only redesign (safe: scoped to .home-page) */
+
+:root{
+  /* Palette */
+  --home-bg: #0b1220;
+  --home-surface: rgba(15, 27, 46, .55);
+  --home-card: #f5f7fb;
+  --home-ink: #0f172a;
+
+  --home-accent: #38bdf8;        /* sky */
+  --home-nav: rgba(21, 34, 56, .72);
+  --home-nav-hover: rgba(27, 44, 75, .85);
+
+  --home-border: rgba(255,255,255,.18);
+  --home-outline: rgba(255,255,255,.35);  /* WHITE OUTLINE */
+  --home-shadow: 0 18px 55px rgba(0,0,0,.45);
+
+  --radius-lg: 18px;
+  --radius-md: 14px;
 }
 
-/* Hide global header on homepage */
+body.home-page {
+  background: var(--home-bg);
+}
+
+/* Hide global header on home only */
 .home-hide-global-header { display: none !important; }
 
-/* FULL PAGE WHITE OUTLINE FRAME (like your reference) */
-.home-frame {
-  padding: 18px;
+/* ====== OUTER PAGE FRAME (white outline like your example) ====== */
+.home-shell{
   min-height: calc(100vh - 60px);
-  box-sizing: border-box;
-}
-
-.home-frame::before {
-  content: "";
-  position: fixed;
-  inset: 12px;
-  border: 2px solid rgba(255,255,255,.45);
-  border-radius: 10px;
-  pointer-events: none;
-}
-
-/* Main layout: left nav + center content */
-.home-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: auto 1fr;
   gap: 26px;
-  padding: 20px;
-  box-sizing: border-box;
+  padding: 26px;
+
+  /* This is the outer framed container */
+  border-radius: 22px;
+  border: 2px solid var(--home-outline);       /* <-- white outline */
+  background: radial-gradient(1200px 600px at 55% 15%, rgba(56,189,248,.14), transparent 60%),
+              radial-gradient(900px 450px at 15% 55%, rgba(255,255,255,.06), transparent 60%),
+              rgba(255,255,255,.02);
+  box-shadow: var(--home-shadow);
 }
 
-/* LEFT NAV AREA */
-.home-left { align-self: start; }
+/* ====== LEFT NAV AREA should fit the buttons (not full height) ====== */
+.home-leftnav{
+  /* no giant column background */
+  background: transparent;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
 
-.home-nav {
-  display: grid;
-  gap: 14px;
+  align-self: start;               /* hug content */
 }
 
-.home-nav-btn {
+/* ====== LEFT NAV BUTTONS (SVG + rectangular style) ====== */
+.home-nav{
   display: grid;
-  grid-template-columns: 44px 1fr;
+  gap: 10px;
+
+  /* Background behind nav that hugs the buttons */
+  background: var(--home-nav);
+  border: 1px solid var(--home-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+
+  width: 240px;
+}
+
+.home-nav__item{
+  display: flex;
   align-items: center;
   gap: 14px;
 
-  background: rgba(60, 72, 90, .55);
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 6px;
+  width: 100%;
+  padding: 14px 18px;
 
-  padding: 16px 16px;
+  background: #4b5d73;              /* base gray-blue */
+  color: var(--home-accent);
+
   text-decoration: none;
-  box-shadow: 0 10px 24px rgba(0,0,0,.35);
-}
-
-.home-nav-btn:hover {
-  background: rgba(60, 72, 90, .70);
-  border-color: rgba(255,255,255,.18);
-}
-
-.home-nav-btn.is-active {
-  outline: 2px solid rgba(0,191,255,.35);
-}
-
-.home-nav-ico {
-  font-size: 28px;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-}
-
-.home-nav-text {
-  font-size: 20px;
   font-weight: 800;
-  color: #00bfff;
+  font-size: 16px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.10);
+
+  transition: background .15s ease, border-color .15s ease, transform .12s ease;
+}
+
+.home-nav__item:hover{
+  background: #3f5168;
+  border-color: rgba(255,255,255,.18);
+  transform: translateY(-1px);
+}
+
+.home-nav__item.is-active{
+  background: #2b4f73;
+  border-color: rgba(56,189,248,.55);
+  box-shadow: 0 0 0 3px rgba(56,189,248,.16);
+}
+
+.home-nav__icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(0,0,0,.22);
+  color: var(--home-accent);
+}
+
+.home-nav__icon svg{
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  display: block;
+}
+
+.home-nav__label{
   letter-spacing: .3px;
 }
 
-/* CENTER CONTENT TOP AREA */
-.home-center {
-  display: grid;
-  justify-items: center;
-  gap: 16px;
+/* ====== MAIN WRAP ====== */
+.home-main{
+  background: rgba(255,255,255,.03);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 44px rgba(0,0,0,.35);
+  padding: 20px;
 }
 
-/* Name card */
-.home-namecard {
-  width: min(720px, 100%);
-  background: #eef2f6;
-  border: 1px solid rgba(255,255,255,.35);
-  border-radius: 10px;
-  box-shadow: 0 18px 55px rgba(0,0,0,.45);
+/* hero */
+.home-hero{
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+
+  background: rgba(0,34,68,.70);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,.16);
   padding: 18px 18px 14px;
+}
+
+.home-namecard{
+  width: min(720px, 100%);
+  background: #eef2f7;
+  border-radius: 16px;
+  border: 1px solid rgba(15,23,42,.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  padding: 16px 18px 12px;
   text-align: center;
 }
 
-.home-namecard h1 {
+.home-namecard h1{
   margin: 0;
-  font-size: 46px;
-  font-weight: 900;
+  font-size: 44px;
+  line-height: 1.05;
   color: #0f172a;
+  font-weight: 900;
+  letter-spacing: .4px;
 }
 
-.home-namecard-rule{
-  height: 3px;
-  width: 86%;
-  background: rgba(15,23,42,.18);
-  margin: 10px auto 8px;
-  border-radius: 99px;
-}
-
-.home-sub {
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: .3px;
+.home-subtitle{
+  margin-top: 8px;
   color: #334155;
-  line-height: 1.45;
+  font-weight: 750;
+  font-size: 12.5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
 }
+.home-subtitle .dot{ opacity: .6; }
 
-/* Social bar container */
-.home-socialbar {
-  background: #eef2f6;
-  border: 1px solid rgba(255,255,255,.35);
-  border-radius: 10px;
-  box-shadow: 0 18px 55px rgba(0,0,0,.45);
-  padding: 12px 14px;
-
+/* social row */
+.home-social{
   display: flex;
   gap: 14px;
-  justify-content: center;
   flex-wrap: wrap;
+  justify-content: center;
+
+  background: rgba(238,242,247,.92);
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.14);
 }
 
-/* ✅ FIX: Remove double-border look
-   Let the PNG be the "tile" (images already contain the white rounded square) */
-.social-tile {
-  width: 74px;
-  height: 74px;
-  border-radius: 14px;
+.social-btn{
+  width: 52px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  background: transparent;
-  border: none;
-  box-shadow: none;
-
-  display: grid;
-  place-items: center;
   text-decoration: none;
+  font-weight: 900;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid rgba(15,23,42,.14);
+  box-shadow: 0 10px 20px rgba(0,0,0,.14);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
 }
 
-.social-tile img {
-  width: 74px;
-  height: 74px;
-  object-fit: contain;
-  display: block;
-
-  border-radius: 14px;
-  box-shadow: 0 14px 28px rgba(0,0,0,.22);
+.social-btn:hover{
+  transform: translateY(-2px);
+  border-color: rgba(56,189,248,.55);
+  box-shadow: 0 14px 26px rgba(0,0,0,.18);
 }
 
-/* Bottom 3-column grid */
-.home-bottomgrid {
-  width: min(1120px, 100%);
-  margin-top: 12px;
+/* ====== GRID ====== */
+.home-grid{
   display: grid;
-  grid-template-columns: 1.25fr 1fr 0.9fr;
+  grid-template-columns: 1.2fr 1fr 0.9fr;
   gap: 18px;
   align-items: stretch;
+  margin-top: 16px;
 }
 
-/* Cards */
-.home-card {
-  background: #f5f7fb;
-  border: 1px solid rgba(15,23,42,.20);
-  border-radius: 10px;
-  box-shadow: 0 18px 55px rgba(0,0,0,.40);
+.home-card{
+  background: var(--home-card);
+  border-radius: 16px;
+  border: 1px solid rgba(15,23,42,.12);
+  box-shadow: 0 14px 34px rgba(0,0,0,.18);
   overflow: hidden;
 }
 
-.home-card-hd {
-  padding: 16px 18px 12px;
+/* Standard card header */
+.home-card__header{
+  padding: 14px 16px 12px;
   background: rgba(15,23,42,.06);
-  border-bottom: 2px solid rgba(15,23,42,.12);
+  border-bottom: 1px solid rgba(15,23,42,.10);
 }
 
-.home-card-hd h2{
+.home-card__header h2{
   margin: 0;
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 900;
   color: #0f172a;
 }
 
-.home-card-bd {
-  padding: 16px 18px;
+/* ====== NEWS header should look like nav buttons ====== */
+.home-card__header--news{
+  /* remove flat header look */
+  background: transparent;
+  border-bottom: 0;
+  padding: 16px;
+  display: grid;
+  justify-items: center;
+}
+
+.home-card__header--news h2{
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 2px;
+  color: var(--home-accent);
+
+  /* mimic nav item style */
+  background: rgba(21, 34, 56, .80);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 12px;
+  padding: 12px 10px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.22);
+}
+
+/* Card body */
+.home-card__body{
+  padding: 16px;
   color: #0f172a;
   font-size: 16px;
   line-height: 1.55;
 }
 
-.home-card-bd p { margin: 0 0 14px; }
-
-/* Photo card */
-.home-photo-wrap {
-  padding: 18px;
-  display: grid;
-  place-items: center;
+/* Photo */
+.home-card--photo .home-card__body{ padding: 12px; }
+.home-photo-wrap{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.home-photo-wrap img {
+.home-photo{
   width: 100%;
   max-height: 560px;
   object-fit: cover;
-  display: block;
-
-  border-radius: 6px;
-  border: 8px solid rgba(255,255,255,.92);
-  box-shadow: 0 18px 55px rgba(0,0,0,.35);
+  border-radius: 14px;
+  border: 6px solid rgba(255,255,255,.92);
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
 }
 
-/* NEWS card header like reference */
-.news-hd {
-  background: rgba(60, 72, 90, .78);
-  border-bottom: 2px solid rgba(255,255,255,.16);
-  padding: 18px 18px 14px;
-  text-align: center;
-}
-
-.news-hd h2 {
+/* News list */
+.home-news{
+  list-style: none;
+  padding: 0;
   margin: 0;
-  font-size: 34px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: #00bfff;
+  display: grid;
+  gap: 10px;
 }
-
-.news-list { list-style: none; padding: 0; margin: 0; }
-.news-empty { color: #64748b; }
+.home-news__placeholder{ color: #64748b; }
 
 /* Responsive */
 @media (max-width: 1200px){
-  .home-bottomgrid { grid-template-columns: 1fr; }
-  .home-layout { grid-template-columns: 1fr; }
-  .home-left { justify-self: center; }
+  .home-grid{ grid-template-columns: 1fr; }
 }
+@media (max-width: 920px){
+  .home-shell{
+    grid-template-columns: 1fr;
+    padding: 18px;
+    gap: 18px;
+  }
+  .home-nav{ width: 100%; }
+}
+
 
 
 
